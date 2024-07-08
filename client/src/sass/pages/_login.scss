@@ -1,0 +1,265 @@
+.login {
+    height: 100vh;
+    background-size: cover;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: $color-font-dark;
+    font-family: "Regular", sans-serif;
+    display: flex;
+    justify-content: baseline; 
+
+    &-cont {
+        width: 45%;
+        background-color: #fff;
+        height: 100%;
+        padding: 0rem 5% 0 10%;
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+
+        &-main {
+            width: 100%;
+            text-align: center;
+
+            h1{
+                font-size: 3.5rem;
+            }
+
+            .input-field {
+                display: block;
+                position: relative;
+                text-align: left;
+
+                label,
+                .invalid + label {
+                    display: block;
+                    margin-left: 1.4rem;
+                    position: absolute;
+                    top: .95rem;
+                    left: 0;
+                    color: $color-font-dark;
+                    padding: 0 0.2rem;
+                    transition: all 0.4s ease;
+                    cursor: text;
+                    z-index: 0;
+                }
+                input {
+                    position: relative;
+                    display: inline-block;
+                    min-width: 16rem;
+                    width: 100%;
+                    padding: 0.8rem 1.2rem;
+                    font-size: 1rem;
+                    border: 2px solid #8dc5dc;
+                    outline: none;
+                    border-radius: 2rem;
+                    background-color: transparent;
+                    font-family: 'Regular', sans-serif;
+                    z-index: 1;
+                    transition: all .3s;
+
+                    &:focus {
+                        border: 2px solid #42768c;
+                    }
+                }
+
+                .error {
+                    border: 2px solid #fa4f4f;
+                }
+
+                .showPassword, .hidePassword{
+                    border: none;
+                    outline: none;
+                    background-color: none;
+                    position: absolute;
+                    top: 1.05rem;
+                    right: 1.5rem;
+                    font-size:1rem;
+                    cursor: pointer;
+                    z-index: 5;
+                    color: $color-font-dark;
+                }
+
+                input:focus + label,
+                .valid + label,
+                .showPassword:active + label {
+                    background-color: #fff;
+                    position: absolute;
+                    top: -0.6rem;
+                    left: 0;
+                    z-index: 2;
+                    color: #42768c;
+                }
+            }
+
+            .login-button {
+                min-width: 16rem;
+                width: 100%;
+                display: inline-block;
+                height: 3rem;
+                font-size: 1.2rem;
+                font-family: "Bold2", sans-serif;
+                border-radius: 2rem;
+                border: 2px solid #8dc5dc;
+                background-color: #8dc5dc;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    border: 2px solid #42768c;
+                    background-color: #42768c;
+                    color: $color-font-light;
+                }
+
+                &::before {
+                    background-color: $color-font-dark;
+                }
+            }
+
+            .sign-up {
+                display: block;
+                text-align: center;
+                font-size: 1.2rem;
+
+                .link {
+                    display: inline-block;
+                    margin-left: 0.5rem;
+                    background-clip: text;
+                    cursor: pointer;
+                    font-family: "Bold2", sans-serif;
+
+                    .link-element {
+                        &:link,
+                        &:visited {
+                            color: transparent;
+                            text-decoration: none;
+                        }
+                    }
+
+                    .underline {
+                        width: 1%;
+                        height: 2px !important;
+                        float: left;
+                        background-color: transparent;
+                        transition: width 0.6s cubic-bezier(0.86, 0, 0.07, 1);
+                    }
+
+                    .link-element:hover + .underline {
+                        width: 100%;
+                        height: 2px;
+                        background-clip: content-box;
+                        background-image: linear-gradient(to right bottom, #5593f6 0%, #fb5bf5 100%);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.separator{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    &-text {
+        position: absolute;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 0 1rem;
+    }
+
+    .line{
+        height: 1px;
+        width: 80%;
+        background-color: $color-font-dark;
+    }
+}
+
+.auth-login{
+    width: 100%;
+    
+    &-button{
+        font-family: 'Bold2', sans-serif;
+        min-width: 16rem;
+        text-align: left;
+        padding: 0 .7rem;
+        height: 3rem;
+        border-radius: 2rem;
+        font-size: 1.2rem;
+        background-color: #fff;
+        border: 2px solid $color-font-dark;
+        transition: all .3s;
+        position: relative;
+        text-align: right;
+
+        .google-icon{
+            position: absolute;
+            top: .5rem;
+            left: .7rem;
+            font-size: 1.8rem;
+            margin: 0 1rem -.45rem 0;
+        }
+
+        .description {
+            width:90%;
+            text-align: center;
+        }
+
+        &:hover {
+            background-color: $color-font-dark;
+            color: $color-font-light;
+        }
+    }
+}
+
+.img {
+    &-cont {
+        width: 55%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 70%;
+        }
+    }
+    
+}
+
+@media (max-width: 768px) {
+    .login{
+        width: 100%;
+        text-align: center;
+
+        h1{
+            font-size: 2.8rem;
+        }
+
+        &-cont{
+            width: 100%;
+            padding: 0 8%;
+
+            &-main {
+
+                .separator{
+                    margin-bottom: 4rem;
+                }
+            }
+        }
+
+        .img-cont {
+            display: none;
+        }
+    }
+}
+
+@media (max-height: 700px) {
+    .login {
+        padding: 2rem 0;
+    }
+}
