@@ -86,7 +86,7 @@ export default function Login() {
                     <h1 className="heading-primary-dark u-margin-bottom-small">Start your journey with <span className="u-dynamic-text">Charusat Alumni</span></h1>
                     <Input
                         labelText='Username'
-                        className={`u-margin-bottom-s_small ${userDetails.username === "" ? 'invalid' : 'valid'} ${userDetails.usernameError ? 'error' : ''}`}
+                        className={`u-margin-bottom-small ${userDetails.username === "" ? 'invalid' : 'valid'} ${userDetails.usernameError ? 'error' : ''}`}
                         type="text"
                         name="username"
                         onChange={handleChange}
@@ -95,7 +95,7 @@ export default function Login() {
                     />
                     <Input
                         labelText='Password'
-                        className={`u-margin-bottom-s_small ${userDetails.password === "" ? 'invalid' : 'valid'} ${userDetails.passwordError ? 'error' : ''}`}
+                        className={`u-margin-bottom-small ${userDetails.password === "" ? 'invalid' : 'valid'} ${userDetails.passwordError ? 'error' : ''}`}
                         type="password"
                         name="password"
                         onChange={handleChange}
@@ -104,7 +104,7 @@ export default function Login() {
                     />
                     <Input
                         labelText='Confirm Password'
-                        className={`u-margin-bottom-s_small ${userDetails.confirmPassword === "" ? 'invalid' : 'valid'} ${userDetails.confirmPasswordError ? 'error' : ''}`}
+                        className={`u-margin-bottom-small ${userDetails.confirmPassword === "" ? 'invalid' : 'valid'} ${userDetails.confirmPasswordError ? 'error' : ''}`}
                         type="password"
                         name="confirmPassword"
                         onChange={handleChange}
