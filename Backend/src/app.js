@@ -24,12 +24,11 @@ app.use(cookieParser());
 
 
 //routes import
-// import userRouter from "./routes/user.routes.js";
-
+import authRouter from "./routes/auth.routes.js"
 
 
 // // routes Declaration
-// app.use("/", userRouter)
+app.use("/auth", authRouter)
 // app.use("/",(req,res)=>{
 //     res.send("hii how are you")
 // })
