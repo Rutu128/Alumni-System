@@ -1,0 +1,18 @@
+::1 - - [09/Jul/2024:17:38:36 +0000] "POST /auth/login HTTP/1.1" 200 580 "-" "PostmanRuntime/7.40.0"
+::1 - - [09/Jul/2024:17:39:14 +0000] "POST /auth/login HTTP/1.1" 200 580 "-" "PostmanRuntime/7.40.0"
+::1 - - [09/Jul/2024:17:44:46 +0000] "POST /auth/login HTTP/1.1" 200 580 "-" "PostmanRuntime/7.40.0"
+POST /auth/login localhost
+POST /auth/login localhost -
+POST /auth/login localhost [object Promise] 
+POST /auth/login localhost [object Promise] 
+POST /auth/login localhost [object Promise] 
+POST /auth/login localhost [object Promise] 
+POST /auth/login localhost [object Promise] 
+POST /auth/login localhost [object Promise] 
+POST /auth/login localhost [object Promise] 
+POST /auth/login localhost [object Promise] 
+POST /auth/login localhost [object Promise] 
+POST /auth/login localhost [object Promise] 
+POST Tue, 09 Jul 2024 18:11:43 GMT /auth/login localhost [object Promise] 
+POST Tue, 09 Jul 2024 18:13:31 GMT /auth/login localhost [object Promise] 
+POST Tue, 09 Jul 2024 18:15:18 GMT /auth/login localhost [object Promise] 
