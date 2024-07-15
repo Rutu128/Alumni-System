@@ -71,7 +71,7 @@
                 .showPassword, .hidePassword{
                     border: none;
                     outline: none;
-                    background-color: none;
+                    background-color: transparent;
                     position: absolute;
                     top: 1.05rem;
                     right: 1.5rem;
@@ -190,9 +190,11 @@
         height: 3rem;
         border-radius: 2rem;
         font-size: 1.2rem;
-        background-color: #fff;
+        // background-color: #fff;
+        background-image: linear-gradient(120deg, $color-font-light 0%, $color-font-light 50%, $color-font-dark 50%, $color-font-dark 100%);
+        background-size: 250%;
         border: 2px solid $color-font-dark;
-        transition: all .3s;
+        transition: all .5s;
         position: relative;
         text-align: right;
 
@@ -210,8 +212,11 @@
         }
 
         &:hover {
-            background-color: $color-font-dark;
+            // background-color: $color-font-dark;
+            background-position: 100%;
+            // background-image: linear-gradient(to right bottom, $color-font-light 0%, $color-font-dark 0%, $color-font-dark 100%);
             color: $color-font-light;
+            box-shadow: 0 0 3rem rgba($color-font-dark, .6);
         }
     }
 }

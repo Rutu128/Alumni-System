@@ -83,7 +83,7 @@ export default function Login() {
         <main className="login">
             <section className="login-cont">
                 <div className="login-cont-main">
-                    <h1 className="heading-primary-dark u-margin-bottom-small">Start your journey with <span className="u-dynamic-text">Charusat Alumni</span></h1>
+                    <h1 className="heading-primary-dark u-margin-bottom-small">Start your journey with <span className="u-dynamic-text">Alumni Hub</span></h1>
                     <Input
                         labelText='Username'
                         className={`u-margin-bottom-small ${userDetails.username === "" ? 'invalid' : 'valid'} ${userDetails.usernameError ? 'error' : ''}`}

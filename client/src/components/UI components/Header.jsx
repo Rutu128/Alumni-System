@@ -5,16 +5,17 @@ import { LuSearch } from "react-icons/lu";
 
 export default function Header() {
     return (
+        <header>
         <div className="header__cont">
             <div className="header__cont--left">
-                <img className="charusat_logo" src="/charusat_logo.png" alt="Charusat Logo" />
-                {/* <h1 className="header-heading u-bold">CHARUSAT</h1> */}
+                {/* <img className="charusat_logo" src="/charusat_logo.png" alt="Charusat Logo" /> */}
+                <h1 className="header-heading">CHARUSAT</h1>
             </div>
             <div className="header__cont--right">
                 <nav>
                     <div className="nav--item">
                         <div className="search">
-                            <input type="text" className="search--input" />
+                            <input type="text" className="search--input" placeholder="Search" />
                             <button><LuSearch className="search--icon" /></button>
                         </div>
                     </div>
@@ -37,5 +38,6 @@ export default function Header() {
                 </nav>
             </div>
         </div>
+        </header>
     )
 }

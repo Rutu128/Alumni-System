@@ -1,6 +1,13 @@
-.header__cont {
-    padding: 1% 10%;
+header {
+    width: 100%;
     background-color: $color-header;
+}
+
+.header__cont {
+    padding: 1% 0;
+    display: block;
+    width: 80vw;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -17,7 +24,10 @@
         }
 
         h1 {
-            font-family: Times, serif;
+            font-family: 'Bold2', sans-serif;
+            font-size: 2.2rem;
+            transform: translate(0, .15rem);
+            // font-family: Times, serif;
             color: #5593f6;
         }
     }
@@ -78,7 +88,7 @@
 
             &__heading {
                 font-size: 1rem;
-                padding: .5rem 1rem;
+                padding: .5rem 1rem .5rem 1rem;
                 font-family: 'Bold', sans-serif;
                 border-radius: 1rem;
                 transition: all .3s;
@@ -97,7 +107,7 @@
             }
 
             &__icon {
-                margin: 0 0 -.2rem .3rem;
+                transform: translate(.2rem, .2rem);
             }
 
             &__links {
@@ -109,17 +119,14 @@
                 display: block;
             }
 
-            .showDropdown{
-                display: none;
+            
+            .dropdown_links{
+                // display: none;
                 width: 20rem;
-                height: auto;
-                position: absolute;
-                top: 2.2rem;
-                right: 0;
-                background-color: $color-font-light;
-                border-radius: 1rem;
-                overflow: hidden;
-
+                // height: auto;
+                transition: height 2s;
+                // animation: slideDown .5s;
+                
                 .nav__link {
                     display: block;
                     padding: 1rem 1.5rem;
@@ -133,7 +140,58 @@
                         background-color: #ccc;
                     }
                 }
+            
             }
+            .hidden {
+                display: none;
+                height: 0;
+            }
+    
+            .showDropdown{
+                display: inline-block;
+                height: auto;
+                width: 20rem;
+                position: absolute;
+                top: 2.5rem;
+                right: 0;
+                background-color: $color-font-light;
+                border-radius: 1rem;
+                overflow: hidden;
+            }
+        }
+    }
+}
+
+.header{
+    width: 100vw;
+    // background-color: rgb(211, 206, 206);
+    background-color: $color-font-light;
+    color: $color-font-dark;
+    border-bottom: 1px solid #ccc;
+    // background-color: red;
+
+    &_cont{
+        padding: 1rem 0;
+        // display: inline-block;
+        width: 85vw;
+        // min-width: 40rem;
+        margin: 0 auto;
+        // display: flex;
+        // align-items: center;
+        // justify-content: left;
+
+
+        &--left {
+            h1{
+                font-family: 'Inter', sans-serif;
+                font-weight: 800;
+                font-size: 2.2rem;
+                // margin-top: .2rem;
+            }
+        }
+
+        &--right {
+
         }
     }
 }
