@@ -188,10 +188,22 @@ header {
                 font-size: 2.2rem;
             }
 
+            .sandwich-menu {
+                border: none;
+                font-size: 1.6rem;
+                background-color: #aaa;
+                width: 3rem;
+                height: 3rem;
+                border-radius: 50%;
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+
             .search {
                 position: relative;
-                width: 20rem;
-                min-width: 10rem;
+                width: 15rem;
+                min-width: 5rem;
                 margin-left: 2rem;
 
                 &--input {
@@ -232,7 +244,7 @@ header {
         &--right {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
+            // justify-content: center;
             .navigation {
                 &--links {
                     // padding: 0 .8rem;
@@ -279,6 +291,25 @@ header {
                     height: 3.5rem;
                     // margin: none;
                 }
+            }
+        }
+    }
+}
+
+
+@media (max-width: 768px) {
+    .header_cont{
+        width: 100vw;
+        padding: .5rem;
+
+        &--left{
+
+            .main-header{
+                display: none;
+            }
+
+            .sandwich-menu {
+                display: flex;
             }
         }
     }

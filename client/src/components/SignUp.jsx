@@ -8,12 +8,22 @@ import { Link } from "react-router-dom";
 export default function Login() {
     log('<Login/> rendered', 1);
     const [userDetails, setUserDetails] = useState({
-        username: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        c_id: '',
+        dob: '',
+        passingYear: '',
         password: '',
         confirmPassword: '',
-        usernameError: '',
+        firstNameError: '',
+        lastNameError: '',
+        emailError: '',
+        c_idError: '',
+        dobError: '',
+        passingYearError: '',
         passwordError: '',
-        confirmPasswordError: ''
+        confirmPasswordError: '',
     })
 
     function handleChange(e) {
@@ -45,15 +55,24 @@ export default function Login() {
         let errorMessage;
         let errorField;
 
+        for (const [key, value] of Object.entries(userDetails)) {
+            if(value === ""){
+                console.log('Key: ', key, ', Value: ', value);
+                setUserDetails(prevDetails => {
+                    return {
+                        ...prevDetails,
+                        [key + 'Error']: 'This field is required!'
+                    }
+                })
+                return;
+            }
+        }
+
         let pattern = new RegExp(
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
         );
 
-        if(userDetails.username.trim() === "" || userDetails.username.trim().length < 6){
-            errorMessage = 'Username must be minimum of 6 characters'
-            errorField = 'usernameError'
-        } 
-        else if (userDetails.password.trim() === "" || userDetails.password.trim().length < 6){
+        if (userDetails.password.trim() === "" || userDetails.password.trim().length < 6){
             errorMessage = 'Password must be minimum of 6 characters'
             errorField = 'passwordError'
         } 
@@ -83,15 +102,52 @@ export default function Login() {
         <main className="login">
             <section className="login-cont">
                 <div className="login-cont-main">
-                    <h1 className="heading-primary-dark u-margin-bottom-small">Start your journey with <span className="u-dynamic-text">Alumni Hub</span></h1>
+                    <h1 className="heading-primary-dark u-margin-bottom-s_small">Start your journey with <span className="u-dynamic-text">Alumni Hub</span></h1>
                     <Input
-                        labelText='Username'
-                        className={`u-margin-bottom-small ${userDetails.username === "" ? 'invalid' : 'valid'} ${userDetails.usernameError ? 'error' : ''}`}
+                        labelText='First name'
+                        className={`u-margin-bottom-small ${userDetails.firstName === "" ? 'invalid' : 'valid'} ${userDetails.firstNameError ? 'error' : ''}`}
                         type="text"
-                        name="username"
+                        name="firstName"
                         onChange={handleChange}
-                        value={userDetails.username}
-                        errorText={userDetails.usernameError}
+                        value={userDetails.firstName}
+                        errorText={userDetails.firstNameError}
+                    />
+                    <Input
+                        labelText='Last name'
+                        className={`u-margin-bottom-small ${userDetails.lastName === "" ? 'invalid' : 'valid'} ${userDetails.lastNameError ? 'error' : ''}`}
+                        type="text"
+                        name="lastName"
+                        onChange={handleChange}
+                        value={userDetails.lastName}
+                        errorText={userDetails.lastNameError}
+                    />
+                    <Input
+                        labelText='Email'
+                        className={`u-margin-bottom-small ${userDetails.email === "" ? 'invalid' : 'valid'} ${userDetails.emailError ? 'error' : ''}`}
+                        type="email"
+                        name="email"
+                        onChange={handleChange}
+                        value={userDetails.email}
+                        errorText={userDetails.emailError}
+                    />
+                    <Input
+                        labelText='College ID'
+                        className={`u-margin-bottom-small ${userDetails.c_id === "" ? 'invalid' : 'valid'} ${userDetails.c_idError ? 'error' : ''}`}
+                        type="text"
+                        name="c_id"
+                        onChange={handleChange}
+                        value={userDetails.c_id}
+                        errorText={userDetails.c_idError}
+                    />
+                    <Input
+                        labelText='Date of Birth'
+                        className={`u-margin-bottom-small ${userDetails.dob === '' ? 'invalid' : 'valid'}`}
+                        type="date"
+                        name="dob"
+                        onChange={handleChange}
+                        value={userDetails.dob}
+                        errorText={userDetails.dobError}
+                        // placeholder='Hey'
                     />
                     <Input
                         labelText='Password'
@@ -112,11 +168,11 @@ export default function Login() {
                         errorText={userDetails.confirmPasswordError}
                     />
                     <Button
-                        className="login-button u-margin-bottom-small"
+                        className="login-button u-margin-bottom-s_small"
                         btnText='Create Account'
                         onClick={handleSubmit}
                     />
-                    <div className="sign-up u-margin-bottom-small">Already have an account?
+                    <div className="sign-up u-margin-bottom-s_small">Already have an account?
                         <div className="link u-dynamic-text-link">
                             <Link to="/login" className="link-element">Login</Link>
                             <div className="underline"></div>

@@ -67,7 +67,7 @@ export default function Login() {
 
     return (
         <main className="login">
-            <section className="login-cont">
+            <section className="login-cont narrow">
                 <div className="login-cont-main">
                     <h1 className="heading-primary-dark u-margin-bottom-small">Login to <br /><span className="u-dynamic-text">Charusat Alumni</span></h1>
                     <Input
@@ -78,6 +78,7 @@ export default function Login() {
                         onChange={handleChange}
                         value={userDetails.username}
                         errorText={userDetails.usernameError}
+                        inputFor='login'
                     />
                     <Input
                         labelText='Password'
@@ -87,6 +88,7 @@ export default function Login() {
                         onChange={handleChange}
                         value={userDetails.password}
                         errorText={userDetails.passwordError}
+                        inputFor='login'
                     />
                     <Button
                         className="login-button u-margin-bottom-small"
@@ -116,7 +118,7 @@ export default function Login() {
                     </div>
                 </div>
             </section>
-            <div className="img-cont">
+            <div className="img-cont wider">
                 <img src="/login-bg.svg" alt="login-illustration" />
             </div>
         </main>
