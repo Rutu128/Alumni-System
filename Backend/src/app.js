@@ -6,7 +6,7 @@ import morgan from "morgan";
 import { createStream } from 'rotating-file-stream';
 import path from "path";
 import { existsSync, mkdirSync } from "fs";
-import { getname } from "./helper.js";
+// import { getname } from "./helper.js";
 
 const app = express();
 
@@ -39,8 +39,8 @@ const accessLogStream = createStream("access.log", {
 morgan.token("host", function (req, res) {
   return req.hostname;
 });
-morgan.token("user",getname)
-app.use(morgan(`:method :date :url :host :user `, { stream: accessLogStream }));
+// morgan.token("user",getname)
+app.use(morgan(`:method :date :url :host  `, { stream: accessLogStream }));
 //routes import
 import authRouter from "./routes/auth.routes.js";
 
