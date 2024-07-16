@@ -12,31 +12,31 @@ header {
     justify-content: space-between;
     align-items: center;
     font-size: 1rem;
-    font-family: 'Regular', sans-serif;
+    font-family: "Regular", sans-serif;
     color: $color-font-dark;
 
     &--left {
         display: flex;
         align-items: center;
 
-        .charusat_logo{
+        .charusat_logo {
             width: 15rem;
         }
 
         h1 {
-            font-family: 'Bold2', sans-serif;
+            font-family: "Bold2", sans-serif;
             font-size: 2.2rem;
-            transform: translate(0, .15rem);
+            transform: translate(0, 0.15rem);
             // font-family: Times, serif;
             color: #5593f6;
         }
     }
 
     &--right {
-        .nav--item{
+        .nav--item {
             display: inline-block;
 
-            &:not(:last-child){
+            &:not(:last-child) {
                 margin-right: 1rem;
             }
         }
@@ -47,26 +47,26 @@ header {
             min-width: 10rem;
 
             &--input {
-                padding: .6rem 1rem;
+                padding: 0.6rem 1rem;
                 width: 100%;
                 border: 2px solid transparent;
                 border-radius: 2rem;
                 outline: none;
                 font-size: 1rem;
-                font-family: 'Regular', sans-serif;
+                font-family: "Regular", sans-serif;
 
                 &:focus {
                     border: 2px solid #5593f6;
                 }
             }
 
-            button{
+            button {
                 position: absolute;
-                top: .45rem;
-                right: .5rem;
+                top: 0.45rem;
+                right: 0.5rem;
                 background-color: transparent;
                 border: none;
-                padding: .2rem .4rem;
+                padding: 0.2rem 0.4rem;
                 border-radius: 1rem;
 
                 &:hover {
@@ -74,24 +74,24 @@ header {
                 }
             }
 
-            &--icon{
+            &--icon {
                 font-size: 1.2rem;
-                margin: .1rem 0 -.1rem 0;
+                margin: 0.1rem 0 -0.1rem 0;
             }
         }
-        
-        .dropdown{
+
+        .dropdown {
             position: relative;
-            &:not(:last-child){
+            &:not(:last-child) {
                 margin-right: 1rem;
             }
 
             &__heading {
                 font-size: 1rem;
-                padding: .5rem 1rem .5rem 1rem;
-                font-family: 'Bold', sans-serif;
+                padding: 0.5rem 1rem 0.5rem 1rem;
+                font-family: "Bold", sans-serif;
                 border-radius: 1rem;
-                transition: all .3s;
+                transition: all 0.3s;
                 border: none;
                 outline: none;
                 background-color: transparent;
@@ -102,12 +102,12 @@ header {
                 }
 
                 &:hover .dropdown__icon {
-                    animation: shake .5s;
+                    animation: shake 0.5s;
                 }
             }
 
             &__icon {
-                transform: translate(.2rem, .2rem);
+                transform: translate(0.2rem, 0.2rem);
             }
 
             &__links {
@@ -119,35 +119,33 @@ header {
                 display: block;
             }
 
-            
-            .dropdown_links{
+            .dropdown_links {
                 // display: none;
                 width: 20rem;
                 // height: auto;
                 transition: height 2s;
                 // animation: slideDown .5s;
-                
+
                 .nav__link {
                     display: block;
                     padding: 1rem 1.5rem;
                     background-color: inherit;
                     text-decoration: none;
                     color: $color-font-dark;
-                    font-family: 'Bold', sans-serif;
-                    transition: all .3s;
+                    font-family: "Bold", sans-serif;
+                    transition: all 0.3s;
 
                     &:hover {
                         background-color: #ccc;
                     }
                 }
-            
             }
             .hidden {
                 display: none;
                 height: 0;
             }
-    
-            .showDropdown{
+
+            .showDropdown {
                 display: inline-block;
                 height: auto;
                 width: 20rem;
@@ -162,7 +160,7 @@ header {
     }
 }
 
-.header{
+.header {
     width: 100vw;
     // background-color: rgb(211, 206, 206);
     background-color: $color-font-light;
@@ -170,28 +168,118 @@ header {
     border-bottom: 1px solid #ccc;
     // background-color: red;
 
-    &_cont{
-        padding: 1rem 0;
+    &_cont {
+        padding: .5rem 0;
         // display: inline-block;
         width: 85vw;
         // min-width: 40rem;
         margin: 0 auto;
-        // display: flex;
-        // align-items: center;
-        // justify-content: left;
-
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
         &--left {
-            h1{
-                font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+
+            .main-header {
+                font-family: "Inter", sans-serif;
                 font-weight: 800;
                 font-size: 2.2rem;
-                // margin-top: .2rem;
+            }
+
+            .search {
+                position: relative;
+                width: 20rem;
+                min-width: 10rem;
+                margin-left: 2rem;
+
+                &--input {
+                    padding: 0.6rem 1rem;
+                    width: 100%;
+                    border: 2px solid transparent;
+                    border-radius: 2rem;
+                    outline: none;
+                    font-size: 1rem;
+                    font-family: "Regular", sans-serif;
+
+                    &:focus {
+                        border: 2px solid #5593f6;
+                    }
+                }
+
+                button {
+                    position: absolute;
+                    top: 0.45rem;
+                    right: 0.5rem;
+                    background-color: transparent;
+                    border: none;
+                    padding: 0.2rem 0.4rem;
+                    border-radius: 1rem;
+
+                    &:hover {
+                        background-color: #ccc;
+                    }
+                }
+
+                &--icon {
+                    font-size: 1.2rem;
+                    margin: 0.1rem 0 -0.1rem 0;
+                }
             }
         }
 
         &--right {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            .navigation {
+                &--links {
+                    // padding: 0 .8rem;
+                    // display: inline-block;
+                    width: 3rem;
+                    height: 3rem;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 1rem 0 0;
 
+
+                    &,
+                    &:link,
+                    &:visited {
+                        color: $color-font-dark;
+                        text-decoration: none;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                        border-radius: 50%;
+                        // margin-top: 0 !important;
+                        // margin-bottom: 0 !important;
+                    }
+
+                    &:hover {
+                        background-color: #aaa;
+                    }
+
+                    .nav--icon {
+                        .header--icons {
+                            margin: 0 0 -0.2rem 0;
+                            font-size: 1.6rem;
+                        }
+                    }
+                }
+            }
+            .profile {
+                border-radius: 50%;
+                overflow: hidden;
+                background-color: #bbb;
+
+                img {
+                    width: 3.5rem;
+                    height: 3.5rem;
+                    // margin: none;
+                }
+            }
         }
     }
 }
