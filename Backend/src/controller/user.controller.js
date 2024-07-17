@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { Verification } from "../db/verification.model.js";
 import mailer from "../utils/Mailer.js";
+import { randomBytes } from 'crypto';
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -21,6 +22,10 @@ const generateAccessAndRefreshTokens = async (userId) => {
       "something went wrong during generating access token and refresh token"
     );
   }
+};
+
+const generateRandomHex = (length) => {
+  return randomBytes(length).toString('hex');
 };
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -62,7 +67,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!createdUser) {
     throw new ApiError(500, "something went wrong");
   }
-  const token = crypto.randomUUID();
+  const token = generateRandomHex(20)
   const verificationToken = Verification.create({
     userId: user._id,
     token,
@@ -73,7 +78,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200,  createdUser, "user registered Successfully"));
+    .json(new ApiResponse(200, createdUser, "user registered Successfully"));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -134,4 +139,32 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser, loginUser };
+const verify = asyncHandler(async (req, res) => {
+  const { token } = req.params;
+  console.log(token);
+  console.log(typeof token);
+
+  if (!token) {
+    throw new ApiError(404, "Token not found");
+  }
+
+  const verification = await Verification.findOne({ token: token });
+  if (!verification) {
+    throw new ApiError(404, "Verification not found");
+  }
+
+  const user = await User.findById(verification.userId);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  user.isVerified = true;
+  await user.save({ validateBeforeSave: false });
+  await Verification.deleteOne({ token: token });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Email verified successfully"));
+});
+
+export { registerUser, loginUser,verify };
