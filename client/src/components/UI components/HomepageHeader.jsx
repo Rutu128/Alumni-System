@@ -20,15 +20,15 @@ export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
                         <h1 className="u-dynamic-text">Alumni Hub</h1>
                     </div>
                     <div className="section--middle section">
-                        <button className="header__button"><FaUsers className="button--icon" /><p>My Network</p></button>
-                        <button className="header__button"><BiSolidLike className="button--icon smaller" /><p>Interactions</p></button>
+                    </div>
+                    <div className="section--right section">
                         <div className="input-search">
                             <button className="search-button"><LuSearch className="search-icon" /></button>
                             <input className="search-input" placeholder="Search" onClick={() => hover} />
                         </div>
+                        <button className="header__button"><FaUsers className="button--icon" /><p>My Network</p></button>
+                        <button className="header__button"><BiSolidLike className="button--icon smaller" /><p>Interactions</p></button>
                         <button className="header__button"><FaBell className="button--icon smaller" /><p>Notifications</p></button>
-                    </div>
-                    <div className="section--right section">
                         {!userLoggedIn ?
                             <>
                                 <button
@@ -36,12 +36,6 @@ export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
                                     onClick={() => navigate('/login')}
                                 >
                                     Log in
-                                </button>
-                                <button
-                                    className="header__button signup"
-                                    onClick={() => navigate('/signup')}
-                                >
-                                    Sign Up
                                 </button>
                             </>
                             :
