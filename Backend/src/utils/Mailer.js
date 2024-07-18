@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { ApiError } from './ApiError.js';
 
 class Mailer {
     from = process.env.GMAIL;

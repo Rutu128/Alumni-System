@@ -2,37 +2,60 @@ import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuUsers, LuSearch } from "react-icons/lu";
 import { MdOutlineNotifications } from "react-icons/md";
 import { LuMenu } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+import { FaUsers } from "react-icons/fa";
+import { BiSolidLike } from "react-icons/bi";
+import { FaBell } from "react-icons/fa";
 
-export default function HomepageHeader() {
+export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
+
+
+    const navigate = useNavigate();
+
     return (
         <>
             <header className="header">
-                <div className="header_cont">
-                    <div className="header_cont--left">
-                        <h1 className="main-header u-dynamic-text u-il-blk">Alumni Hub</h1>
-                        <button className="sandwich-menu"><LuMenu /></button>
-                        <div className="search u-il-blk">
-                            <input type="text" className="search--input" placeholder="Search" />
-                            <button><LuSearch className="search--icon" /></button>
-                        </div>
+                <div className="header__cont">
+                    <div className="section--left section">
+                        <h1 className="u-dynamic-text">Alumni Hub</h1>
                     </div>
-                    <div className="header_cont--right">
-                        <nav className="navigation u-il-blk">
-                            <a className="navigation--links u-il-blk" title="Dashboard">
-                                <div className="nav--icon"><MdOutlineSpaceDashboard className="header--icons" /></div>
-                            </a>
-                            <a href="" className="navigation--links u-il-blk" title="Network">
-                                <div className="nav--icon"><LuUsers className="header--icons" /></div>
-                            </a>
-                            <a href="" className="navigation--links u-il-blk" title="Notifications">
-                                <div className="nav--icon"><MdOutlineNotifications className="header--icons" /></div>
-                            </a>
-                        </nav>
-                        <a href="" className="profile u-il-blk" title="Profile">
-                            <div className="nav--icon">
-                                <img src="/vite.svg" className="header--icons" alt="User Profile Image" />
+                    <div className="section--middle section">
+                        <button className="header__button"><FaUsers className="button--icon" /><p>My Network</p></button>
+                        <button className="header__button"><BiSolidLike className="button--icon smaller" /><p>Interactions</p></button>
+                        <div className="input-search">
+                            <button className="search-button"><LuSearch className="search-icon" /></button>
+                            <input className="search-input" placeholder="Search" onClick={() => hover} />
+                        </div>
+                        <button className="header__button"><FaBell className="button--icon smaller" /><p>Notifications</p></button>
+                    </div>
+                    <div className="section--right section">
+                        {!userLoggedIn ?
+                            <>
+                                <button
+                                    className="header__button login"
+                                    onClick={() => navigate('/login')}
+                                >
+                                    Log in
+                                </button>
+                                <button
+                                    className="header__button signup"
+                                    onClick={() => navigate('/signup')}
+                                >
+                                    Sign Up
+                                </button>
+                            </>
+                            :
+                            <div className="header__profile">
+                                {
+                                    profileImg === null ?
+                                        <button className="dummy-profile">
+                                            {initials}
+                                        </button>
+                                        :
+                                        <img src={profileImg} alt="Profile Photo" />
+                                }
                             </div>
-                        </a>
+                        }
                     </div>
                 </div>
             </header>

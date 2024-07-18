@@ -337,7 +337,7 @@
 
                 input[value=""]:not(:focus) { color: transparent; }
 
-                input {
+                input, select {
                     position: relative;
                     display: inline-block;
                     width: 100%; /* Full width within the container */
@@ -356,6 +356,13 @@
                     }
                 }
 
+                select{
+                    // height: 3.1rem;
+                    appearance: none;
+                    padding: .87rem 1.2rem;
+                }
+
+
                 .error {
                     border: 2px solid #fa4f4f;
                 }
@@ -366,14 +373,19 @@
                     background-color: transparent;
                     position: absolute;
                     top: 1.05rem;
-                    right: 1.5rem;
+                    right: .8rem;
                     font-size:1rem;
                     cursor: pointer;
                     z-index: 5;
                     color: $color-font-dark;
+
+                    &:focus{
+                        background-color: transparent;
+                    }
                 }
 
                 input:focus + label,
+                select:focus + label,
                 .valid + label,
                 .showPassword:active + label {
                     background-color: #fff;
@@ -536,12 +548,19 @@
 @media (max-width: 768px) {
     .login {
         width: 100%;
+        height: 100vh;
         text-align: center;
         padding: 3rem 0;
         overflow-y: auto;
 
         h1 {
             font-size: 2.8rem;
+        }
+        
+        .narrow{
+            width: 100%;
+            margin: none;
+            padding: 0 5% 0 5%;
         }
 
         &-cont {

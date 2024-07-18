@@ -37,6 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const existedUser = await User.findOne({
     $or: [{ c_id }, { email }],
   });
+  // console.log('Existed user:', existedUser);
   if (existedUser) {
     console.log(existedUser);
     throw new ApiError(
@@ -66,14 +67,20 @@ const registerUser = asyncHandler(async (req, res) => {
   const verificationToken = Verification.create({
     userId: user._id,
     token,
-    expireAfterSeconds: 300,
+    expiresAt: Date.now() + 300,
   });
   const verificationLink = `${process.env.BASE_URL}/api/auth/verify-email/${token}`;
   await mailer.sendVerificationLink(email, verificationLink);
 
   return res
     .status(200)
-    .json(new ApiResponse(200,  createdUser, "user registered Successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { createdUser, verificationToken },
+        "user registered Successfully"
+      )
+    );
 });
 
 const loginUser = asyncHandler(async (req, res) => {

@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { log } from "../log";
 import Input from "./UI components/Input";
 import Button from "./UI components/Button";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 export default function Login() {
+    const navigate = useNavigate();
+
+    const { userDetail, loginUser } = useContext(UserContext);
+
     log('<Login/> rendered', 1);
     const [userDetails, setUserDetails] = useState({
-        username: '',
+        email: '',
         password: '',
-        usernameError: '',
+        emailError: '',
         passwordError: ''
     })
 
@@ -39,18 +44,28 @@ export default function Login() {
         })
     }
 
-    function handleSubmit() {
+    const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    async function handleSubmit(e) {
         let errorMessage;
         let errorField;
+        e.preventDefault();
 
-        if(userDetails.username.trim() === "" || userDetails.username.trim().length < 6){
-            errorMessage = 'Username must be minimum of 6 characters'
-            errorField = 'usernameError'
+        if(userDetails.email.trim() === ""){
+            errorMessage = 'This field is required!'
+            errorField = 'emailError'
         } 
-        else if (userDetails.password.trim() === "" || userDetails.password.trim().length < 6){
-            errorMessage = 'Password must be minimum of 6 characters'
+        else if(userDetails.password.trim() === ""){
+            errorMessage = 'This field is required!'
             errorField = 'passwordError'
         } 
+        else if(!isValidEmail(userDetails.email)){
+            errorMessage = 'Enter a valid email!'
+            errorField = 'emailError'
+        }
 
         if(errorMessage !== undefined){
             setUserDetails(prevDetails => {
@@ -62,22 +77,32 @@ export default function Login() {
             return;
         }
 
-        console.log('username: ', username, ' password: ', password);
+        const userStatus = await loginUser({
+            email: userDetails.email,
+            password: userDetails.password,
+        })
+
+        console.log(userStatus);
+        if(userStatus.status === 200){
+            navigate('/');
+        }
+
+        console.log('email: ', userDetails.email, ' password: ', userDetails.password);
     }
 
     return (
         <main className="login">
             <section className="login-cont narrow">
-                <div className="login-cont-main">
-                    <h1 className="heading-primary-dark u-margin-bottom-small">Login to <br /><span className="u-dynamic-text">Charusat Alumni</span></h1>
+                <form className="login-cont-main">
+                    <h1 className="heading-primary-dark u-margin-bottom-small">Login to <br /><span className="u-dynamic-text">Alumni Hub</span></h1>
                     <Input
-                        labelText='Username'
-                        className={`u-margin-bottom-small ${userDetails.username === "" ? 'invalid' : 'valid'} ${userDetails.usernameError ? 'error' : ''}`}
+                        labelText='email'
+                        className={`u-margin-bottom-small ${userDetails.email === "" ? 'invalid' : 'valid'} ${userDetails.emailError ? 'error' : ''}`}
                         type="text"
-                        name="username"
+                        name="email"
                         onChange={handleChange}
-                        value={userDetails.username}
-                        errorText={userDetails.usernameError}
+                        value={userDetails.email}
+                        errorText={userDetails.emailError}
                         inputFor='login'
                     />
                     <Input
@@ -93,7 +118,7 @@ export default function Login() {
                     <Button
                         className="login-button u-margin-bottom-small"
                         btnText='Login'
-                        type='primary'
+                        type='submit'
                         onClick={handleSubmit}
                     />
                     <div className="sign-up u-margin-bottom-small">Don't have an account?
@@ -116,7 +141,7 @@ export default function Login() {
                             </div>
                         </Button>
                     </div>
-                </div>
+                </form>
             </section>
             <div className="img-cont wider">
                 <img src="/login-bg.svg" alt="login-illustration" />
