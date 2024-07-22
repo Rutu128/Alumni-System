@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import postApi from "../utils/postApi";
 export const UserContext = createContext({
     userDetail: {
         firstName: String,
@@ -24,19 +25,23 @@ export default function UserContextProvider({ children }) {
         email: '',
         accessToken: '',
         refreshToken: '',
+        profileImg: '',
         isAuthenticated: false
     })
 
     async function handleLoginUser(credentials) {
         let responseData;
 
-        await axios.post('http://localhost:8000/auth/login', credentials)
-            .then(response => {
-                responseData = response.data;
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        // await axios.post('http://localhost:8000/auth/login', credentials)
+        //     .then(response => {
+        //         responseData = response.data;
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     })
+        const response = await postApi('URL_login', credentials);
+        console.log(response.data);
+        responseData = response.data;
 
         if (responseData.statusCode === 200 && responseData.success) {
             console.log('Updating User details!!');
@@ -60,18 +65,32 @@ export default function UserContextProvider({ children }) {
     async function handleRegisterUser(userDetails) {
         console.log('Registering user with following credentials: ');
         console.table(userDetails);
-        await axios.post('http://localhost:8000/auth/signup', userDetails)
-            .then(response => {
-                console.log(response.status);
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        // await axios.post('http://localhost:8000/auth/signup', userDetails)
+        //     .then(response => {
+        //         console.log(response.status);
+        //         console.log(response.data);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     })
+
+        const response = await postApi('URL_signup', userDetails);
+        console.log(response.data);
     }
 
     function handleLogoutUser() {
-
+        setUserInfo({
+            firstName: '',
+            lastName: '',
+            email: '',
+            accessToken: '',
+            refreshToken: '',
+            profileImg: '',
+            isAuthenticated: false
+        })
+        return {
+            logoutStatus : 200
+        }
     }
     function getUserDetails() {
 

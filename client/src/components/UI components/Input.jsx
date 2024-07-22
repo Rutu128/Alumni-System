@@ -3,12 +3,13 @@ import { RiEyeFill } from "react-icons/ri";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { MdError } from "react-icons/md";
 
-function Input({ labelText, type, errorText, inputFor, values, ...props }) {
+function Input({ labelText, type, errorText, inputFor, values, showError, ...props }) {
 
     if (type === 'password') {
         const [showPassword, setShowPassword] = useState(false);
 
-        function handleShowPassword() {
+        function handleShowPassword(e) {
+            e.preventDefault();
             setShowPassword(prevValue => !prevValue);
         }
 

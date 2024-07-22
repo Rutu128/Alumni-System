@@ -1,17 +1,33 @@
-import { useContext } from 'react';
-import {log} from '../log';
-import Header from './UI components/Header';
-import HomepageHeader from './UI components/HomepageHeader';
+import { useContext, useEffect } from 'react';
+import { log } from '../log';
+import HomepageHeader from './Homepage UI/HomepageHeader';
 import { UserContext } from '../context/UserContext';
-export default function Homepage(){
-    const { userDetail } = useContext(UserContext);
+import HomepageContent from './Homepage UI/HomepageContent';
+import HomepageMenu from './Homepage UI/HomepageMenu';
+import '../sass/pages/_homepage.scss';
+import { Outlet, useNavigate } from 'react-router-dom';
+
+export default function Homepage() {
     log('<Homepage /> rendered', 1);
+    
+    const navigate = useNavigate();
+    const { userDetail } = useContext(UserContext);
     let initials = userDetail.firstName[0] + userDetail.lastName[0];
 
+    useEffect(() => {
+        if(!userDetail.isAuthenticated){
+            navigate('/login');
+        }
+    }, [])
+
     return (
-        <>
-            {/* <Header /> */}
-            <HomepageHeader userLoggedIn={userDetail.isAuthenticated} profileImg={null} initials={initials} />
-        </>
+        <main className='homepage'>
+            <section className="sideMenu">
+                <HomepageMenu />
+            </section>
+            <section className="main">
+                <Outlet />
+            </section>
+        </main>
     )
 }

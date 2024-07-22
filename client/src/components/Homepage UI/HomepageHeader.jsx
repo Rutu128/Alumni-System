@@ -19,20 +19,18 @@ export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
                     <div className="section--left section">
                         <h1 className="u-dynamic-text">Alumni Hub</h1>
                     </div>
-                    <div className="section--middle section">
-                    </div>
                     <div className="section--right section">
                         <div className="input-search">
                             <button className="search-button"><LuSearch className="search-icon" /></button>
                             <input className="search-input" placeholder="Search" onClick={() => hover} />
                         </div>
-                        <button className="header__button"><FaUsers className="button--icon" /><p>My Network</p></button>
-                        <button className="header__button"><BiSolidLike className="button--icon smaller" /><p>Interactions</p></button>
-                        <button className="header__button"><FaBell className="button--icon smaller" /><p>Notifications</p></button>
+                        <button className="header__button desktop_window" title="Network"><FaUsers className="button--icon" /><p>My Network</p></button>
+                        <button className="header__button desktop_window" title="Interactions"><BiSolidLike className="button--icon smaller" /><p>Interactions</p></button>
+                        <button className="header__button desktop_window" title="Notifications"><FaBell className="button--icon smaller" /><p>Notifications</p></button>
                         {!userLoggedIn ?
                             <>
                                 <button
-                                    className="header__button login"
+                                    className="header__button login-button"
                                     onClick={() => navigate('/login')}
                                 >
                                     Log in
@@ -46,7 +44,7 @@ export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
                                             {initials}
                                         </button>
                                         :
-                                        <img src={profileImg} alt="Profile Photo" />
+                                        <img className="profile-img" src={profileImg} alt="Profile Photo" />
                                 }
                             </div>
                         }

@@ -96,7 +96,7 @@ export default function Login() {
                 <form className="login-cont-main">
                     <h1 className="heading-primary-dark u-margin-bottom-small">Login to <br /><span className="u-dynamic-text">Alumni Hub</span></h1>
                     <Input
-                        labelText='email'
+                        labelText='Email'
                         className={`u-margin-bottom-small ${userDetails.email === "" ? 'invalid' : 'valid'} ${userDetails.emailError ? 'error' : ''}`}
                         type="text"
                         name="email"

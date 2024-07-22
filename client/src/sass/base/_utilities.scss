@@ -19,10 +19,18 @@
     margin-bottom: 4rem;
 }
 
+.u-margin-right-small{
+    margin-right: .5rem;
+}
+
+.u-float-right{
+    float: right;
+}
+
 .u-dynamic-text{
     text-decoration: none;
-    // background-image: linear-gradient(to right bottom, #5593f6 0%, #fb5bf5 100%);
-    background-image: linear-gradient(to right bottom, #ffb804 0%, #7332fe 85%);
+    background-image: linear-gradient(to right bottom, #5593f6 0%, #fb5bf5 100%);
+    // background-image: linear-gradient(to right bottom, #ffb804 0%, #7332fe 85%);
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
