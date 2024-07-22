@@ -2,10 +2,10 @@ import asyncHandler from "express-async-handler";
 import { User } from "../db/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 import { Verification } from "../db/verification.model.js";
 import mailer from "../utils/Mailer.js";
-import { randomBytes } from 'crypto';
+import { randomBytes } from "crypto";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -25,7 +25,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 };
 
 const generateRandomHex = (length) => {
-  return randomBytes(length).toString('hex');
+  return randomBytes(length).toString("hex");
 };
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -67,7 +67,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!createdUser) {
     throw new ApiError(500, "something went wrong");
   }
-  const token = generateRandomHex(20)
+  const token = generateRandomHex(20);
   const verificationToken = Verification.create({
     userId: user._id,
     token,
@@ -167,4 +167,49 @@ const verify = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Email verified successfully"));
 });
 
-export { registerUser, loginUser,verify };
+const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) {
+    throw new ApiError(202, "Give Old and New Password Both!!!");
+  }
+  const user_id = req.user?._id;
+  if (!user_id) {
+    throw new ApiError(400, "User dosen't fetch");
+  }
+  const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+  if (!isPasswordCorrect) {
+    throw new ApiError(400, "Invalid password");
+  }
+  user.password = newPassword
+  await user.save({ validateBeforeSave: false })
+
+  return res.status(200).json(new ApiResponse(200, {}, "Password updated successfully"))
+
+});
+
+const logoutUser = asyncHandler(async (req, res) => {
+  //remove cookies
+  //reset refresh token
+  await User.findById(
+    req.user._id,
+    {
+      unset: {
+        refreshToken: 1,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  // console.log(hii)
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User logged Out"));
+});
+export { registerUser, loginUser, verify,changePassword,logoutUser };
