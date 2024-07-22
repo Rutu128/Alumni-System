@@ -177,6 +177,7 @@ const changePassword = asyncHandler(async (req, res) => {
   if (!user_id) {
     throw new ApiError(400, "User dosen't fetch");
   }
+  const user = await User.findById(user_id);
   const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
   if (!isPasswordCorrect) {
     throw new ApiError(400, "Invalid password");
