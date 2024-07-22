@@ -1,0 +1,122 @@
+// HOMEPAGE HEADER 2
+
+.menu {
+    display: inline-flex;
+    // align-items: center;
+    
+    width: 16rem;
+    height: 100vh;
+    padding: 1rem;
+
+    font-family: 'Mona-sans', sans-serif;
+    font-weight: 600;
+    color: $color-font-dark;
+    // font-stretch: 110%;
+    border: none;
+    border-right: 1px solid $color-grey-light-3;
+    
+    &__cont{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__header{
+        margin-bottom: 2rem;
+
+        .header__cont{
+            padding: 1rem 0;
+
+            h1{
+                font-size: clamp(
+                    1rem,
+                    2rem,
+                    2rem
+                );
+                font-weight: 900;
+                font-stretch: 115%;
+            }
+        }
+    }
+
+    &__navigation{
+        flex: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__footer{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+}
+
+.nav{
+    
+    &--item{
+        font-size: 1rem;
+        border-radius: .8rem;
+        overflow: hidden;
+        margin-bottom: .2rem;
+        
+        &:hover{
+            background-color: $color-theme-back-light;
+        }   
+    }
+
+    &--link{
+        
+        &,
+        &:link,
+        &:visited{
+            display: block;
+            padding: 1rem 1.2rem;
+            text-decoration: none;
+            color: $color-font-dark;
+            width: 100%;
+            
+            p{
+                display: inline-block;
+            }
+        }
+    }
+    
+    &--icons{
+        font-size: 1.4rem;
+        margin: -.1rem .4rem -.3rem 0;
+    }
+}
+
+.link-profile{
+    padding: .3rem .8rem !important;
+}
+
+@media (max-width: 1080px){
+
+    .menu{
+        width: 4.2rem;
+        padding: 0 .4rem;
+    }
+
+    .header__cont h1{
+        display: none;
+    }
+
+    .nav--link,
+    .nav--link:link,
+    .nav--link:visited{
+        padding: 1rem;
+        p{
+            display: none !important;
+        }
+    }
+
+    .link-profile{
+        padding: .3rem 0rem .3rem .4rem !important;
+    }
+}
+
+//remaining work:
+//  -responsiveness for mobile devices
