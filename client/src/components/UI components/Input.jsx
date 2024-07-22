@@ -3,33 +3,57 @@ import { RiEyeFill } from "react-icons/ri";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { MdError } from "react-icons/md";
 
-function Input({ labelText, type, errorText, ...props }) {
+function Input({ labelText, type, errorText, inputFor, values, showError, ...props }) {
 
     if (type === 'password') {
         const [showPassword, setShowPassword] = useState(false);
 
-        function handleShowPassword() {
+        function handleShowPassword(e) {
+            e.preventDefault();
             setShowPassword(prevValue => !prevValue);
         }
 
         return (
-            <div className="input-field">
-                {errorText === '' ? null : <div className="u-error-text"><MdError className="error-icon"/>{errorText}</div>}
+            <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                {errorText === '' ? null : <div className="u-error-text"><MdError className="error-icon" />{errorText}</div>}
                 <input {...props} type={showPassword ? 'text' : 'password'} />
                 <label>{labelText}</label>
                 <button onClick={handleShowPassword} className={showPassword ? "showPassword" : "hidePassword"} >
                     {showPassword ?
                         <RiEyeCloseLine className="react-icons" /> :
                         <RiEyeFill className="react-icons" />
-                    } 
+                    }
                 </button>
             </div>
         )
-    } else {
+    } else if (type === 'dropdown') {
+        const generateOptions = (start, end) => {
+            let options = [];
+            for (let i = start; i >= end; i--) {
+                options.push(i);
+            }
+            return options;
+        };
+
         return (
-            <div className="input-field">
-                {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon"/>{errorText}</span>}
-                <input {...props} />
+            <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
+                <select {...props}>
+                    <option value="" hidden={true} disabled></option>
+                    {generateOptions(values[1], values[0]).map(value => (
+                        <option key={value} value={value}>{value}</option>
+                    ))}
+                </select>
+                <label>{labelText}</label>
+            </div>
+        )
+    }
+
+    else {
+        return (
+            <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
+                <input {...props} type={type} />
                 <label>{labelText}</label>
             </div>
         )

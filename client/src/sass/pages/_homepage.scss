@@ -1,0 +1,207 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+@import "../base/animation";
+@import "../base/utilities";
+@import "../base/typography";
+
+@import "../components/headings";
+
+@import "../layout/header";
+
+@include profile-img;
+
+.homepage{
+    display: flex;
+    justify-content: baseline;
+    width: 100%;
+}
+
+.sideMenu{
+
+}
+
+.main{
+    flex: 1;
+}
+
+.content {
+    width: 100%;
+    // display: block;
+    font-family: "Mona-sans";
+    font-weight: 600;
+    padding-top: 2rem;
+    display: flex;
+    // padding: 2rem 0;
+    align-items: center;
+    justify-content: center;
+
+    &__box {
+        width: 70%;
+        display: flex;
+        justify-content: baseline;
+        align-items: flex-start;
+    }
+
+    &__middle {
+        flex: 1;
+    }
+
+    &__right {
+        width: 30%;
+    }
+}
+
+.post {
+    display: block;
+    width: 100%;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+
+    .top,
+    .bottom {
+        display: flex;
+        align-items: center;
+    }
+
+    .top {
+        padding: 1rem;
+
+        .profile {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+
+            &-photo{
+                width: 15%;
+                display: flex;
+                justify-content: center;
+            }
+            
+            .post-input {
+                display: inline-block;
+                width: 70%;
+                
+                input {
+                    min-width: 50%;
+                    width: 100%;
+                    padding: 0.8rem 1rem;
+                    border: 2px solid $color-theme-dark;
+                    border-radius: 2rem;
+                    outline: none;
+                    transition: 0.3s;
+                    font-family: "Mona-sans";
+                    font-weight: 600;
+                    
+                    &:focus {
+                        background-color: $color-theme-back-light;
+                    }
+                }
+            }
+            
+            .post-submit {                
+                width: 15%;
+                display: flex;
+                justify-content: center;
+
+                button {
+                    float: right;
+                    width: 2.6rem;
+                    height: 2.6rem;
+                    border-radius: 50%;
+                    background-color: $color-theme-light;
+                    border: none;
+                    outline: none;
+                    font-size: 1.2rem;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    .send-icon {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .bottom {
+        display: flex;
+        align-items: center;
+        border: none;
+
+        button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1rem;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            font-size: clamp(
+                .6rem,
+                .9rem, 
+                1rem
+            );
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: $color-theme-back-light;
+            }
+
+            .button-icon {
+                font-size: 1.2rem;
+                margin-right: 0.5rem;
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+
+}
+
+@media (max-width: 1080px){
+    .content__right{
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .content{
+        width: 100%;
+        padding: .8rem;
+
+        &__box, &__middle{
+            width: 100%;
+        }
+
+        &__left, &__right{
+            display: none;
+        }
+    }
+
+    .post{
+        width: 100%;
+        padding: none;
+    }
+
+    .post-input input{
+        font-size: .8rem;
+    }
+
+    .bottom{
+
+        button p{
+            font-size: .6rem;
+        }
+    }
+}
+
+
+// remaining work
+//  -displaying header for mobile devices

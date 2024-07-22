@@ -1,11 +1,23 @@
 *,
 *::after,
-*::before{
+*::before {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     font-size: 62.5%;
+    font-family: "Mona-sans";
+    font-weight: 400;
+}
+
+button {
+    font-family: "Mona-sans";
+    font-weight: 600;
+}
+
+input {
+    font-family: "Mona-sans";
+    font-weight: 400;
 }
