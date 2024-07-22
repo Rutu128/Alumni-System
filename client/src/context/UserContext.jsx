@@ -31,15 +31,12 @@ export default function UserContextProvider({ children }) {
 
     async function handleLoginUser(credentials) {
         let responseData;
-
-        // await axios.post('http://localhost:8000/auth/login', credentials)
-        //     .then(response => {
-        //         responseData = response.data;
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     })
         const response = await postApi('URL_login', credentials);
+        if(response.response.status === 404 || 401) {
+            return {
+                status : response.response.status,
+            }
+        }
         console.log(response.data);
         responseData = response.data;
 
@@ -65,17 +62,17 @@ export default function UserContextProvider({ children }) {
     async function handleRegisterUser(userDetails) {
         console.log('Registering user with following credentials: ');
         console.table(userDetails);
-        // await axios.post('http://localhost:8000/auth/signup', userDetails)
-        //     .then(response => {
-        //         console.log(response.status);
-        //         console.log(response.data);
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     })
 
         const response = await postApi('URL_signup', userDetails);
+        if(response.response.status === 409 || 500) {
+            return {
+                status : response.response.status,
+            }
+        }
         console.log(response.data);
+        return {
+            status: response.data.statusCode,
+        }
     }
 
     function handleLogoutUser() {

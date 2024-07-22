@@ -312,7 +312,9 @@
             .login-button {
                 min-width: 16rem;
                 width: 100%;
-                display: inline-block;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
                 height: 3rem;
                 font-size: 1.2rem;
                 font-family: "Bold2", sans-serif;
@@ -320,6 +322,7 @@
                 border: 2px solid #8dc5dc;
                 background-color: #8dc5dc;
                 transition: all 0.2s ease;
+                text-align: center;
 
                 &:hover {
                     border: 2px solid #42768c;
@@ -460,7 +463,6 @@
 @media (max-width: 768px) {
     .login {
         width: 100%;
-        height: 100vh;
         text-align: center;
         padding: 3rem 0;
         overflow-y: auto;
