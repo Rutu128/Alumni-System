@@ -25,6 +25,25 @@
     flex: 1;
 }
 
+.loading{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    h1{
+        font-size: clamp(
+            2rem,
+            2.4rem,
+            3rem
+        );
+        font-weight: 900;
+        color: $color-font-dark;
+    }
+}
+
 .content {
     width: 100%;
     // display: block;
