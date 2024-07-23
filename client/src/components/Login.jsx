@@ -94,10 +94,7 @@ export default function Login() {
 
         console.log(userStatus);
         setIsLoading(false);
-        if(userStatus.status === 200){
-            navigate('/');
-        } 
-        else if(userStatus.status === 404){
+        if(userStatus.status === 404){
             displayError('emailError', 'User with entered email does not exist!');
             return;
         }
@@ -105,6 +102,9 @@ export default function Login() {
             displayError('passwordError', 'Incorrect Password!');
             return;
         }
+        else if(userStatus.status === 200){
+            navigate('/');
+        } 
 
         console.log('email: ', userDetails.email, ' password: ', userDetails.password);
     }
