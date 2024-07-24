@@ -50,12 +50,18 @@ const registerUser = asyncHandler(async (req, res) => {
       "User with email address or charusat id is already exists "
     );
   }
+
+  const user_initials = firstName[0] + lastName[0];
+  if (!user_initials) {
+    throw new ApiError(403, "User initials are not setedIn");
+  }
   const user = await User.create({
     firstName,
     lastName,
     email,
     c_id,
     dob,
+    initials: user_initials,
     passingYear,
     password,
   });
@@ -283,7 +289,7 @@ const googleLogin = asyncHandler(async (req, res) => {
 
 const ping = asyncHandler(async (req, res) => {
   const user = req.user._id;
-console.log(user);
+  console.log(user);
   if (!user) {
     throw new ApiError(401, "User not logged in");
   }
@@ -293,6 +299,14 @@ console.log(user);
   return res
     .status(200)
     .json(new ApiResponse(200, loggedInUser, "User logged in"));
-  });
+});
 
-export { registerUser, loginUser, verify, changePassword, logoutUser,googleLogin,ping };
+export {
+  registerUser,
+  loginUser,
+  verify,
+  changePassword,
+  logoutUser,
+  googleLogin,
+  ping,
+};

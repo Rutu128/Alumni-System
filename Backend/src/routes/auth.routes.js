@@ -11,7 +11,7 @@ router.route("/login").post(loginUser);
 router.route("/verify/:token").put(verify);
 router.route("/logout").post(verifyJWT,logoutUser);
 router.route("/change-password").post(verifyJWT,changePassword);
-router.route("/google-login").post(googleLogin);
+router.route("/google-login").get(googleLogin);
 router.route("/ping").get(verifyJWT,ping)
 
 export default router;
