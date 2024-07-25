@@ -295,4 +295,31 @@ console.log(user);
     .json(new ApiResponse(200, loggedInUser, "User logged in"));
   });
 
-export { registerUser, loginUser, verify, changePassword, logoutUser,googleLogin,ping };
+  const updateProfile = asyncHandler(async(req,res)=>{
+      const{firstName, lastName, c_id, email, passingYear, dob}=req.body
+
+      if(!firstName || !lastName || !c_id || !email || !passingYear || !dob){
+        throw new ApiError(400, "All feilds are required")
+      }
+      const user_id = req.user?._id
+      if(!user_id){
+        throw new ApiError(404, "User dosen't exist")
+      }
+
+      const user =await User.findByIdAndUpdate(user_id,{
+        $set:{
+          firstName:firstName,
+          lastName:lastName,
+          c_id:c_id,
+          email:email.toLowerCase(),
+          passingYear:passingYear,
+          dob:dob
+        }
+      }).select("-password")
+      return res
+      .status(200)
+      .json(new ApiResponse(200, user, "Profile updated successfully"))
+
+  })
+
+export { registerUser, loginUser, verify, changePassword, logoutUser,googleLogin,ping,updateProfile };
