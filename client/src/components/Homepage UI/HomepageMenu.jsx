@@ -33,8 +33,8 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
                         const isSelected = item.name === selectedMenu;
                         const IconComponent = isSelected ? item.fillIcon : item.icon;
                         return (
-                            <div className="nav--item">
-                                <Link onClick={() => {handleSelectMenu(item.name)}} key={index} to={item.path} className={`nav--link ${isSelected && 'highlight'}`}>
+                            <div className="nav--item" key={index}>
+                                <Link onClick={() => {handleSelectMenu(item.name)}} to={item.path} className={`nav--link ${isSelected && 'highlight'}`}>
                                     <IconComponent className='nav--icons' />
                                     <p>
                                         {item.name}

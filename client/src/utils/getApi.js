@@ -4,9 +4,9 @@ import axios from "axios";
 
 async function getApi(path, parameters){
     let response;
-    axios.defaults.withCredentials = true;
     await axios.get(apiInfo.URL + path, {
-        ...parameters
+        ...parameters,
+        withCredentials: true,
     })
     .then(Response => {
         response = Response;

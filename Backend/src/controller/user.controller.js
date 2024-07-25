@@ -283,7 +283,7 @@ const googleLogin = asyncHandler(async (req, res) => {
 
 const ping = asyncHandler(async (req, res) => {
   const user = req.user._id;
-console.log(user);
+  console.log(user);
   if (!user) {
     throw new ApiError(401, "User not logged in");
   }
@@ -293,6 +293,6 @@ console.log(user);
   return res
     .status(200)
     .json(new ApiResponse(200, loggedInUser, "User logged in"));
-  });
+});
 
-export { registerUser, loginUser, verify, changePassword, logoutUser,googleLogin,ping };
+export { registerUser, loginUser, verify, changePassword, logoutUser, googleLogin, ping };

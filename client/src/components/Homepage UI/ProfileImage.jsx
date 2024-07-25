@@ -5,7 +5,7 @@ export default function ProfileImage({className}) {
     const { userDetail } = useContext(UserContext);
     let profileImg = userDetail.profileImg;
 
-    if (profileImg === undefined) {
+    if (profileImg === undefined || profileImg === null) {
         return (
             <button className={"dummy-profile " + className}>
                 {userDetail.initials}
