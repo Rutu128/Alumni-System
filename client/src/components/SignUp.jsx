@@ -5,6 +5,7 @@ import Button from "./UI components/Button";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import React from "react";
 
 export default function SignUp() {
     log('<SignUp/> rendered', 1);
