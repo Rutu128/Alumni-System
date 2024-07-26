@@ -3,13 +3,16 @@ import { log } from "../log";
 import Input from "./UI components/Input";
 import Button from "./UI components/Button";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import ReactLoading from 'react-loading'
 
 export default function SignUp() {
     log('<SignUp/> rendered', 1);
+    const navigate = useNavigate();
 
     const { userDetail, registerUser } = useContext(UserContext);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [userDetails, setUserDetails] = useState({
         firstName: '',
@@ -64,22 +67,24 @@ export default function SignUp() {
         })
     }
 
-    const isValidEmail = (email) => {
+    function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
     
-    const displayError = (field, message) => {
+    function displayError (field, message){
         setUserErrors(prevDetails => {
             return {
                 ...prevDetails,
                 [field + 'Error']: message,
             }
         })
+        setIsLoading(false);
     }
     
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+        setIsLoading(true);
         for (const [key, value] of Object.entries(userDetails)) {
                 if(value === ""){
                 console.log('Key: ', key, ', Value: ', value);
@@ -116,7 +121,8 @@ export default function SignUp() {
 
         console.log('No errors found!');
         
-        registerUser({
+        // setIsLoading(false);
+        const response = await registerUser({
             firstName: userDetails.firstName,
             lastName: userDetails.lastName,
             email: userDetails.email,
@@ -125,6 +131,20 @@ export default function SignUp() {
             passingYear: userDetails.passingYear,
             password: userDetails.password
         })
+
+        console.log(response);
+        setIsLoading(false);
+        if(response.status === 200){
+            navigate('/login');
+        }
+        else if(response.status === 409){
+            displayError('email', 'User with given email or charusat ID already exists!');
+            return;
+        }
+        // else if(userStatus.status === 500){
+        //     displayError('passwordError', 'Incorrect Password!');
+        //     return;
+        // }
     }
 
     return (
@@ -207,10 +227,15 @@ export default function SignUp() {
                     />
                     <Button
                         className="login-button u-margin-bottom-s_small"
-                        btnText='Create Account'
                         type='submit'
                         onClick={handleSubmit}
-                    />
+                    >
+                        {isLoading ?
+                            <ReactLoading type={'spin'} width={'2rem'} height={'2rem'} className={"loader"} />
+                            :
+                            'Create Account'
+                        }
+                    </Button>
                     <div className="sign-up u-margin-bottom-s_small">Already have an account?
                         <div className="link u-dynamic-text-link">
                             <Link to="/login" className="link-element">Login</Link>
