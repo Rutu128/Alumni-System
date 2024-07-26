@@ -1,0 +1,24 @@
+[{
+    "user_id": "...",
+    "title": "",
+    "image_src": "...",
+    "description": "...",
+    "timestamp": "...",
+    "likes": "...",
+    "comments": "..."
+},
+{
+    "user_id": "...",
+    "post_id": "...",
+    "text": "...",
+    "likes": "..."
+},
+{
+    "post_id":"...",
+    "count": "..."
+},
+{
+    "comment_id":"...",
+    "count": "..."
+}
+]

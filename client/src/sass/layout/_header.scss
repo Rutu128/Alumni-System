@@ -59,11 +59,14 @@
         font-size: 1rem;
         border-radius: .8rem;
         overflow: hidden;
-        margin-bottom: .2rem;
+        margin-bottom: .4rem;
         
         &:hover{
             background-color: $color-theme-back-light;
         }   
+        .highlight{
+            background-color: $color-theme-back-light;
+        }
     }
 
     &--link{
@@ -82,10 +85,11 @@
             }
         }
     }
+
     
     &--icons{
-        font-size: 1.4rem;
-        margin: -.1rem .4rem -.3rem 0;
+        font-size: 1.7rem;
+        margin: -.2rem .4rem -.45rem 0;
     }
 }
 
@@ -111,6 +115,10 @@
         p{
             display: none !important;
         }
+    }
+
+    .nav--icons{
+        margin: -.2rem 0 -.45rem -.15rem;
     }
 
     .link-profile{

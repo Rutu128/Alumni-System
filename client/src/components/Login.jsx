@@ -5,19 +5,24 @@ import Button from "./UI components/Button";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+// import { Oval } from 'svg-loaders-react';
+import ReactLoading from 'react-loading';
 
 export default function Login() {
     const navigate = useNavigate();
 
     const { userDetail, loginUser } = useContext(UserContext);
-
+    const [isLoading, setIsLoading] = useState(false);
+    
     log('<Login/> rendered', 1);
     const [userDetails, setUserDetails] = useState({
         email: '',
         password: '',
+    })
+    const [userErrors, setUserErrors] = useState({
         emailError: '',
         passwordError: ''
-    })
+    });
 
     function handleChange(e) {
         let name = e.target.name;
@@ -26,7 +31,7 @@ export default function Login() {
         if(value !== value.trim()){
             name += 'Error';
             value = 'Spaces are not allowed'
-            setUserDetails(prevDetails => {
+            setUserErrors(prevDetails => {
                 return {
                     ...prevDetails,
                     [name]: value,
@@ -39,6 +44,12 @@ export default function Login() {
             return {
                 ...prevDetails,
                 [name]: value,
+            }
+        })
+
+        setUserErrors(prevErrors => {
+            return {
+                ...prevErrors,
                 [name + 'Error']: ''
             }
         })
@@ -49,31 +60,30 @@ export default function Login() {
         return emailRegex.test(email);
     };
 
+    function displayError (field, message){
+        setUserErrors(prevDetails => {
+            return {
+                ...prevDetails,
+                [field]: message,
+            }
+        })
+        setIsLoading(false);
+    }
+
     async function handleSubmit(e) {
-        let errorMessage;
-        let errorField;
         e.preventDefault();
+        setIsLoading(true);
 
         if(userDetails.email.trim() === ""){
-            errorMessage = 'This field is required!'
-            errorField = 'emailError'
+            displayError('emailError', 'This field is required!');
+            return;
         } 
         else if(userDetails.password.trim() === ""){
-            errorMessage = 'This field is required!'
-            errorField = 'passwordError'
+            displayError('passwordError', 'This field is required!');
+            return;
         } 
         else if(!isValidEmail(userDetails.email)){
-            errorMessage = 'Enter a valid email!'
-            errorField = 'emailError'
-        }
-
-        if(errorMessage !== undefined){
-            setUserDetails(prevDetails => {
-                return {
-                    ...prevDetails,
-                    [errorField]: errorMessage,
-                }
-            })
+            displayError('emailError', 'Enter a valid email!');
             return;
         }
 
@@ -83,9 +93,18 @@ export default function Login() {
         })
 
         console.log(userStatus);
-        if(userStatus.status === 200){
-            navigate('/');
+        setIsLoading(false);
+        if(userStatus.status === 404){
+            displayError('emailError', 'User with entered email does not exist!');
+            return;
         }
+        else if(userStatus.status === 401){
+            displayError('passwordError', 'Incorrect Password!');
+            return;
+        }
+        else if(userStatus.status === 200){
+            navigate('/');
+        } 
 
         console.log('email: ', userDetails.email, ' password: ', userDetails.password);
     }
@@ -97,30 +116,35 @@ export default function Login() {
                     <h1 className="heading-primary-dark u-margin-bottom-small">Login to <br /><span className="u-dynamic-text">Alumni Hub</span></h1>
                     <Input
                         labelText='Email'
-                        className={`u-margin-bottom-small ${userDetails.email === "" ? 'invalid' : 'valid'} ${userDetails.emailError ? 'error' : ''}`}
+                        className={`u-margin-bottom-small ${userDetails.email === "" ? 'invalid' : 'valid'} ${userErrors.emailError ? 'error' : ''}`}
                         type="text"
                         name="email"
                         onChange={handleChange}
                         value={userDetails.email}
-                        errorText={userDetails.emailError}
+                        errorText={userErrors.emailError}
                         inputFor='login'
                     />
                     <Input
                         labelText='Password'
-                        className={`u-margin-bottom-small ${userDetails.password === "" ? 'invalid' : 'valid'} ${userDetails.passwordError ? 'error' : ''}`}
+                        className={`u-margin-bottom-small ${userDetails.password === "" ? 'invalid' : 'valid'} ${userErrors.passwordError ? 'error' : ''}`}
                         type="password"
                         name="password"
                         onChange={handleChange}
                         value={userDetails.password}
-                        errorText={userDetails.passwordError}
+                        errorText={userErrors.passwordError}
                         inputFor='login'
                     />
                     <Button
                         className="login-button u-margin-bottom-small"
-                        btnText='Login'
                         type='submit'
                         onClick={handleSubmit}
-                    />
+                    >
+                        {isLoading ?
+                            <ReactLoading type={'spin'} width={'2rem'} height={'2rem'} className={"loader"} />
+                            :
+                            'Login'
+                        }
+                    </Button>
                     <div className="sign-up u-margin-bottom-small">Don't have an account?
                         <div className="link u-dynamic-text-link">
                             <Link to="/signUp" className="link-element">Sign Up</Link>

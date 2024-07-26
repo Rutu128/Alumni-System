@@ -1,16 +1,24 @@
 import { Link } from "react-router-dom";
-import { FaUsers } from "react-icons/fa";
-import { BiSolidLike } from "react-icons/bi";
-import { FaBell } from "react-icons/fa";
-import { LuSearch } from "react-icons/lu";
-import { GoHomeFill } from "react-icons/go";
+
+import { PiUsers, PiUsersFill, PiThumbsUp, PiThumbsUpFill, PiBell, PiBellFill, PiHouse, PiHouseFill, PiGear, PiGearFill, PiMagnifyingGlass, PiMagnifyingGlassDuotone } from "react-icons/pi";
+
 import ProfileImage from "./ProfileImage";
-import { IoSettingsSharp } from "react-icons/io5";
 import { useState } from "react";
 
 
 export default function HomepageHeader2({ isLoggedIn, initials }) {
-    const [selectedMenu, setSelectedMenu] = useState({});
+    const [selectedMenu, setSelectedMenu] = useState('Home');
+
+    const navItems = [
+        { name: 'Home', icon: PiHouse, fillIcon: PiHouseFill, path: '/', isSelected: true },
+        { name: 'Search', icon: PiMagnifyingGlass, fillIcon: PiMagnifyingGlassDuotone, path: '/testPage', isSelected: false },
+        { name: 'Notifications', icon: PiBell, fillIcon: PiBellFill, path: '/testPage', isSelected: false },
+        { name: 'Network', icon: PiUsers, fillIcon: PiUsersFill, path: '/testPage', isSelected: false },
+        { name: 'Interactions', icon: PiThumbsUp, fillIcon: PiThumbsUpFill, path: '/testPage', isSelected: false },
+    ]
+    function handleSelectMenu(name) {
+        setSelectedMenu(name);
+    }
 
     return (
         <div className="menu">
@@ -21,9 +29,23 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
                     </div>
                 </div>
                 <div className="menu__navigation">
-                    <div className="nav--item">
-                        <Link className="nav--link" to={'/testPage'}>
-                            <GoHomeFill className="nav--icons" />
+                    {navItems.map((item, index) => {
+                        const isSelected = item.name === selectedMenu;
+                        const IconComponent = isSelected ? item.fillIcon : item.icon;
+                        return (
+                            <div className="nav--item" key={index}>
+                                <Link onClick={() => {handleSelectMenu(item.name)}} to={item.path} className={`nav--link ${isSelected && 'highlight'}`}>
+                                    <IconComponent className='nav--icons' />
+                                    <p>
+                                        {item.name}
+                                    </p>
+                                </Link>
+                            </div>
+                        );
+                    })}
+                    {/* <div className="nav--item">
+                        <Link className="nav--link" to={'/'}>
+                            <PiHouse className="nav--icons" />
                             <p>
                                 Home
                             </p>
@@ -31,7 +53,7 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
                     </div>
                     <div className="nav--item">
                         <Link className="nav--link" to={'/testPage'}>
-                            <LuSearch className="nav--icons" />
+                            <PiMagnifyingGlass className="nav--icons" />
                             <p>
                                 Search
                             </p>
@@ -39,7 +61,7 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
                     </div>
                     <div className="nav--item">
                         <Link className="nav--link" to={'/testPage'}>
-                            <FaBell className="nav--icons" />
+                            <PiBell className="nav--icons" />
                             <p>
                                 Notifications
                             </p>
@@ -47,7 +69,7 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
                     </div>
                     <div className="nav--item">
                         <Link className="nav--link" to={'/testPage'}>
-                            <FaUsers className="nav--icons" />
+                            <PiUsers className="nav--icons" />
                             <p>
                                 Network
                             </p>
@@ -55,17 +77,17 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
                     </div>
                     <div className="nav--item">
                         <Link className="nav--link" to={'/testPage'}>
-                            <BiSolidLike className="nav--icons" />
+                            <PiThumbsUp className="nav--icons" />
                             <p>
                                 Interactions
                             </p>
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="menu__footer">
                     <div className="nav--item">
                         <Link className="nav--link" to={'/testPage'}>
-                            <IoSettingsSharp className="nav--icons" />
+                            <PiGear className="nav--icons" />
                             <p>
                                 Settings
                             </p>
@@ -86,6 +108,6 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
 }
 
 //remaining work
-//  -removing menu__header and menu__footer for mobile devices 
+//  -removing menu__header and menu__footer for mobile devices
 //  -removing notification from menu__navigation and displaying it in header
 //  -selected menu highlighting

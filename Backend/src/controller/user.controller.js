@@ -2,9 +2,10 @@ import asyncHandler from "express-async-handler";
 import { User } from "../db/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 import { Verification } from "../db/verification.model.js";
 import mailer from "../utils/Mailer.js";
+import { randomBytes } from "crypto";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -21,6 +22,10 @@ const generateAccessAndRefreshTokens = async (userId) => {
       "something went wrong during generating access token and refresh token"
     );
   }
+};
+
+const generateRandomHex = (length) => {
+  return randomBytes(length).toString("hex");
 };
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -63,7 +68,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!createdUser) {
     throw new ApiError(500, "something went wrong");
   }
-  const token = crypto.randomUUID();
+  const token = generateRandomHex(20);
   const verificationToken = Verification.create({
     userId: user._id,
     token,
@@ -74,13 +79,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { createdUser, verificationToken },
-        "user registered Successfully"
-      )
-    );
+    .json(new ApiResponse(200, createdUser, "user registered Successfully"));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -141,4 +140,159 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser, loginUser };
+const verify = asyncHandler(async (req, res) => {
+  const { token } = req.params;
+  console.log(token);
+  console.log(typeof token);
+
+  if (!token) {
+    throw new ApiError(404, "Token not found");
+  }
+
+  const verification = await Verification.findOne({ token: token });
+  if (!verification) {
+    throw new ApiError(404, "Verification not found");
+  }
+
+  const user = await User.findById(verification.userId);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  user.isVerified = true;
+  await user.save({ validateBeforeSave: false });
+  await Verification.deleteOne({ token: token });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Email verified successfully"));
+});
+
+const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) {
+    throw new ApiError(400, "Give Old and New Password Both!!!");
+  }
+  const user_id = req.user?._id;
+  if (!user_id) {
+    throw new ApiError(404, "User dosen't fetch");
+  }
+  const user = await User.findById(user_id);
+  const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+  if (!isPasswordCorrect) {
+    throw new ApiError(400, "Invalid password");
+  }
+  user.password = newPassword;
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password updated successfully"));
+});
+
+const logoutUser = asyncHandler(async (req, res) => {
+  //remove cookies
+  //reset refresh token
+  await User.findById(
+    req.user._id,
+    {
+      unset: {
+        refreshToken: 1,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  // console.log(hii)
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User logged Out"));
+});
+
+const googleLogin = asyncHandler(async (req, res) => {
+  const { code } = req.query;
+
+  try {
+    // Exchange authorization code for access token
+    const { data } = await axios.post("https://oauth2.googleapis.com/token", {
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      code,
+      redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+      grant_type: "authorization_code",
+    });
+
+    const { access_token, id_token } = data;
+    const { data: profile } = await axios.get(
+      "https://www.googleapis.com/oauth2/v1/userinfo",
+      {
+        headers: { Authorization: `Bearer ${access_token}` },
+      }
+    );
+    let user = await User.findOne({ email: profile.email.toLowerCase() });
+
+    if (!user) {
+      user = await User.create({
+        firstName: profile.given_name,
+        lastName: profile.family_name,
+        email: profile.email.toLowerCase(),
+        isVerified: true,
+      });
+      if (!user) {
+        throw new ApiError(500, "Failed to create user");
+      }
+    }
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+      user._id
+    );
+
+    const loggedInUser = await User.findById(user._id).select(
+      "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
+    );
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 3000000,
+    };
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken)
+      .json(
+        new ApiResponse(
+          200,
+          { user: loggedInUser, accessToken, refreshToken },
+          "loggedin Successfully"
+        )
+      )
+      .redirect(`${process.env.BASE_URL}/`);
+  } catch (error) {
+    throw new ApiError(500, "Failed to authenticate with Google");
+  }
+});
+
+const ping = asyncHandler(async (req, res) => {
+  const user = req.user._id;
+  console.log(user);
+  if (!user) {
+    throw new ApiError(401, "User not logged in");
+  }
+  const loggedInUser = await User.findById(user).select(
+    "-password -refreshToken -createdAt -updatedAt -_id"
+  );
+  return res
+    .status(200)
+    .json(new ApiResponse(200, loggedInUser, "User logged in"));
+});
+
+export { registerUser, loginUser, verify, changePassword, logoutUser, googleLogin, ping };

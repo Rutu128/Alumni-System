@@ -115,3 +115,10 @@
         }
     }
 }
+
+@mixin hover-button-effect {
+    &:hover {
+        color: $color-font-dark;
+        background-color: $color-theme-back-light;
+    }
+}

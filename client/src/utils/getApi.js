@@ -2,15 +2,20 @@ import apiInfo from "./apiInfo";
 import axios from "axios";
 
 
-export default async function getApi(path, parameters){
-    await axios.get(apiInfo[path], {
-        ...parameters
+async function getApi(path, parameters){
+    let response;
+    await axios.get(apiInfo.URL + path, {
+        ...parameters,
+        withCredentials: true,
     })
     .then(Response => {
-        return Response;
+        response = Response;
     })
     .catch(err => {
         console.log(err);
-        return err;
+        response = err;
     })
+    return response;
 }
+
+export default getApi;
