@@ -50,12 +50,18 @@ const registerUser = asyncHandler(async (req, res) => {
       "User with email address or charusat id is already exists "
     );
   }
+
+  const user_initials = firstName[0] + lastName[0];
+  if (!user_initials) {
+    throw new ApiError(403, "User initials are not setedIn");
+  }
   const user = await User.create({
     firstName,
     lastName,
     email,
     c_id,
     dob,
+    initials: user_initials,
     passingYear,
     password,
   });
@@ -116,7 +122,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 3000000,
+    maxAge: 3600*24*7,
   };
 
   // const user_info = await Info.findOne({ user: user._id })
@@ -295,4 +301,4 @@ const ping = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, loggedInUser, "User logged in"));
 });
 
-export { registerUser, loginUser, verify, changePassword, logoutUser, googleLogin, ping };
+export { registerUser, loginUser, verify, changePassword, logoutUser,googleLogin,ping };
