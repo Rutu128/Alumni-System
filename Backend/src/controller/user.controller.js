@@ -122,7 +122,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 3000000,
+    maxAge: 3600*24*7,
   };
 
   // const user_info = await Info.findOne({ user: user._id })
