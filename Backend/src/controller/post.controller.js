@@ -110,6 +110,21 @@ const showPosts = asyncHandler(async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $addFields: {
+          user: {
+            $arrayElemAt: ["$user", 0],
+          },
+        },
+      },
+      {
         $project: {
           likes: {
             $size: "$likes",
@@ -118,6 +133,10 @@ const showPosts = asyncHandler(async (req, res) => {
           description: 1,
           createdAt: 1,
           comments: 1,
+          "user.firstName": 1,
+          "user.lastName": 1,
+          "user.initials": 1,
+          "user.image": 1,
         },
       },
       {
