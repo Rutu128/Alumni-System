@@ -102,6 +102,14 @@ const showPosts = asyncHandler(async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: "comments",
+          localField: "_id",
+          foreignField: "postId",
+          as: "comments",
+        },
+      },
+      {
         $project: {
           likes: {
             $size: "$likes",
@@ -109,6 +117,7 @@ const showPosts = asyncHandler(async (req, res) => {
           content: 1,
           description: 1,
           createdAt: 1,
+          comments: 1,
         },
       },
       {
@@ -207,9 +216,9 @@ const deleteComment = asyncHandler(async (req, res) => {
 
 const getComments = asyncHandler(async (req, res) => {
   const post_id = req.params.id;
-  const post = await Post.findById({_id: post_id});
+  const post = await Post.findById({ _id: post_id });
   if (!post) {
-    throw new ApiError(404,"No Post available")
+    throw new ApiError(404, "No Post available");
   }
   const comments = await Comment.find({ postId: post_id });
   if (!comments) {
