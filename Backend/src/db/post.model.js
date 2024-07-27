@@ -7,9 +7,13 @@ const postSchema = new Schema(
       ref: "User",
       required: true,
     },
-    content: {
-      type: String, //Image or video link
-    },
+    content: [
+      {
+        url: {
+          type: String, //Image or video link
+        },
+      },
+    ],
     description: {
       type: String,
       required: true,
@@ -20,4 +24,4 @@ const postSchema = new Schema(
   }
 );
 
-export const Post = mongoose.model('Post',postSchema);
+export const Post = mongoose.model("Post", postSchema);
