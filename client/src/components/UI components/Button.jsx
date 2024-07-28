@@ -1,3 +1,4 @@
+import React from "react"
 export default function Button({ btnText, type, children, ...props }){
     if(btnText){
         return (
