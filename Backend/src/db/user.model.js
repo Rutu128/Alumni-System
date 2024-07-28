@@ -40,7 +40,13 @@ const userSchema = new Schema(
       type: Number,
       required: true,
     },
-
+    avatar: {
+      type: String,
+    },
+    initials: {
+      type: String,
+      required: true,
+    },
     isVerified: {
       type: Boolean,
       default: false,
