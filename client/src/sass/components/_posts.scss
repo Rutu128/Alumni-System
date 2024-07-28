@@ -1,0 +1,98 @@
+.post{
+    color: $color-font-dark;
+    margin: .5rem 0;
+    // box-shadow: 0 0 2rem rgba($color: $color-font-dark, $alpha: .4);
+    border: 1px solid $color-grey-light-3;
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &__head {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: .5rem;
+    }
+
+    &__profile {
+        .user-profile {
+            
+        }
+    }
+
+    &__userInfo {
+        margin-left: .5rem;
+        font-weight: 500;
+        font-stretch: 100%;
+
+        .user_name{
+            font-size: .9rem;
+        }
+    }
+
+    &__description{
+        padding: .5rem;
+        font-weight: 400;
+        font-size: .8rem;
+    }
+
+    &__content {
+        max-width: 100%;
+
+        .content-container{
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+
+            // &::-webkit-scrollbar{
+            //     display: none;
+            // }
+
+            @include horizontal-scrollbar;
+
+            .media-container {
+                flex: 0 0 auto;
+                width: 100%;
+
+                img{
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+
+    &__statistics{
+        padding: .2rem .5rem;
+        font-size: .8rem;
+        // border-bottom: 1px solid $color-grey-light-3;
+
+        div{
+            display: inline-block;
+
+            &:not(:last-child){
+                margin-right: .5rem;
+            }
+        }
+    }
+
+    &__foot {
+        display: flex;
+        justify-content: baseline;
+        align-items: center;
+
+        .post-interactions{
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            outline: none;
+            background-color: transparent;
+
+            &:hover {
+                background-color: $color-theme-back-light;
+            }
+        }
+    }
+}

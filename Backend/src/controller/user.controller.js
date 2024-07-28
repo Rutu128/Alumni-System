@@ -301,12 +301,4 @@ const ping = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, loggedInUser, "User logged in"));
 });
 
-export {
-  registerUser,
-  loginUser,
-  verify,
-  changePassword,
-  logoutUser,
-  googleLogin,
-  ping,
-};
+export { registerUser, loginUser, verify, changePassword, logoutUser,googleLogin,ping };
