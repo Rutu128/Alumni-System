@@ -5,10 +5,11 @@
 @import "../base/utilities";
 @import "../base/typography";
 
-@import "../components/headings";
-
 @import "../layout/header";
-@import "../layout/post";
+@import "../layout/post_menu";
+
+@import "../components/headings";
+@import "../components/posts";
 
 @include profile-img;
 
@@ -16,14 +17,24 @@
     display: flex;
     justify-content: baseline;
     width: 100%;
+    height: 100vh;
+
+    @media (max-width: 768px){
+        flex-direction: column;
+    }
 }
 
 .sideMenu{
-
+    // position: fixed;
 }
 
 .main{
     flex: 1;
+    overflow: auto;
+
+    @media (min-width: 768px){
+        @include horizontal-scrollbar;
+    }
 }
 
 .loading{
@@ -55,6 +66,8 @@
     // padding: 2rem 0;
     align-items: center;
     justify-content: center;
+    // height: 100vh;
+    // overflow: hidden;
 
     &__box {
         width: 70%;
@@ -69,6 +82,8 @@
 
     &__right {
         width: 30%;
+        padding: .5rem;
+        font-size: 1rem;
     }
 }
 

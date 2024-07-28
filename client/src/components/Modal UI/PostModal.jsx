@@ -1,21 +1,30 @@
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import uploadFiles from '../../utils/UploadImage';
 import { PiX } from "react-icons/pi";
+import { PostContext } from '../../context/PostContext';
+import ReactLoading from 'react-loading';
+import { UserContext } from '../../context/UserContext';
+
 
 export default function PostModal({ fileType, closeModal }) {
     const [file, setFile] = useState([]);
     const [fileUrl, setFileUrl] = useState([]);
-    const [cloudUrl, setCloudUrl] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { submitNewPost } = useContext(PostContext);
+    const { createNotification } = useContext(UserContext);
+
     const inputRef = useRef();
+    const descriptionRef = useRef();
 
     let acceptFormats;
-    if(fileType.toLowerCase() === 'image') {
+    if (fileType.toLowerCase() === 'image') {
         acceptFormats = '.jpg, .jpeg, .png';
     }
-    else if(fileType.toLowerCase() === 'video') {
+    else if (fileType.toLowerCase() === 'video') {
         acceptFormats = '.mp4, .mkv';
     }
-    else if(fileType.toLowerCase() === 'document') {
+    else if (fileType.toLowerCase() === 'document') {
         acceptFormats = '.pdf';
     }
 
@@ -35,8 +44,18 @@ export default function PostModal({ fileType, closeModal }) {
     };
 
     async function handleFileSubmit() {
-        let cloudUrls = await uploadFiles(file, fileType);
-        setCloudUrl(cloudUrls);
+        if (file.length === 0 && descriptionRef.current.value === (null || undefined || "")) {
+            return;
+        }
+        setIsLoading(true);
+
+        const response = await submitNewPost(file, fileType, descriptionRef.current.value);
+        console.log(response);
+        if (response.status === 200) {
+            setIsLoading(false);
+            createNotification('Post created!', 'success');
+            handleCloseModal();
+        }
     }
 
     const renderFilePreviews = () => {
@@ -57,7 +76,7 @@ export default function PostModal({ fileType, closeModal }) {
                         <img src={fileUri} alt={`Selected ${index}`} />
                     ) : fileType === 'video' ? (
                         <video controls>
-                            <source src={fileUri} type={file.type}  />
+                            <source src={fileUri} type={file.type} />
                             Your browser does not support the video tag.
                         </video>
                     ) : (
@@ -100,9 +119,15 @@ export default function PostModal({ fileType, closeModal }) {
                 <div className="part-right">
                     <h2>Description:</h2>
                     <div className="description-box">
-                        <textarea name="description" id="post-description" placeholder='Describe your post...' />
+                        <textarea ref={descriptionRef} name="description" id="post-description" placeholder='Describe your post...' />
                     </div>
-                    <button className="submit-button" onClick={handleFileSubmit}>Submit Post</button>
+                    <button className="submit-button" onClick={handleFileSubmit}>
+                        {isLoading ?
+                            <ReactLoading type={'spin'} width={'1.6rem'} height={'1.6rem'} className={"loader"} />
+                            :
+                            'Submit post'
+                        }
+                    </button>
                 </div>
             </div>
         </div>

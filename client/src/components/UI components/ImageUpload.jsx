@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const FileUpload = () => {
-    const [imageUrl, setImageUrl] = useState('');
-    const [uploadedFile, setUploadedFile] = useState();
-
     const [file, setFile] = useState(null);
     const [fileUrl, setFileUrl] = useState('');
 
