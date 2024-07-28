@@ -38,13 +38,13 @@ function Input({ labelText, type, errorText, inputFor, values, showError, ...pro
         return (
             <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
                 {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
-                <select {...props}>
-                    <option value="" hidden={true} disabled></option>
+                <select id={labelText + '-input'} {...props}>
+                    <option htmlFor={labelText + '-input'} value="" hidden={true} disabled></option>
                     {generateOptions(values[1], values[0]).map(value => (
                         <option key={value} value={value}>{value}</option>
                     ))}
                 </select>
-                <label>{labelText}</label>
+                <label htmlFor={labelText + '-input'}>{labelText}</label>
             </div>
         )
     }
