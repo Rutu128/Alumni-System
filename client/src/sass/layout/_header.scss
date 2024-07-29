@@ -50,15 +50,12 @@
                 text-decoration: none;
                 color: $color-font-dark;
                 padding: 0.5rem 0.7rem;
-                font-size: 7vw;
+                font-size: clamp(1rem, 7vw, 1.8rem);
                 
                 .header__nav--icon {
                     margin: -0.2rem 0 -0.3rem 0;
                 }
             }
-        }
-
-        &-text--mobile {
         }
     }
 }
@@ -248,7 +245,11 @@
                 // width: 100%;
 
                 .nav--icons {
-                    font-size: 6vw;
+                    font-size: clamp(
+                        1rem,
+                        6vw,
+                        1.8rem
+                    );
                     margin: -0.2rem 0 -0.1rem 0;
                 }
             }
@@ -263,6 +264,7 @@
         position: fixed;
         bottom: 0;
         left: 0;
+        z-index: 1;
         padding: 0.5rem 0.5rem 0 0.5rem;
 
         width: 100vw;

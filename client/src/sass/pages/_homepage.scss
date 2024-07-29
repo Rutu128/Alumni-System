@@ -24,10 +24,6 @@
     }
 }
 
-.sideMenu{
-    // position: fixed;
-}
-
 .main{
     flex: 1;
     overflow: auto;
@@ -82,7 +78,7 @@
 
     &__right {
         width: 30%;
-        padding: .5rem;
+        padding: .5rem .5rem .5rem 1rem;
         font-size: 1rem;
     }
 }
@@ -153,9 +149,14 @@
                     display: inline-flex;
                     justify-content: center;
                     align-items: center;
+                    transition: all .3s;
+
+                    &:hover{
+                        box-shadow: 0 0 1rem rgba($color-theme-dark, .5);
+                    }
 
                     .send-icon {
-                        margin: 0;
+                        margin: 0 0 0 -.1rem;
                     }
                 }
             }

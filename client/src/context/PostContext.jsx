@@ -31,7 +31,10 @@ export default function PostContextProvider({ children }){
     const [posts, setPosts] = useState([])
 
     async function handleNewPost(files, type, description){
-        let cloudUrls = await uploadFiles(files, type);
+        let cloudUrls = [];
+        if(type !== 'text'){
+            cloudUrls = await uploadFiles(files, type);
+        }
         console.log(cloudUrls);
         console.log('Description : ' + description);
         try {
