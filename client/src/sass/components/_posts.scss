@@ -2,19 +2,21 @@
     color: $color-font-dark;
     margin: .5rem 0;
     // box-shadow: 0 0 2rem rgba($color: $color-font-dark, $alpha: .4);
-    border: 1px solid $color-grey-light-3;
+    border: 2px solid $color-grey-light-3;
+    border-radius: 1rem !important;
 
     &__container {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        // padding: .5rem;
     }
 
     &__head {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        padding: .5rem;
+        padding: 1rem;
     }
 
     // &__profile {
@@ -34,7 +36,7 @@
     }
 
     &__description{
-        padding: .5rem;
+        padding: .5rem 1rem;
         font-weight: 400;
         font-size: .8rem;
     }
@@ -65,7 +67,7 @@
     }
 
     &__statistics{
-        padding: .2rem .5rem;
+        padding: .4rem 1rem;
         font-size: .8rem;
         // border-bottom: 1px solid $color-grey-light-3;
 
