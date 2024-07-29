@@ -8,10 +8,17 @@ import { UserContext } from '../../context/UserContext';
 import ProfileImage from './ProfileImage';
 import ModalContainer from '../Modal UI/ModalContainer';
 import PostModal from '../Modal UI/PostModal';
+import { PostContext } from '../../context/PostContext';
+import ReactLoading from 'react-loading';
 
-export default function HomepageContentPost({ profileImg }) {
+
+export default function HomepageContentPost({ }) {
     const [fileType, setFileType] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const { submitNewPost } = useContext(PostContext);
+    const { createNotification } = useContext(UserContext);
     const postModal = useRef();
+    const inputRef = useRef();
 
     function showPostModal(type) {
         setFileType(type);
@@ -20,6 +27,21 @@ export default function HomepageContentPost({ profileImg }) {
 
     function resetModal() {
         postModal.current.close();
+    }
+
+    async function handleSendClick() {
+        const inputData = inputRef.current.value;
+        if (inputData === "" | undefined) {
+            createNotification("Input field cannot be empty", 'error');
+            return;
+        }
+        setIsLoading(true);
+        const response = await submitNewPost([], 'text', inputData);
+        if (response.status === 200) {
+            inputRef.current.value = '';
+            setIsLoading(false);
+            createNotification('Post created!', 'success');
+        }
     }
 
     return (
@@ -34,11 +56,15 @@ export default function HomepageContentPost({ profileImg }) {
                             <ProfileImage />
                         </div>
                         <div className="post-input">
-                            <input type="text" placeholder='Type something...' />
+                            <input ref={inputRef} type="text" placeholder='Type something...' />
                         </div>
                         <div className="post-submit">
-                            <button>
-                                <FaTelegramPlane className='send-icon' />
+                            <button onClick={handleSendClick}>
+                                {isLoading ?
+                                    <ReactLoading type={'spin'} width={'1.6rem'} height={'1.6rem'} className={"loader"} />
+                                    :
+                                    <FaTelegramPlane className='send-icon' />
+                                }
                             </button>
                         </div>
                     </div>

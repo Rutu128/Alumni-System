@@ -95,6 +95,7 @@
                     overflow-x: auto; // Enable horizontal scrolling
                     min-height: 10rem;
                     padding-bottom: .4rem;
+                    align-items: center;
                     
                     @include horizontal-scrollbar;
 
@@ -238,10 +239,11 @@
     }
 
     .post-file-preview{
-        max-width: 20rem;
+        max-width: 90%;
         display: block;
         margin: 0 auto;
-        height: 30vh;
+        aspect-ratio: 16/9;
+        max-height: 30vh;
         margin-bottom: none;
     }
 

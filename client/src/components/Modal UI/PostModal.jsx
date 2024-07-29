@@ -25,7 +25,7 @@ export default function PostModal({ fileType, closeModal }) {
         acceptFormats = '.mp4, .mkv';
     }
     else if (fileType.toLowerCase() === 'document') {
-        acceptFormats = '.pdf';
+        acceptFormats = 'application/pdf';
     }
 
     const handleFileChange = (event) => {

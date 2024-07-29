@@ -1,6 +1,8 @@
-import ProfileImage from "../Homepage UI/ProfileImage";
+import React from 'react';
 import UserProfile from "./UserProfile";
 import { formatDate } from "../../utils/formatDate";
+
+import { PiThumbsUpDuotone, PiChatTeardropText, PiShare } from "react-icons/pi";
 
 export default function Post({ postData }) {
 
@@ -10,6 +12,17 @@ export default function Post({ postData }) {
 
     const isVideo = (url) => {
         return url.match(/\.(mp4|webm|ogg)$/) != null;
+    };
+
+    const isPdf = (url) => {
+        return url.match(/\.(pdf)$/) != null;
+    };
+
+    // Function to convert original PDF URL to the processed format
+    const getProcessedPdfUrl = (url) => {
+        const urlParts = url.split('/');
+        const publicId = urlParts[urlParts.length - 1].split('.')[0];
+        return `https://res.cloudinary.com/dp6lbnxpa/image/upload/f_auto,q_auto/${publicId}`;
     };
 
     return (
@@ -38,6 +51,18 @@ export default function Post({ postData }) {
                                 return (
                                     <div className="media-container" key={index}>
                                         {isImage(content.url) && <img src={content.url} alt="Post media" />}
+                                        {isVideo(content.url) && (
+                                            <video controls>
+                                                <source src={content.url} type="video/mp4" />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        )}
+                                        {isPdf(content.url) && (
+                                            <img 
+                                                src={getProcessedPdfUrl(content.url)} 
+                                                alt='User content'
+                                            />
+                                        )}
                                     </div>
                                 )
                             })}
@@ -48,23 +73,26 @@ export default function Post({ postData }) {
                     <div className="likes">
                         {postData.likes + ' Likes'}
                     </div>
-                    <div>|</div>
+                    {/* <div>|</div>
                     <div className="comments">
                         {postData.comments.length + ' Comments'}
-                    </div>
+                    </div> */}
                 </div>
                 <div className="post__foot">
                     <button className="post-interactions">
+                        <PiThumbsUpDuotone className='interaction-icons' />
                         Like
                     </button>
                     <button className="post-interactions">
+                        <PiChatTeardropText className='interaction-icons' />
                         Comment
                     </button>
                     <button className="post-interactions">
+                        <PiShare className='interaction-icons' />
                         Share
                     </button>
                 </div>
             </div>
         </div>
-    )
+    );
 }
