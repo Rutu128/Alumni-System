@@ -8,6 +8,7 @@ import { Post } from "../db/post.model.js";
 import { PostLike } from "../db/likes.model.js";
 import { CommentLike } from "../db/likesComment.model.js";
 import { Comment } from "../db/comment.model.js";
+import mongoose from "mongoose";
 
 //Upload Post
 
@@ -103,14 +104,6 @@ const showPosts = asyncHandler(async (req, res) => {
       },
       {
         $lookup: {
-          from: "comments",
-          localField: "_id",
-          foreignField: "postId",
-          as: "comments",
-        },
-      },
-      {
-        $lookup: {
           from: "users",
           localField: "userId",
           foreignField: "_id",
@@ -132,7 +125,6 @@ const showPosts = asyncHandler(async (req, res) => {
           content: 1,
           description: 1,
           createdAt: 1,
-          comments: 1,
           "user.firstName": 1,
           "user.lastName": 1,
           "user.initials": 1,
@@ -239,10 +231,42 @@ const getComments = asyncHandler(async (req, res) => {
   if (!post) {
     throw new ApiError(404, "No Post available");
   }
-  const comments = await Comment.find({ postId: post_id });
-  if (!comments) {
+  const id = new mongoose.Types.ObjectId(post_id);
+  const comments = await Comment.aggregate([
+    {
+      $match: {
+        postId: id,
+      },
+    },
+    {
+      $lookup: {
+        from: "commentlikes",
+        localField: "_id",
+        foreignField: "commentId",
+        as: "likes",
+      },
+    },
+    {
+      $addFields: {
+        like: {
+          $size: "$likes",
+        },
+      },
+    },
+    {
+      $project: {
+        comment: 1,
+        userId: 1,
+        postId: 1,
+        like: 1,
+        createdAt: 1,
+      },
+    },
+  ]);
+  if (!comments || comments.length === 0) {
     return res.status(202).json(new ApiResponse(202, {}, "Comment not found"));
   }
+
   return res
     .status(200)
     .json(new ApiResponse(200, comments, "Comment fetched successfully"));
