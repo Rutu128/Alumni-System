@@ -4,8 +4,9 @@
     // box-shadow: 0 0 2rem rgba($color: $color-font-dark, $alpha: .4);
     // border: 2px solid $color-grey-light-3;
     // border: 2px solid $color-theme-back-light;
-    box-shadow: 0 0 2rem rgba($color-theme-light, .6);
+    // box-shadow: 0 0 2rem rgba($color-theme-light, .6);
     border-radius: 1rem !important;
+    background-color: #fff;
 
     &__container {
         display: flex;
@@ -45,6 +46,8 @@
 
     &__content {
         max-width: 100%;
+        border-radius: .2rem;
+        overflow: hidden;
 
         .content-container{
             display: flex;
@@ -95,7 +98,7 @@
             background-color: transparent;
 
             &:hover {
-                background-color: $color-theme-back-light;
+                // background-color: $color-theme-back-light;
                 cursor: pointer;
             }
 

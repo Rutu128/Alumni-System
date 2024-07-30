@@ -4,11 +4,26 @@ import { formatDate } from "../../utils/formatDate";
 
 import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill } from "react-icons/pi";
 
-export default function Post({ postData }) {
-    const [selectedOption, setSelectedOption] = useState('');
+export default function Post({ postData, likePost }) {
+    const [selectedOption, setSelectedOption] = useState({
+        like: false,
+        comment: false,
+    });
 
     function handleSelection(option){
-        setSelectedOption(option);
+        setSelectedOption(prevOption => {
+            return {
+                ...prevOption,
+                [option]: !prevOption[option],
+            }
+        });
+        if(option === 'like'){
+            console.log('Post liked!!');
+            const res = likePost(postData._id);
+            if(res === 200){
+                postData.likes += 1;
+            }
+        }
     }
 
     const isImage = (url) => {
@@ -76,29 +91,44 @@ export default function Post({ postData }) {
                 </div>
                 <div className="post__statistics">
                     <div className="likes">
-                        {postData.likes + ' Likes'}
+                        {(selectedOption.like ? postData.likes + 1 : postData.likes) + ' Likes'}
                     </div>
-                    {/* <div>|</div>
+                    {/* <div>|</div> 
                     <div className="comments">
                         {postData.comments.length + ' Comments'}
                     </div> */}
                 </div>
                 <div className="post__foot">
                     <button className="post-interactions" onClick={() => handleSelection('like')}>
-                        <PiThumbsUpDuotone 
-                            className={`interaction-icons align ${selectedOption === 'like' && "active animate"}`} 
+                        {selectedOption.like
+                        ?
+                        <PiThumbsUpFill 
+                            className='interaction-icons align'
                         />
+                        :
+                        <PiThumbsUpDuotone
+                            className='interaction-icons align'
+                        />
+                        }
                         Like
                     </button>
                     <button className="post-interactions" onClick={() => handleSelection('comment')}>
-                        <PiChatTeardropText 
-                            className={`interaction-icons align ${selectedOption === 'comment' && "active"}`} 
+                        {selectedOption.comment
+                        ?
+                        <PiChatTeardropTextFill 
+                            className='interaction-icons align' 
                         />
+                        :
+                        <PiChatTeardropText 
+                            className='interaction-icons align'
+                        />
+                        }
+                        
                         Comment
                     </button>
                     <button className="post-interactions" onClick={() => handleSelection('share')}>
                         <PiShare 
-                            className={`interaction-icons  ${selectedOption === 'share' && "active"}`}
+                            className={`interaction-icons`}
                         />
                         Share
                     </button>

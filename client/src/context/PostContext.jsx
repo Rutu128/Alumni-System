@@ -3,6 +3,7 @@ import uploadFiles from "../utils/UploadImage";
 import postApi from "../utils/postApi";
 import getApi from "../utils/getApi";
 import { UserContext } from "./UserContext";
+import putApi from "../utils/putApi";
 
 export const PostContext = createContext({
     posts: [{
@@ -23,6 +24,7 @@ export const PostContext = createContext({
     submitNewPost: () => { },
     getPosts: () => { },
     getSpecificPosts: () => { },
+    likePost: () => { },
 })
 
 export default function PostContextProvider({ children }){
@@ -90,10 +92,21 @@ export default function PostContextProvider({ children }){
         // if()
     }
 
+    async function handleLikePost(id){
+        const response = await putApi('/post/like/' + id);
+        console.log(response);
+        if(response.data){
+            if(response.data.statusCode === 200){
+                return 200;
+            }
+        }
+    }
+
     const ctxValue = {
         posts: posts,
         submitNewPost: handleNewPost,
         getPosts: handleGetPosts,
+        likePost: handleLikePost,
     }
 
     return <PostContext.Provider value={ctxValue}>
