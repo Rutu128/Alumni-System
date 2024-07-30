@@ -18,7 +18,7 @@ const uploadPost = asyncHandler(async (req, res) => {
   if (!content || !description) {
     throw new ApiError(400, "Please provide all the required fields");
   }
-  console.log(user_id);
+  // console.log(user_id);
   const post = await Post.create({
     userId: user_id,
     content,

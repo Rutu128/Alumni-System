@@ -150,8 +150,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const verify = asyncHandler(async (req, res) => {
     const { token } = req.params;
-    console.log(token);
-    console.log(typeof token);
+    // console.log(token);
+    // console.log(typeof token);
 
     if (!token) {
         throw new ApiError(404, "Token not found");
@@ -293,7 +293,7 @@ const googleLogin = asyncHandler(async (req, res) => {
 
 const ping = asyncHandler(async (req, res) => {
     const user = req.user._id;
-    console.log(user);
+    // console.log(user);
     if (!user) {
         throw new ApiError(401, "User not logged in");
     }
