@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import UserProfile from "./UserProfile";
 import { formatDate } from "../../utils/formatDate";
 
-import { PiThumbsUpDuotone, PiChatTeardropText, PiShare } from "react-icons/pi";
+import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill } from "react-icons/pi";
 
 export default function Post({ postData }) {
+    const [selectedOption, setSelectedOption] = useState('');
+
+    function handleSelection(option){
+        setSelectedOption(option);
+    }
 
     const isImage = (url) => {
         return url.match(/\.(jpeg|jpg|gif|png|webp)$/) != null;
@@ -79,16 +84,22 @@ export default function Post({ postData }) {
                     </div> */}
                 </div>
                 <div className="post__foot">
-                    <button className="post-interactions">
-                        <PiThumbsUpDuotone className='interaction-icons' />
+                    <button className="post-interactions" onClick={() => handleSelection('like')}>
+                        <PiThumbsUpDuotone 
+                            className={`interaction-icons align ${selectedOption === 'like' && "active animate"}`} 
+                        />
                         Like
                     </button>
-                    <button className="post-interactions">
-                        <PiChatTeardropText className='interaction-icons' />
+                    <button className="post-interactions" onClick={() => handleSelection('comment')}>
+                        <PiChatTeardropText 
+                            className={`interaction-icons align ${selectedOption === 'comment' && "active"}`} 
+                        />
                         Comment
                     </button>
-                    <button className="post-interactions">
-                        <PiShare className='interaction-icons' />
+                    <button className="post-interactions" onClick={() => handleSelection('share')}>
+                        <PiShare 
+                            className={`interaction-icons  ${selectedOption === 'share' && "active"}`}
+                        />
                         Share
                     </button>
                 </div>

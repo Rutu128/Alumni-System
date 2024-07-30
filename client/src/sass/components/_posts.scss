@@ -2,7 +2,9 @@
     color: $color-font-dark;
     margin: .5rem 0;
     // box-shadow: 0 0 2rem rgba($color: $color-font-dark, $alpha: .4);
-    border: 2px solid $color-grey-light-3;
+    // border: 2px solid $color-grey-light-3;
+    // border: 2px solid $color-theme-back-light;
+    box-shadow: 0 0 2rem rgba($color-theme-light, .6);
     border-radius: 1rem !important;
 
     &__container {
@@ -27,18 +29,18 @@
 
     &__userInfo {
         margin-left: .5rem;
-        font-weight: 500;
-        font-stretch: 100%;
-
+        font-stretch: 110%;
+        
         .user_name{
-            font-size: .9rem;
+            font-weight: 700;
+            font-size:.9rem;
         }
     }
 
     &__description{
         padding: .5rem 1rem;
-        font-weight: 400;
-        font-size: .8rem;
+        font-weight: 450;
+        font-size: .9rem;
     }
 
     &__content {
@@ -94,11 +96,19 @@
 
             &:hover {
                 background-color: $color-theme-back-light;
+                cursor: pointer;
             }
 
             .interaction-icons {
                 font-size: 1.4rem;
                 margin: -.2rem .2rem -.3rem 0;
+                // fill: $color-theme-dark;
+                color: $color-theme-dark;
+                mix-blend-mode: multiply;
+            }
+
+            .align{
+                margin: -.1rem .2rem -.4rem 0;
             }
         }
     }
