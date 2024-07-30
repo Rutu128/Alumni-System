@@ -122,7 +122,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 3600*24*7,
+    maxAge: 1000 * 60 * 60 * 7,
   };
 
   // const user_info = await Info.findOne({ user: user._id })
@@ -301,4 +301,4 @@ const ping = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, loggedInUser, "User logged in"));
 });
 
-export { registerUser, loginUser, verify, changePassword, logoutUser,googleLogin,ping };
+export { registerUser, loginUser, verify, changePassword, logoutUser, googleLogin, ping };

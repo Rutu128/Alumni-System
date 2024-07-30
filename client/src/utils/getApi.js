@@ -3,6 +3,7 @@ import axios from "axios";
 
 
 async function getApi(path, parameters){
+    axios.defaults.withCredentials = true;
     let response;
     await axios.get(apiInfo.URL + path, {
         ...parameters,
