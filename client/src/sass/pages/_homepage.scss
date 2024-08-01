@@ -18,6 +18,7 @@
     justify-content: baseline;
     width: 100%;
     height: 100vh;
+    background-color: rgba($color-theme-back-light, .7);
 
     @media (max-width: 768px){
         flex-direction: column;
@@ -77,7 +78,7 @@
     }
 
     &__right {
-        width: 30%;
+        width: 33%;
         padding: .5rem .5rem .5rem 1rem;
         font-size: 1rem;
     }
@@ -106,14 +107,14 @@
             width: 100%;
 
             &-photo{
-                width: 15%;
-                display: flex;
-                justify-content: center;
+                // width: 15%;
             }
             
             .post-input {
                 display: inline-block;
-                width: 70%;
+                // width: 70%;
+                flex: 1;
+                padding: 0 1rem;
                 
                 input {
                     min-width: 50%;
@@ -133,7 +134,7 @@
             }
             
             .post-submit {                
-                width: 15%;
+                width: auto;
                 display: flex;
                 justify-content: center;
 
@@ -184,13 +185,21 @@
             );
             transition: background-color 0.3s ease;
 
+            img{
+                width: 2.5rem;
+                margin-right: .5rem;
+            }
+
             &:hover {
-                background-color: $color-theme-back-light;
+                // background-color: $color-theme-back-light;
+                cursor: pointer;
+                color: rgba($color-theme-dark, 1);
             }
 
             .button-icon {
                 font-size: 1.2rem;
                 margin-right: 0.5rem;
+                color: $color-theme-dark;
             }
 
             p {
