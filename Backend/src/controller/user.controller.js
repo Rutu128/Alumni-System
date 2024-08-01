@@ -55,6 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
     if (!user_initials) {
         throw new ApiError(403, "User initials are not setedIn");
     }
+    const avatarUrl= `https://avatar.iran.liara.run/username?username=${firstName}+${lastName}`
     const user = await User.create({
         firstName,
         lastName,
@@ -62,6 +63,7 @@ const registerUser = asyncHandler(async (req, res) => {
         c_id,
         dob,
         initials: user_initials,
+        avatar:avatarUrl,
         passingYear,
         password,
     });
@@ -305,6 +307,32 @@ const ping = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, loggedInUser, "User logged in"));
 });
 
+const addInfo = asyncHandler(async (req, res) => {
+    const user_id = req.user?._id;
+    if (!user_id) {
+        throw new ApiError(404, "User dosen't fetch");
+    }
+    const { headline, designation } = req.body;
+
+    const user = await User.findByIdAndUpdate(user_id, {
+        $set: {
+            headline,
+            designation,
+        },
+    }).select(
+        "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
+    );
+    if (!user) {
+        throw new ApiError(500, "Failed to add info");
+    }
+    const updated_user = await User.findById({_id:user_id}).select("-password -refreshToken -isVerified -createdAt -updatedAt -_id")
+    return res
+        .status(200)
+        .json(new ApiResponse(200, updated_user, "info successfully added "));
+});
+
+
+
 export {
     registerUser,
     loginUser,
@@ -313,4 +341,5 @@ export {
     logoutUser,
     googleLogin,
     ping,
+    addInfo,
 };

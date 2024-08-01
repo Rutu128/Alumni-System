@@ -24,6 +24,5 @@ router.route("/likeComment/:id").put(verifyJWT, likeComment);
 router.route("/deleteComment/:id").delete(verifyJWT, deleteComment);
 router.route("/getComments/:id").get(verifyJWT, getComments);
 
-router.route("/myPosts").get(verifyJWT,myPosts)
 
 export default router;
