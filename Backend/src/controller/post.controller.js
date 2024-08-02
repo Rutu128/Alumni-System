@@ -311,77 +311,239 @@ const getComments = asyncHandler(async (req, res) => {
 });
 
 const myPosts = asyncHandler(async (req, res) => {
-    const user_id = req.user._id;
-    const id = new mongoose.Types.ObjectId(user_id);
-    const posts = await Post.aggregate([
-        {
-            $match: {
-                userId: id,
-            },
-        },
-        {
-            $lookup: {
-                from: "postlikes",
-                localField: "_id",
-                foreignField: "postId",
-                as: "likes",
-            },
-        },
-        {
-            $lookup: {
-                from: "comments",
-                localField: "_id",
-                foreignField: "postId",
-                as: "comments",
-            },
-        },
-        {
-            $lookup: {
-                from: "users",
-                localField: "userId",
-                foreignField: "_id",
-                as: "users",
-            },
-        },
-        {
-            $addFields: {
-                user: {
-                    $arrayElemAt: ["$users", 0],
+    try {
+        const user_id = req.user._id;
+        const id = new mongoose.Types.ObjectId(user_id);
+        const posts = await Post.aggregate([
+            {
+                $match: {
+                    userId: id,
                 },
-                isLiked: {
-                    $cond: {
-                        if: {
-                            $in: [id, "$likes.userId"],
+            },
+            {
+                $lookup: {
+                    from: "postlikes",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "likes",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "comments",
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "users",
+                },
+            },
+            {
+                $addFields: {
+                    user: {
+                        $arrayElemAt: ["$users", 0],
+                    },
+                    isLiked: {
+                        $cond: {
+                            if: {
+                                $in: [id, "$likes.userId"],
+                            },
+                            then: true,
+                            else: false,
                         },
-                        then: true,
-                        else: false,
                     },
                 },
             },
-        },
-        {
-            $project: {
-                likes: {
-                    $size: "$likes",
+            {
+                $project: {
+                    likes: {
+                        $size: "$likes",
+                    },
+                    comments: {
+                        $size: "$comments",
+                    },
+                    content: 1,
+                    description: 1,
+                    createdAt: 1,
+                    "user.firstName": 1,
+                    "user.lastName": 1,
+                    "user.initials": 1,
+                    "user.image": 1,
+                    isLiked: 1,
                 },
-                comments: {
-                    $size: "$comments",
-                },
-                content: 1,
-                description: 1,
-                createdAt: 1,
-                "user.firstName": 1,
-                "user.lastName": 1,
-                "user.initials": 1,
-                "user.image": 1,
-                isLiked: 1,
             },
-        },
-    ]);
+        ]);
 
-    return res
-        .status(200)
-        .json(new ApiResponse(200, posts, "My Posts fetched successfully"));
+        return res
+            .status(200)
+            .json(new ApiResponse(200, posts, "My Posts fetched successfully"));
+    } catch (error) {
+        throw new Error(400, "Error fetching My posts");
+    }
+});
+
+const myLikes = asyncHandler(async (req, res) => {
+    try {
+        const user_id = req.user._id;
+        const id = new mongoose.Types.ObjectId(user_id);
+        const likedPosts = await PostLike.aggregate([
+            {
+                $match: {
+                    userId: id,
+                },
+            },
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "postId",
+                    foreignField: "_id",
+                    as: "post",
+                },
+            },
+            {
+                $unwind: "$post",
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $addFields: {
+                    user: {
+                        $arrayElemAt: ["$user", 0],
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "postlikes",
+                    localField: "post._id",
+                    foreignField: "postId",
+                    as: "likes",
+                },
+            },
+            {
+                $addFields: {
+                    likes: {
+                        $size: "$likes",
+                    },
+                    isLiked: {
+                        $in: [id, "$likes.userId"], // Replace with the actual logged-in user ID
+                    },
+                },
+            },
+            {
+                $project: {
+                    "post.content": 1,
+                    "post.description": 1,
+                    "user.firstName": 1,
+                    "user.lastName": 1,
+                    "user.initials": 1,
+                    "user.avatar": 1,
+                    likes: 1,
+                    isLiked: 1,
+                },
+            },
+        ]);
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    likedPosts,
+                    "My Likes fetched successfully"
+                )
+            );
+    } catch (error) {
+        throw new ApiError(400, error, "Error while fetching my likes");
+    }
+});
+
+const getUserPosts = asyncHandler(async (req, res) => {
+    try {
+        const user_id = req.params.id;
+        const id = new mongoose.Types.ObjectId(user_id);
+        const posts = await Post.aggregate([
+            {
+                $match: {
+                    userId: id,
+                },
+            },
+            {
+                $lookup: {
+                    from: "postlikes",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "likes",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "comments",
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "users",
+                },
+            },
+            {
+                $addFields: {
+                    user: {
+                        $arrayElemAt: ["$users", 0],
+                    },
+                    isLiked: {
+                        $cond: {
+                            if: {
+                                $in: [id, "$likes.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    likes: {
+                        $size: "$likes",
+                    },
+                    comments: {
+                        $size: "$comments",
+                    },
+                    content: 1,
+                    description: 1,
+                    createdAt: 1,
+                    "user.firstName": 1,
+                    "user.lastName": 1,
+                    "user.initials": 1,
+                    "user.image": 1,
+                    isLiked: 1,
+                },
+            },
+        ]);
+        return res
+            .status(200)
+            .json(new ApiResponse(200, posts, "Posts Fetched successfully"));
+    } catch (error) {
+        throw new ApiError(400, error, "Error while fetching user posts");
+    }
 });
 
 export {
@@ -394,4 +556,6 @@ export {
     deleteComment,
     getComments,
     myPosts,
+    myLikes,
+    getUserPosts
 };
