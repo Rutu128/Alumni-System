@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Verification } from "../db/verification.model.js";
 import mailer from "../utils/Mailer.js";
 import { randomBytes } from "crypto";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -55,7 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
     if (!user_initials) {
         throw new ApiError(403, "User initials are not setedIn");
     }
-    const avatarUrl= `https://avatar.iran.liara.run/username?username=${firstName}+${lastName}`
+    const avatarUrl = `https://avatar.iran.liara.run/username?username=${firstName}+${lastName}`;
     const user = await User.create({
         firstName,
         lastName,
@@ -63,7 +64,7 @@ const registerUser = asyncHandler(async (req, res) => {
         c_id,
         dob,
         initials: user_initials,
-        avatar:avatarUrl,
+        avatar: avatarUrl,
         passingYear,
         password,
     });
@@ -300,7 +301,7 @@ const ping = asyncHandler(async (req, res) => {
         throw new ApiError(401, "User not logged in");
     }
     const loggedInUser = await User.findById(user).select(
-        "-password -refreshToken -createdAt -updatedAt -_id"
+        "-password -refreshToken -createdAt -updatedAt "
     );
     return res
         .status(200)
@@ -325,13 +326,102 @@ const addInfo = asyncHandler(async (req, res) => {
     if (!user) {
         throw new ApiError(500, "Failed to add info");
     }
-    const updated_user = await User.findById({_id:user_id}).select("-password -refreshToken -isVerified -createdAt -updatedAt -_id")
+    const updated_user = await User.findById({ _id: user_id }).select(
+        "-password -refreshToken -isVerified -createdAt -updatedAt -_id"
+    );
     return res
         .status(200)
         .json(new ApiResponse(200, updated_user, "info successfully added "));
 });
 
+const getUserDetails = asyncHandler(async (req, res) => {
+    try {
+        const user_id = req.params.id;
+        const id = new mongoose.Types.ObjectId(user_id);
+        const userDetails = await User.aggregate([
+            {
+                $match: {
+                    _id:id,
+                },
+            },
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "_id",
+                    foreignField: "userId",
+                    as: "posts",
+                },
+            },
+            {
+                $unwind: "$posts",
+            },
+            {
+                $lookup: {
+                    from: "postlikes",
+                    localField: "posts._id",
+                    foreignField: "postId",
+                    as: "likes",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "posts._id",
+                    foreignField: "postId",
+                    as: "comments",
+                },
+            },
+            {
+                $addFields: {
+                    "posts.isLiked": {
+                        $cond: {
+                            if: {
+                                $in: [
+                                    id,
+                                    "$likes.userId",
+                                ],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    "posts.likesCount": { $size: "$likes" },
+                    "posts.commentsCount": { $size: "$comments" },
+                },
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    posts: { $push: "$posts" },
+                    firstName: { $first: "$firstName" },
+                    lastName: { $first: "$lastName" },
+                    email: { $first: "$email" },
+                    avatar: { $first: "$avatar" },
+                    headline: { $first: "$headline" },
+                    designation: { $first: "$designation" },
+                    passingYear: { $first: "$passingYear" },
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    email: 1,
+                    posts: 1,
+                    avatar: 1,
+                    headline: 1,
+                    designation: 1,
+                    passingYear: 1,
+                },
+            },
+        ]);
 
+        return res.status(200).json(new ApiResponse(200, userDetails, "User details"));
+    } catch (error) {
+        throw new ApiError(400, error, "Failed to get user details");
+    }
+});
 
 export {
     registerUser,
@@ -342,4 +432,5 @@ export {
     googleLogin,
     ping,
     addInfo,
+    getUserDetails
 };

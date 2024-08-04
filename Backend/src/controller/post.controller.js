@@ -84,6 +84,16 @@ const deletePost = asyncHandler(async (req, res) => {
     if (!deleteLikes) {
         throw new ApiError(402, "Some happend while deleting likes");
     }
+    const deleteComments = await Comment.deleteMany({ postId: post_id });
+    if (!deleteComments) {
+        throw new ApiError(402, "Some happend while deleting comments");
+    }
+    const deleteCommentLikes = await CommentLike.deleteMany({
+        postId: post_id,
+    });
+    if (!deleteCommentLikes) {
+        throw new ApiError(402, "Some happend while deleting comment likes");
+    }
     return res
         .status(200)
         .json(new ApiResponse(200, {}, "Delete post successfully"));
@@ -151,6 +161,7 @@ const showPosts = asyncHandler(async (req, res) => {
                     "user.lastName": 1,
                     "user.initials": 1,
                     "user.image": 1,
+                    "user._id": 1,
                     isLiked: 1,
                 },
             },
@@ -283,9 +294,20 @@ const getComments = asyncHandler(async (req, res) => {
             },
         },
         {
+            $lookup: {
+                from: "users",
+                localField: "userId",
+                foreignField: "_id",
+                as: "users",
+            },
+        },
+        {
             $addFields: {
                 like: {
                     $size: "$likes",
+                },
+                users: {
+                    $arrayElemAt: ["$users", 0],
                 },
             },
         },
@@ -296,6 +318,11 @@ const getComments = asyncHandler(async (req, res) => {
                 postId: 1,
                 like: 1,
                 createdAt: 1,
+                "users.firstName": 1,
+                "users.lastName": 1,
+                "users.initials": 1,
+                "users.avatar": 1,
+                "users._id": 1,
             },
         },
     ]);
@@ -533,7 +560,8 @@ const getUserPosts = asyncHandler(async (req, res) => {
                     "user.firstName": 1,
                     "user.lastName": 1,
                     "user.initials": 1,
-                    "user.image": 1,
+                    "user.avatar": 1,
+                    "user._id": 1,
                     isLiked: 1,
                 },
             },
@@ -557,5 +585,5 @@ export {
     getComments,
     myPosts,
     myLikes,
-    getUserPosts
+    getUserPosts,
 };
