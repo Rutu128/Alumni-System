@@ -16,7 +16,7 @@ function Input({ labelText, type, errorText, inputFor, values, showError, ...pro
         return (
             <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
                 {errorText === '' ? null : <div className="u-error-text"><MdError className="error-icon" />{errorText}</div>}
-                <input {...props} type={showPassword ? 'text' : 'password'} id={labelText + '-input'} />
+                <input {...props} type={showPassword ? 'text' : 'password'} id={labelText + '-input'} autoComplete="true" />
                 <label htmlFor={labelText + '-input'}>{labelText}</label>
                 <button onClick={handleShowPassword} className={showPassword ? "showPassword" : "hidePassword"} >
                     {showPassword ?

@@ -25,11 +25,30 @@ export const PostContext = createContext({
     getPosts: () => { },
     getSpecificPosts: () => { },
     likePost: () => { },
+    getComments: () => { },
+    newComment: () => { },
 })
 
-export default function PostContextProvider({ children }){
-    const { userDetail } = useContext(UserContext);
+function handleResponse(res){
+    if(res.response){
+        if(res.response.status !== 200){
+            console.log('Catched an error: ', res.response.status);
+            return {
+                status: res.response.status,
+            }
+        }
+    }
+    else if(res.data){
+        if(res.data.statusCode === 200 | 202){
+            console.log('Api executed Successfully!');
+            return {
+                status: res.data.statusCode,
+            }
+        }
+    }
+}
 
+export default function PostContextProvider({ children }){
     const [posts, setPosts] = useState([])
 
     async function handleNewPost(files, type, description){
@@ -46,21 +65,8 @@ export default function PostContextProvider({ children }){
             });
         
             console.log(response);
+            return handleResponse(response);
         
-            if(response.response){
-                if (response.response.status === 400 || response.response.status === 300) {
-                    return {
-                        status: response.response.status,
-                    };
-                }
-            }
-        
-            if (response.data && response.data.statusCode) {
-                console.log(response.data);
-                return {
-                    status: response.data.statusCode,
-                };
-            }
         } catch (error) {
             console.error('Unexpected error:', error);
             return {
@@ -73,31 +79,57 @@ export default function PostContextProvider({ children }){
     async function handleGetPosts(page){
         const response = await getApi('/post/getpost/' + page);
         
-        // console.log(response);
-        if(response.response){
-            if(response.response.status === 400){
-                console.log("Error fetching posts!");
-            }
-        }
+        const apiStatus = handleResponse(response);
         
-        const postData = response.data.data;
-        console.log(postData);
-
-        setPosts(prevPosts => {
-            return [
-                ...prevPosts,
-                ...postData
-            ]
-        });
-        // if()
+        if(apiStatus.status === 200){
+            const postData = response.data.data;
+            console.log(postData);
+            
+            setPosts(prevPosts => {
+                return [
+                    ...prevPosts,
+                    ...postData
+                ]
+            });
+        }
     }
 
     async function handleLikePost(id){
         const response = await putApi('/post/like/' + id);
         console.log(response);
-        if(response.data){
-            if(response.data.statusCode === 200){
-                return 200;
+        return handleResponse(response);
+    }
+
+    async function handleGetComments(id){
+        const response = await getApi('/post/getComments/' + id);
+        // const comments = [];
+        
+        const apiStatus = handleResponse(response);
+        
+        console.log(apiStatus.status);
+        if(apiStatus.status === 200){
+            console.log(response.data.data);
+            
+            // response.data.data.map(data => {
+            //     comments.push(data.comment);
+            // })
+            // console.log(comments);
+            return response.data.data;
+        }
+        if(apiStatus.status === 202){
+            return [];
+        }
+    }
+    
+    async function handleNewComment(id, comment){
+        const response = await postApi('/post/addComment/' + id, {
+            comment: comment,
+        });
+        const apiStatus = handleResponse(response);
+        console.log(response);
+        if(apiStatus.status === 200){
+            return {
+                status: apiStatus.status,
             }
         }
     }
@@ -107,6 +139,8 @@ export default function PostContextProvider({ children }){
         submitNewPost: handleNewPost,
         getPosts: handleGetPosts,
         likePost: handleLikePost,
+        getComments: handleGetComments,
+        newComment: handleNewComment,
     }
 
     return <PostContext.Provider value={ctxValue}>

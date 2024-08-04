@@ -1,18 +1,17 @@
 .post{
     color: $color-font-dark;
+    // border-bottom: 2px solid $color-grey-light-3;
+    // border-radius: 0px !important;
+    // padding: .5rem 0;
     margin: .5rem 0;
-    // box-shadow: 0 0 2rem rgba($color: $color-font-dark, $alpha: .4);
-    // border: 2px solid $color-grey-light-3;
-    // border: 2px solid $color-theme-back-light;
-    // box-shadow: 0 0 2rem rgba($color-theme-light, .6);
-    border-radius: 1rem !important;
-    background-color: #fff;
-
+    
     &__container {
+        border-radius: 1rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        // padding: .5rem;
+        border: 2px solid $color-grey-light-3;
+        overflow: hidden;
     }
 
     &__head {
@@ -41,7 +40,7 @@
     &__description{
         padding: .5rem 1rem;
         font-weight: 450;
-        font-size: .9rem;
+        font-size: .85rem;
     }
 
     &__content {
@@ -90,29 +89,142 @@
         justify-content: baseline;
         align-items: center;
 
-        .post-interactions{
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            outline: none;
-            background-color: transparent;
-
-            &:hover {
-                // background-color: $color-theme-back-light;
-                cursor: pointer;
+    }
+    
+    &__comments {
+        background-color: $color-grey-light-3;
+        
+        .new_comment{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: .5rem 1rem;
+            
+            .comment-input{
+                flex: 1;
+                display: inline-block;
+                padding: 0 1rem;
+                
+                input {
+                    width: 100%;
+                    padding: .7rem;
+                    outline: none;
+                    border: 2px solid $color-theme-dark;
+                    border-radius: 2rem;
+                    font-weight: 450;
+                }
             }
+            
+            .comment-submit{
+                button{
+                    font-size: 1.2rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                    outline: none;
+                    width: 2.6rem;
+                    height: 2.6rem;
+                    border-radius: 50%;
+                    background-color: $color-theme-light;
+                    
+                    .send-icon{
+                        margin: 0 0 0 -.1rem;
+                    }
+                }
+            }            
+        }
+    }
+}
 
-            .interaction-icons {
-                font-size: 1.4rem;
-                margin: -.2rem .2rem -.3rem 0;
-                // fill: $color-theme-dark;
-                color: $color-theme-dark;
-                mix-blend-mode: multiply;
-            }
+.post-interactions{
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
 
-            .align{
-                margin: -.1rem .2rem -.4rem 0;
+    &:hover {
+        // background-color: $color-theme-back-light;
+        cursor: pointer;
+    }
+
+    .interaction-icons {
+        font-size: 1.4rem;
+        margin: -.2rem .2rem -.3rem 0;
+        // fill: $color-theme-dark;
+        color: $color-theme-dark;
+        mix-blend-mode: multiply;
+    }
+
+    .align{
+        margin: -.1rem .2rem -.4rem 0;
+    }
+}
+
+.small-button{
+    padding: .2rem;
+
+    .interaction-icons{
+        font-size: 1.2rem;
+        margin: 0 0 -.2rem 0;
+    }
+}
+
+.comment{
+
+    &_cont{
+        display: flex;
+        align-items: flex-start;
+        padding: .5rem 1rem;
+        font-size: .8rem;
+        font-weight: 450;
+    }
+
+    &_profile{
+
+    }
+
+    &_body{
+        flex: 1;
+        padding: 0 .5rem;
+    }
+
+    &_interactions {
+        // padding: .5rem 0 .5rem .5rem;
+
+        .like_cont {
+
+
+            .like_count{
+
             }
         }
     }
+
+    &_user{
+
+        &_name {
+            display: inline-block;
+            font-size: .8rem;
+            margin-right: .5rem;
+        }
+    }
+
+    &_date{
+        display: inline-block;
+        font-size: .6rem;
+    }
+
+    &_text{
+
+    }
+
+}
+
+.separator{
+    width: 100%;
+    height: 1px;
+    background-color: $color-grey-light-3;
+    margin: .5rem 0;
 }
