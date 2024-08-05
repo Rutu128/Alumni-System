@@ -10,6 +10,7 @@ import ModalContainer from '../Modal UI/ModalContainer';
 import PostModal from '../Modal UI/PostModal';
 import { PostContext } from '../../context/PostContext';
 import ReactLoading from 'react-loading';
+import { ImageIcon } from '../Icon/HomepageIcons';
 
 
 export default function HomepageContentPost({ }) {
@@ -49,7 +50,7 @@ export default function HomepageContentPost({ }) {
             <ModalContainer onReset={resetModal} ref={postModal} >
                 <PostModal fileType={fileType} closeModal={resetModal} />
             </ModalContainer>
-            <section className="post">
+            <section className="newPost">
                 <div className="top">
                     <div className="profile">
                         <div className="profile-photo">
@@ -71,18 +72,19 @@ export default function HomepageContentPost({ }) {
                 </div>
                 <div className="bottom">
                     <button onClick={() => showPostModal('image')}>
-                        <FaRegImages className='button-icon' />
-                        {/* <img src="/picture-dynamic-color.svg" alt="image icon" /> */}
+                        {/* <FaRegImages className='button-icon' /> */}
+                        <img src="/picture-dynamic-color.svg" alt="image icon" />
+                        {/* <ImageIcon /> */}
                         <p>Image</p>
                     </button>
                     <button onClick={() => showPostModal('video')}>
-                        <MdOutlineVideoLibrary className='button-icon' />
-                        {/* <img src="/video-camera-dynamic-color.svg" alt="image icon" /> */}
+                        {/* <MdOutlineVideoLibrary className='button-icon' /> */}
+                        <img src="/video-camera-dynamic-color.svg" alt="image icon" />
                         <p>Video</p>
                     </button>
                     <button onClick={() => showPostModal('document')}>
-                        <IoDocumentsOutline className='button-icon' />
-                        {/* <img src="/copy-dynamic-color.svg" alt="image icon" /> */}
+                        {/* <IoDocumentsOutline className='button-icon' /> */}
+                        <img src="/copy-dynamic-color.svg" alt="image icon" />
                         <p>Document</p>
                     </button>
                 </div>

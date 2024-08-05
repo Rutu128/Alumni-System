@@ -1,4 +1,4 @@
-export default function UserProfile({profileSrc, initials, className}){
+export default function UserProfile({profileSrc="", initials="", className=""}){
     if(profileSrc){
         return (
             <img src={profileSrc} className={"profile-img " + className} alt="User Profile" />
