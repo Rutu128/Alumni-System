@@ -62,7 +62,7 @@ export default function Post({ postData, likePost, getComments, newComment: post
             }
         })
         const res = await postNewComment(postData._id, commentRef.current.value);
-        if(res.status === 200){
+        if (res.status === 200) {
             fetchComments();
             commentRef.current.value = "";
             setPostState(prevState => {
@@ -76,7 +76,7 @@ export default function Post({ postData, likePost, getComments, newComment: post
 
     return (
         <div className="post">
-            {modalView && 
+            {modalView &&
                 <button className='post-head-close' onClick={handleCloseModal}><PiX className='post-head-icon' /></button>
             }
             <div className="post__container">
@@ -162,27 +162,34 @@ export default function Post({ postData, likePost, getComments, newComment: post
                         Share
                     </button>
                 </div>
-                {postState.comment &&
-                    <div className="post__comments">
-                        <div className="new_comment">
-                            <div className="profile_comm_user">
-                                <ProfileImage />
-                            </div>
-                            <div className="comment-input">
-                                <input type="text" ref={commentRef} placeholder='Add a comment...' />
-                            </div>
-                            <div className="comment-submit" onClick={newComment}>
-                                <SendButton isLoading={postState.newCommentLoading} />
-                            </div>
-                        </div>
-                        {(postState.fetchedComments.length > 0) &&
-                            postState.fetchedComments.map((comment, index) => (
-                                <CommentBlock data={comment}     key={index} />
-                            ))
-                        }
-                    </div>
-                }
             </div>
+            {postState.comment &&
+                <div className="post__comments">
+                    <div className="new_comment">
+                        <div className="profile_comm_user">
+                            <ProfileImage />
+                        </div>
+                        <div className="comment-input">
+                            <input
+                                type="text"
+                                ref={commentRef}
+                                placeholder='Add a comment...'
+                                onKeyUp={(e) => {
+                                    e.key === "Enter" && newComment()
+                                }} 
+                            />
+                        </div>
+                        <div className="comment-submit" onClick={newComment}>
+                            <SendButton isLoading={postState.newCommentLoading} />
+                        </div>
+                    </div>
+                    {(postState.fetchedComments.length > 0) &&
+                        postState.fetchedComments.map((comment, index) => (
+                            <CommentBlock data={comment} key={index} />
+                        ))
+                    }
+                </div>
+            }
         </div>
     );
 }

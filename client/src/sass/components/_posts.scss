@@ -1,17 +1,14 @@
 .post{
     color: $color-font-dark;
-    // border-bottom: 2px solid $color-grey-light-3;
-    // border-radius: 0px !important;
-    // padding: .5rem 0;
     margin: .5rem 0;
+    border-radius: 1rem;
+    border: 2px solid $color-grey-light-3;
+    overflow: hidden;
     
     &__container {
-        border-radius: 1rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        border: 2px solid $color-grey-light-3;
-        overflow: hidden;
     }
 
     &__head {
@@ -20,12 +17,6 @@
         align-items: center;
         padding: 1rem;
     }
-
-    // &__profile {
-    //     .user-profile {
-            
-    //     }
-    // }
 
     &__userInfo {
         margin-left: .5rem;
@@ -92,7 +83,8 @@
     }
     
     &__comments {
-        background-color: $color-grey-light-3;
+        // background-color: $color-grey-light-3;
+        border-top: 1px solid $color-grey-light-3;
         
         .new_comment{
             display: flex;
