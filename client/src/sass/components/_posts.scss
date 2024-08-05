@@ -177,19 +177,46 @@
 
     }
 
+    &_main{
+        min-width: 30%;
+    }
+    
     &_body{
         flex: 1;
-        padding: 0 .5rem;
+        padding: .6rem 1rem;
+        background-color: $color-theme-back-light;
+        border-radius: 1rem;
+        margin: 0 .5rem;
+    }
+    
+    &_main_bottom{
+        margin-left: 1.5rem;
+        margin-top: .3rem;
     }
 
+    &_main_bottom, &_body_bottom {
+        font-weight: 600;
+        font-stretch: 110%;
+        color: $color-theme-dark;
+
+        .like_count{
+            display: inline-block;
+            margin-left: .6rem;    
+            font-size: .7rem;
+        }
+    }
+
+    
     &_interactions {
         // padding: .5rem 0 .5rem .5rem;
 
         .like_cont {
+            padding: .2rem;
+            border-radius: 50%;
+            margin-top: .5rem;
 
-
-            .like_count{
-
+            &:hover{
+                background-color: $color-theme-back-light;
             }
         }
     }
@@ -198,18 +225,23 @@
 
         &_name {
             display: inline-block;
-            font-size: .8rem;
+            font-size: .7rem;
             margin-right: .5rem;
         }
     }
 
     &_date{
         display: inline-block;
-        font-size: .6rem;
+        font-size: .7rem;
+        // margin-top: .3rem;
     }
 
     &_text{
-
+        margin: .4rem 0 0 0;
+        font-size: .85rem;
+        font-stretch: 105%;
+        line-height: 18px;
+        // word-spacing: 1.5px;
     }
 
 }

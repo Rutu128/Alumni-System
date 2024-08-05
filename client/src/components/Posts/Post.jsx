@@ -92,7 +92,7 @@ export default function Post({ postData, likePost, getComments, newComment: post
                             {postData.user.firstName + ' ' + postData.user.lastName}
                         </div>
                         <div className="post_date">
-                            {formatDate(postData.createdAt, true)}
+                            {formatDate(postData.createdAt)}
                         </div>
                     </div>
                 </div>
