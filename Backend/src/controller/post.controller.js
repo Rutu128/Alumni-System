@@ -33,7 +33,7 @@ const uploadPost = asyncHandler(async (req, res) => {
 });
 
 const likePost = asyncHandler(async (req, res) => {
-    const post_id = req.params.id;
+    const {post_id} = req.body;
     // console.log(post_id);
     const user_id = req.user._id;
     const post = await Post.findById({ _id: post_id });
