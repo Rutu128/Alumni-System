@@ -224,7 +224,7 @@ const likeComment = asyncHandler(async (req, res) => {
     if (!user_id) {
         throw new ApiError(400, "Invalid user id");
     }
-    const isLiked = await CommentLike.findOne({ commentId: comment_id });
+    const isLiked = await CommentLike.findOne({ commentId: comment_id, userId: user_id});
     if (isLiked) {
         const commentLike = await CommentLike.findOneAndDelete({
             commentId: comment_id,
