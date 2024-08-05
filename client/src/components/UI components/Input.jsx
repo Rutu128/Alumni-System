@@ -2,6 +2,7 @@ import { useState } from "react";
 import { RiEyeFill } from "react-icons/ri";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { MdError } from "react-icons/md";
+import React from "react";
 
 function Input({ labelText, type, errorText, inputFor, values, showError, ...props }) {
 

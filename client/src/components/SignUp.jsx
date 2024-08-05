@@ -5,6 +5,7 @@ import Button from "./UI components/Button";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import React from "react";
 import ReactLoading from 'react-loading'
 
 export default function SignUp() {
