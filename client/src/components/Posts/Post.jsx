@@ -12,8 +12,7 @@ import CommentBlock from './CommentBlock';
 
 
 export default function Post({ postData, likePost, getComments, newComment: postNewComment, modalView = false }) {
-    const commentRef = useRef();
-
+    
     const [postState, setPostState] = useState({
         isLiked: postData.isLiked,
         like: postData.isLiked,
@@ -21,6 +20,8 @@ export default function Post({ postData, likePost, getComments, newComment: post
         fetchedComments: [],
         newCommentLoading: false,
     });
+
+    const commentRef = useRef();
 
     useEffect(() => {
         if (postState.comment && postState.fetchedComments.length === 0) {
@@ -42,6 +43,8 @@ export default function Post({ postData, likePost, getComments, newComment: post
                 ...prevOption,
                 like: !prevOption.like,
             }));
+            console.log(postData._id);
+            
             const res = await likePost(postData._id);
             if (res === 200) {
                 postData.likes += postState.like ? -1 : 1;

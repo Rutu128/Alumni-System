@@ -45,6 +45,7 @@ export default function PostModal({ fileType, closeModal }) {
 
     async function handleFileSubmit() {
         if (file.length === 0 && descriptionRef.current.value === (null || undefined || "")) {
+            createNotification('Empty fields!', 'error');
             return;
         }
         setIsLoading(true);
@@ -52,9 +53,9 @@ export default function PostModal({ fileType, closeModal }) {
         const response = await submitNewPost(file, fileType, descriptionRef.current.value);
         console.log(response);
         if (response.status === 200) {
-            setIsLoading(false);
             createNotification('Post created!', 'success');
             handleCloseModal();
+            setIsLoading(false);
         }
     }
 

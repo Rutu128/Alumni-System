@@ -95,7 +95,7 @@ export default function PostContextProvider({ children }){
     }
 
     async function handleLikePost(id){
-        const response = await putApi('/post/like/' + id);
+        const response = await putApi(`/post/like/${id}`);
         console.log(response);
         return handleResponse(response);
     }
