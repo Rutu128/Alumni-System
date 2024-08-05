@@ -43,7 +43,10 @@ const likePost = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Invalid user id");
     }
     // const post = await Post.findById(post_id);
-    const isLiked = await PostLike.findOne({ postId: post_id });
+    const isLiked = await PostLike.findOne({
+        postId: post_id,
+        userId: user_id,
+    });
     if (isLiked) {
         const postLike = await PostLike.findOneAndDelete({
             postId: post_id,
