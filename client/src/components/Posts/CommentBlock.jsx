@@ -1,8 +1,11 @@
 import { formatDate } from "../../utils/formatDate";
 import { PiThumbsUpDuotone, PiThumbsUpFill } from "react-icons/pi";
 import UserProfile from "./UserProfile";
+import { useReducer, useRef, useState } from "react";
 
-export default function CommentBlock({ data, isLiked, handleCommentLike, ...props }) {
+export default function CommentBlock({ data, handleCommentLike, ...props }) {
+    const [isLiked, setIsLiked] = useState(data.isLiked);
+
     return (
         <div className="comment_cont" {...props}>
             <div className="comment_profile">
@@ -21,14 +24,6 @@ export default function CommentBlock({ data, isLiked, handleCommentLike, ...prop
                         {data.comment}
                     </div>
 
-                    {/* <div className="comment_body_bottom">
-                        <div className="comment_date">
-                            {formatDate(data.createdAt)}
-                        </div>
-                        <div className="like_count">
-                            {data.like}{data.like === 1 ? ' like' : ' likes'}
-                        </div>
-                    </div> */}
                 </div>
                 <div className="comment_main_bottom">
                     <div className="comment_date">
@@ -42,8 +37,8 @@ export default function CommentBlock({ data, isLiked, handleCommentLike, ...prop
 
             <div className="comment_interactions">
                 <div className="like_cont">
-                    <button className="post-interactions small-button" onClick={() => {handleCommentLike(data._id)}}>
-                        {data.isLiked
+                    <button className="post-interactions small-button" onClick={() => { setIsLiked(prevValue => !prevValue); handleCommentLike(data._id); }}>
+                        {isLiked
                             ?
                             <PiThumbsUpFill
                                 className='interaction-icons align'
@@ -55,6 +50,9 @@ export default function CommentBlock({ data, isLiked, handleCommentLike, ...prop
                         }
                     </button>
                 </div>
+                {/* <div className="like_count oth u-text-center">
+                    {data.like}
+                </div> */}
             </div>
         </div>
     )

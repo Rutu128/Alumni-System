@@ -213,11 +213,17 @@
         .like_cont {
             padding: .2rem;
             border-radius: 50%;
-            margin-top: .5rem;
+            margin-top: .3rem;
 
             &:hover{
                 background-color: $color-theme-back-light;
             }
+        }
+
+        .oth{
+            font-weight: 700;
+            font-stretch: 110%;
+            transform: translateY(-.2rem);
         }
     }
 
