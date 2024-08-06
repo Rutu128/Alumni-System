@@ -42,8 +42,8 @@ export default function CommentBlock({ data, isLiked, handleCommentLike, ...prop
 
             <div className="comment_interactions">
                 <div className="like_cont">
-                    <button className="post-interactions small-button" onClick={handleCommentLike}>
-                        {isLiked
+                    <button className="post-interactions small-button" onClick={() => {handleCommentLike(data._id)}}>
+                        {data.isLiked
                             ?
                             <PiThumbsUpFill
                                 className='interaction-icons align'

@@ -11,7 +11,7 @@ import SendButton from '../UI components/SendButton';
 import CommentBlock from './CommentBlock';
 
 
-export default function Post({ postData, likePost, getComments, newComment: postNewComment, modalView = false }) {
+export default function Post({ postData, likePost, likeComment, getComments, newComment: postNewComment, modalView = false }) {
     
     const [postState, setPostState] = useState({
         isLiked: postData.isLiked,
@@ -56,6 +56,13 @@ export default function Post({ postData, likePost, getComments, newComment: post
             }));
         }
     };
+
+    async function handleLikeComment(id){
+        const res = await likeComment(id);
+        if(res.status === 200){
+            fetchComments();
+        }
+    }
 
     const newComment = async () => {
         setPostState(prevState => {
@@ -188,7 +195,7 @@ export default function Post({ postData, likePost, getComments, newComment: post
                     </div>
                     {(postState.fetchedComments.length > 0) &&
                         postState.fetchedComments.map((comment, index) => (
-                            <CommentBlock data={comment} key={index} />
+                            <CommentBlock data={comment} handleCommentLike={handleLikeComment} key={index} />
                         ))
                     }
                 </div>

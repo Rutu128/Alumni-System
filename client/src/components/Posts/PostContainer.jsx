@@ -4,7 +4,7 @@ import { PostContext } from "../../context/PostContext";
 import Post from "./Post";
 
 export default function PostContainer(props) {
-    const { posts, likePost, getComments, newComment } = useContext(PostContext);
+    const { posts, likePost, likeComment, getComments, newComment } = useContext(PostContext);
 
     return (
         <>
@@ -12,7 +12,7 @@ export default function PostContainer(props) {
                 {posts.map((post, index) => {
                     return (
                         <div key={index}>
-                            <Post postData={post} getComments={getComments} newComment={newComment} likePost={likePost} />
+                            <Post postData={post} getComments={getComments} newComment={newComment} likePost={likePost} likeComment={likeComment} />
                             {/* <div className="separator"></div> */}
                         </div>
                     )

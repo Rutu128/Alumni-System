@@ -1,8 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import uploadFiles from "../utils/UploadImage";
 import postApi from "../utils/postApi";
 import getApi from "../utils/getApi";
-import { UserContext } from "./UserContext";
 import putApi from "../utils/putApi";
 
 export const PostContext = createContext({
@@ -25,6 +24,7 @@ export const PostContext = createContext({
     getPosts: () => { },
     getSpecificPosts: () => { },
     likePost: () => { },
+    likeComment: () => { },
     getComments: () => { },
     newComment: () => { },
 })
@@ -100,6 +100,11 @@ export default function PostContextProvider({ children }){
         return handleResponse(response);
     }
 
+    async function handleLikeComment(id){
+        const response = await putApi(`/post/likeComment/${id}`);
+        return handleResponse(response);
+    }
+
     async function handleGetComments(id){
         const response = await getApi('/post/getComments/' + id);
         // const comments = [];
@@ -139,6 +144,7 @@ export default function PostContextProvider({ children }){
         submitNewPost: handleNewPost,
         getPosts: handleGetPosts,
         likePost: handleLikePost,
+        likeComment: handleLikeComment,
         getComments: handleGetComments,
         newComment: handleNewComment,
     }

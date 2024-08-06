@@ -50,7 +50,7 @@ export function formatDate(inputDate) {
         }
     } else {
         if (diffDays < 30) {
-            return `${diffDays} d`;
+            return `${diffDays+1} d`;
         } else if (diffDays < 365) {
             return `${diffMonths} mo`;
         } else {
