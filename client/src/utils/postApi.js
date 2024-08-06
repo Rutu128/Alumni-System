@@ -6,7 +6,8 @@ export default async function postApi(path, body){
     let response;
 
     await axios.post(apiInfo.URL + path, {
-        ...body
+        ...body,
+        withCredentials: true,
     })
     .then(Response => {
         response = Response;

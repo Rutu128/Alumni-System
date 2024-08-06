@@ -1,0 +1,28 @@
+.portal{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    outline: none;
+    border: none;
+    padding: 1rem;
+    border-radius: 1rem;
+
+    &::backdrop{
+        background-color: rgba($color: #000000, $alpha: .3);
+    }
+}
+
+@media (max-width: 768px){
+    .portal{
+        width: 100%;
+        height: auto;
+        padding: none;
+        margin: none;
+        position: relative;
+        top: auto;
+        left: 50%;
+        bottom: 1rem;
+        transform: translate(-50%, 0%);
+    }
+}

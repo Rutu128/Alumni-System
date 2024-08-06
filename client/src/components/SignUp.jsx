@@ -5,6 +5,7 @@ import Button from "./UI components/Button";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import React from "react";
 import ReactLoading from 'react-loading'
 
 export default function SignUp() {
@@ -84,9 +85,8 @@ export default function SignUp() {
     
     async function handleSubmit(e) {
         e.preventDefault();
-        setIsLoading(true);
         for (const [key, value] of Object.entries(userDetails)) {
-                if(value === ""){
+            if(value === ""){
                 console.log('Key: ', key, ', Value: ', value);
                 setUserErrors(prevDetails => {
                     return {
@@ -97,11 +97,11 @@ export default function SignUp() {
                 return;
             }
         }
-
+        
         let pattern = new RegExp(
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
         );
-
+        
         if(!isValidEmail(userDetails.email)){
             displayError('email', 'Enter a valid email!')
             return;
@@ -118,7 +118,8 @@ export default function SignUp() {
             displayError('confirmPassword', 'Password and confirm password Does not match')
             return;
         }
-
+        
+        setIsLoading(true);
         console.log('No errors found!');
         
         // setIsLoading(false);

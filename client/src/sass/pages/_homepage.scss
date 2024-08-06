@@ -5,9 +5,12 @@
 @import "../base/utilities";
 @import "../base/typography";
 
-@import "../components/headings";
-
 @import "../layout/header";
+@import "../layout/post_menu";
+
+@import "../components/headings";
+@import "../components/posts";
+@import "../components/buttons";
 
 @include profile-img;
 
@@ -15,14 +18,40 @@
     display: flex;
     justify-content: baseline;
     width: 100%;
-}
+    height: 100vh;
+    // background-color: rgba($color-theme-back-light, .7);
 
-.sideMenu{
-
+    @media (max-width: 768px){
+        flex-direction: column;
+    }
 }
 
 .main{
     flex: 1;
+    overflow: auto;
+
+    @media (min-width: 768px){
+        @include horizontal-scrollbar;
+    }
+}
+
+.loading{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    h1{
+        font-size: clamp(
+            2rem,
+            2.4rem,
+            3rem
+        );
+        font-weight: 900;
+        color: $color-font-dark;
+    }
 }
 
 .content {
@@ -35,6 +64,8 @@
     // padding: 2rem 0;
     align-items: center;
     justify-content: center;
+    // height: 100vh;
+    // overflow: hidden;
 
     &__box {
         width: 70%;
@@ -48,11 +79,13 @@
     }
 
     &__right {
-        width: 30%;
+        width: 40%;
+        padding: .5rem .5rem .5rem 1rem;
+        font-size: 1rem;
     }
 }
 
-.post {
+.newPost {
     display: block;
     width: 100%;
     border-radius: 0.5rem;
@@ -75,14 +108,14 @@
             width: 100%;
 
             &-photo{
-                width: 15%;
-                display: flex;
-                justify-content: center;
+                // width: 15%;
             }
             
             .post-input {
                 display: inline-block;
-                width: 70%;
+                // width: 70%;
+                flex: 1;
+                padding: 0 1rem;
                 
                 input {
                     min-width: 50%;
@@ -102,7 +135,7 @@
             }
             
             .post-submit {                
-                width: 15%;
+                width: auto;
                 display: flex;
                 justify-content: center;
 
@@ -118,9 +151,14 @@
                     display: inline-flex;
                     justify-content: center;
                     align-items: center;
+                    transition: all .3s;
+
+                    &:hover{
+                        box-shadow: 0 0 1rem rgba($color-theme-dark, .5);
+                    }
 
                     .send-icon {
-                        margin: 0;
+                        margin: 0 0 0 -.1rem;
                     }
                 }
             }
@@ -148,13 +186,21 @@
             );
             transition: background-color 0.3s ease;
 
+            img{
+                width: 2rem;
+                margin-right: .5rem;
+            }
+
             &:hover {
-                background-color: $color-theme-back-light;
+                // background-color: $color-theme-back-light;
+                cursor: pointer;
+                color: rgba($color-theme-dark, 1);
             }
 
             .button-icon {
                 font-size: 1.2rem;
                 margin-right: 0.5rem;
+                color: $color-theme-dark;
             }
 
             p {

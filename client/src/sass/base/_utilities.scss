@@ -6,6 +6,10 @@
     display: inline-block;
 }
 
+.u-text-center {
+    text-align: center;
+}
+
 .u-margin-bottom-s_small{
     margin-bottom: 1rem;
 }
@@ -44,7 +48,9 @@
 }
 
 .u-bold{
-    font-family: 'Bold2', sans-serif;
+    font-family: 'Mona-sans', sans-serif;
+    font-weight: 700;
+    font-stretch: 110%;
 }
 
 .react-icons{
@@ -65,4 +71,25 @@
         font-size: 1rem;
         margin: 0 .3rem -.22rem 0;
     }
+}
+
+.u-font-p{
+    font-size: .8rem;
+    font-weight: 400;
+}
+
+.u-flex-align-center{
+    display: flex;
+    align-items: center;
+}
+
+.u-flex-justify-center{
+    display: flex;
+    justify-content: center;
+}
+
+.u-flex-both-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
