@@ -224,7 +224,10 @@ const likeComment = asyncHandler(async (req, res) => {
     if (!user_id) {
         throw new ApiError(400, "Invalid user id");
     }
-    const isLiked = await CommentLike.findOne({ commentId: comment_id });
+    const isLiked = await CommentLike.findOne({
+        commentId: comment_id,
+        userId: user_id,
+    });
     if (isLiked) {
         const commentLike = await CommentLike.findOneAndDelete({
             commentId: comment_id,
@@ -276,11 +279,13 @@ const deleteComment = asyncHandler(async (req, res) => {
 
 const getComments = asyncHandler(async (req, res) => {
     const post_id = req.params.id;
+    const user_id = req.user._id;
     const post = await Post.findById({ _id: post_id });
     if (!post) {
         throw new ApiError(404, "No Post available");
     }
     const id = new mongoose.Types.ObjectId(post_id);
+    const uid = new mongoose.Types.ObjectId(user_id);
     const comments = await Comment.aggregate([
         {
             $match: {
@@ -311,6 +316,18 @@ const getComments = asyncHandler(async (req, res) => {
                 users: {
                     $arrayElemAt: ["$users", 0],
                 },
+                isLiked: {
+                    $cond: {
+                        if: {
+                            $in: [
+                                uid,
+                                "$likes.userId",
+                            ], // Check if loggedInUserId exists in likes.userId array
+                        },
+                        then: true,
+                        else: false,
+                    },
+                },
             },
         },
         {
@@ -319,6 +336,7 @@ const getComments = asyncHandler(async (req, res) => {
                 userId: 1,
                 postId: 1,
                 like: 1,
+                isLiked: 1,
                 createdAt: 1,
                 "users.firstName": 1,
                 "users.lastName": 1,
