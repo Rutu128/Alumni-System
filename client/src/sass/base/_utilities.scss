@@ -49,12 +49,21 @@
 
 .u-bold{
     font-family: 'Mona-sans', sans-serif;
-    font-weight: 700;
+    font-weight: 800;
+    font-stretch: 115%;
+}
+
+.u-light {
+    font-weight: 500;
     font-stretch: 110%;
 }
 
 .react-icons{
     margin: 0 .5rem;
+}
+
+.u-phosphor-icons {
+    margin: 0rem .2rem -.2rem .2rem;
 }
 
 .u-error-text{
@@ -92,4 +101,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.u-button {
+    border: none;
+    outline: none;
+    display: inline-block;
+    color: $color-font-dark;
+    font-stretch: 110%;
 }

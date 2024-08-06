@@ -1,0 +1,128 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+@import "../base/animation";
+@import "../base/utilities";
+@import "../base/typography";
+
+.profile {
+    width: 100%;
+    color: $color-font-dark;
+
+    &__cont {
+    }
+
+    &__head {
+        width: 100%;
+        display: block;
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);
+            font-weight: 900;
+            font-stretch: 120%;
+        }
+    }
+
+    &__main {
+        display: flex;
+        padding: 2rem 0 0 0;
+
+        @media (max-width: 1080px) {
+            flex-direction: column;
+        }
+    }
+
+    &__left {
+        width: 30%;
+
+        @media (max-width: 1080px) {
+            width: 100%;
+            display: flex;
+
+            .profile-image {
+                width: 30%;
+                padding: 2vw;
+
+                .full_length_image {
+                    // width: 35%;
+                }
+            }
+
+            .section-info {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                flex: 1;
+                padding: 0 1rem;
+            }
+        }
+
+        .profile-image {
+            position: relative;
+
+            .full_length_image {
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                font-size: clamp(2rem, 5vw + 1rem, 6rem);
+            }
+        }
+
+        .section-info {
+            .edit-profile {
+                width: 100%;
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+                font-weight: 700;
+                margin: 0.7rem 0 0 0;
+                background-color: $color-theme-back-light;
+                border-radius: 1rem;
+
+                &-cont {
+                    width: 100%;
+                }
+            }
+
+            .user-info {
+                padding-top: 1rem;
+
+                @media (max-width: 1080px){
+                    padding-top: 0;
+                }
+
+                &-name {
+                    font-size: clamp(
+                        1rem,
+                        3vw + .1rem,
+                        1.4rem
+                    );
+                }
+
+                &-email {
+                    color: $color-grey-dark-3;
+                    font-size: clamp(
+                        .75rem,
+                        .8vw + .1rem,
+                        .9rem
+                    );
+                }
+            }
+        }
+    }
+
+    &__right {
+        flex: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile {
+
+        &__head {
+            display: none;
+        }
+
+        &__main{
+            padding: 0 0 0 0;
+        }
+    }
+}

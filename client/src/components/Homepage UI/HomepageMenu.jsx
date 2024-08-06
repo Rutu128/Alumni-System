@@ -8,8 +8,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 
 
-export default function HomepageHeader2({ isLoggedIn, initials }) {
-    const [selectedMenu, setSelectedMenu] = useState('Home');
+export default function HomepageHeader2({ handleSelectMenu, selectedMenu }) {
 
     const navItems = [
         { name: 'Home', icon: PiHouse, fillIcon: PiHouseFill, path: '/', isSelected: true },
@@ -19,9 +18,7 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
         { name: 'Interactions', icon: PiThumbsUp, fillIcon: PiThumbsUpFill, path: '/testPage', isSelected: false },
         { name: 'Settings', icon: PiGear, fillIcon: PiGearFill, path: '/testPage', isSelected: false },
     ]
-    function handleSelectMenu(name) {
-        setSelectedMenu(name);
-    }
+    
 
     return (
         <div className="menu">
@@ -42,7 +39,7 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
                         const IconComponent = isSelected ? item.fillIcon : item.icon;
                         return (
                             <div className={"nav--item " + item.name} key={index}>
-                                <Link onClick={() => { handleSelectMenu(item.name) }} to={item.path} className={`nav--link ${isSelected && 'highlight'}`}>
+                                <Link onClick={() => { handleSelectMenu(item.name) }} to={item.path} className={`nav--link ${selectedMenu === item.name && 'highlight'}`}>
                                     <IconComponent className='nav--icons' />
                                     <p>
                                         {item.name}
@@ -54,7 +51,7 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
                 </div>
                 <div className="menu__footer">
                     <div className="nav--item">
-                        <Link className="nav--link" to={'/testPage'}>
+                        <Link to={'/testPage'} onClick={() => { handleSelectMenu('Settings') }} className={`nav--link ${selectedMenu === 'Settings' && 'highlight'}`}>
                             <PiGear className="nav--icons" />
                             <p>
                                 Settings
@@ -62,7 +59,7 @@ export default function HomepageHeader2({ isLoggedIn, initials }) {
                         </Link>
                     </div>
                     <div className="nav--item Profile">
-                        <Link className="link-profile" to={'/testPage'}>
+                        <Link to={'/profile'} onClick={() => { handleSelectMenu('Profile') }} className={`link-profile ${selectedMenu === 'Profile' && 'highlight'}`}>
                             <ProfileImage className='u-margin-right-small' />
                             <p>
                                 Profile

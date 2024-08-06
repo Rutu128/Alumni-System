@@ -16,7 +16,10 @@ export default function Homepage() {
     log('<Homepage /> rendered', 1);
     const { userDetail, authenticateUser } = useContext(UserContext);
     const { getPosts } = useContext(PostContext);
+
     const [isLoading, setIsLoading] = useState(userDetail.isAuthenticated ? false : true);
+    const [selectedMenu, setSelectedMenu] = useState('Home');
+
     const navigate = useNavigate();
 
 
@@ -28,17 +31,21 @@ export default function Homepage() {
 
     async function pingServer() {
         const response = await authenticateUser();
-        if(response.status === 200){
+        if (response.status === 200) {
             console.log('Authorized user');
             getPosts(1);
             setIsLoading(false);
-        } else if(response.status === 401){
+        } else if (response.status === 401) {
             setIsLoading(false);
             navigate('/login');
         }
     }
 
-    if(isLoading){
+    function handleSelectMenu(name) {
+        setSelectedMenu(name);
+    }
+
+    if (isLoading) {
         return (
             <LoadingScreen />
         )
@@ -46,12 +53,16 @@ export default function Homepage() {
 
     return (
         <main className='homepage'>
-            <HomepageHeader />
+            <HomepageHeader handleSelectMenu={handleSelectMenu} selectedMenu={selectedMenu} />
             <section className="sideMenu">
-                <HomepageMenu />
+                <HomepageMenu handleSelectMenu={handleSelectMenu} selectedMenu={selectedMenu} />
             </section>
             <section className="main">
-                <Outlet />
+                <main className="content">
+                    <div className="content__box">
+                        <Outlet />
+                    </div>
+                </main>
             </section>
         </main>
     )

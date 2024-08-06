@@ -7,9 +7,9 @@ export default function ProfileImage({className}) {
 
     if (profileImg === (undefined || null || "")) {
         return (
-            <button className={"dummy-profile " + className}>
+            <div className={"dummy-profile " + className}>
                 {userDetail.initials}
-            </button>
+            </div>
         )
     }
     else {

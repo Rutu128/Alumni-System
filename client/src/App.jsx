@@ -10,6 +10,7 @@ import TestPage from './components/Homepage UI/TestPage';
 import LandingPage from './components/LandingPage';
 import HomepageContent from './components/Homepage UI/HomepageContent';
 import PostContextProvider from './context/PostContext';
+import Profile from './components/Pages/Profile';
 
 function App() {
   log('<App /> rendered');
@@ -26,6 +27,7 @@ function App() {
             <Route path="/" element={<Homepage />}>
               <Route path='/' index element={<HomepageContent />} />
               <Route path='/testPage' element={<TestPage />} />
+              <Route path='/profile' element={<Profile />} />
             </Route>
           </Routes>
         </Router>

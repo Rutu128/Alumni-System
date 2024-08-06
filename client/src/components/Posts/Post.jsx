@@ -1,7 +1,7 @@
 /* The above code is a React functional component called `Post` that represents a post in a social
 media application. Here is a summary of what the code is doing: */
 import React, { useState, useEffect, useRef } from 'react';
-import UserProfile from "./UserProfile";
+import UserProfile from "./UserProfileImage";
 import { formatDate } from "../../utils/formatDate";
 
 import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill } from "react-icons/pi";

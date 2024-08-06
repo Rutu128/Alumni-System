@@ -1,6 +1,6 @@
 import { formatDate } from "../../utils/formatDate";
 import { PiThumbsUpDuotone, PiThumbsUpFill } from "react-icons/pi";
-import UserProfile from "./UserProfile";
+import UserProfile from "./UserProfileImage";
 import { useReducer, useRef, useState } from "react";
 
 export default function CommentBlock({ data, handleCommentLike, ...props }) {

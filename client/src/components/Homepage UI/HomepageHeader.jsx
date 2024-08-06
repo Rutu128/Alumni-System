@@ -43,11 +43,10 @@
 import { useNavigate } from "react-router-dom";
 import ProfileImage from "./ProfileImage";
 import SiteIcon from "../UI components/SiteIcon";
-import { PiBell } from "react-icons/pi";
+import { PiBell, PiBellFill } from "react-icons/pi";
 import { Link } from "react-router-dom";
 
-export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
-    const navigate = useNavigate();
+export default function HomepageHeader({ handleSelectMenu, selectedMenu }) {
 
     return (
         <header className="header">
@@ -57,10 +56,14 @@ export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
                     <h1 className="header-text--mobile">Alumni Hub</h1>
                 </div>
                 <div className="section section--right">
-                    <Link className="header__nav--item" to={'/testPage'}>
-                        <PiBell className="header__nav--icon" />
+                    <Link to={'/testPage'} onClick={() => { handleSelectMenu('Notifications') }} className={`header__nav--item ${selectedMenu === 'Notifications' && 'highlight'}`}>
+                        {selectedMenu === 'Notifications' ?
+                            <PiBellFill className="header__nav--icon" />
+                            :
+                            <PiBell className="header__nav--icon" />
+                        }
                     </Link>
-                    <Link className="link-profile" to={'/testPage'}>
+                    <Link to={'/profile'} onClick={() => { handleSelectMenu('Profile') }} className={`link-profile ${selectedMenu === 'Profile' && 'highlight'}`}>
                         <ProfileImage />
                     </Link>
                 </div>
