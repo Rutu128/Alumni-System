@@ -1,9 +1,11 @@
 import { useContext } from "react"
 import { UserContext } from "../../context/UserContext"
+import { log } from "../../log";
 
 export default function ProfileImage({className}) {
     const { userDetail } = useContext(UserContext);
-    let profileImg = userDetail.profileImg;
+    console.log(userDetail);
+    let profileImg = userDetail.avatar;
 
     if (profileImg === (undefined || null || "")) {
         return (

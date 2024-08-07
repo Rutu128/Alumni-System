@@ -13,7 +13,7 @@ export const UserContext = createContext({
         lastName: String,
         email: String,
         initials: String,
-        profileImg: String,
+        avatar: String,
         isAuthenticated: Boolean
     },
     loginUser: () => { },
@@ -31,7 +31,7 @@ export default function UserContextProvider({ children }) {
         lastName: '',
         email: '',
         initials: '',
-        profileImg: '',
+        avatar: '',
         isAuthenticated: false
     })
 
@@ -57,7 +57,7 @@ export default function UserContextProvider({ children }) {
                     lastName: responseData.data.user.lastName,
                     email: responseData.data.user.email,
                     initials: responseData.data.user.firstName[0] + responseData.data.user.lastName[0],
-                    profileImg: "",
+                    avatar: responseData.data.user.avatar,
                     isAuthenticated: true
                 }
             })
@@ -91,7 +91,7 @@ export default function UserContextProvider({ children }) {
             lastName: '',
             email: '',
             initials: '',
-            profileImg: '',
+            avatar: '',
             isAuthenticated: false
         })
         return {
@@ -122,7 +122,7 @@ export default function UserContextProvider({ children }) {
                 lastName: response.data.data.lastName,
                 email: response.data.data.email,
                 initials: response.data.data.firstName[0] + response.data.data.lastName[0],
-                profileImg: "",
+                avatar: response.data.data.avatar,
                 isAuthenticated: true
             })
             return {
