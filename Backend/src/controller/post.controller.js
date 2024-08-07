@@ -162,7 +162,7 @@ const showPosts = asyncHandler(async (req, res) => {
                     "user.firstName": 1,
                     "user.lastName": 1,
                     "user.initials": 1,
-                    "user.image": 1,
+                    "user.avatar": 1,
                     "user._id": 1,
                     isLiked: 1,
                 },
