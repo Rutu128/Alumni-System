@@ -313,12 +313,13 @@ const addInfo = asyncHandler(async (req, res) => {
     if (!user_id) {
         throw new ApiError(404, "User dosen't fetch");
     }
-    const { headline, designation } = req.body;
+    const { headline, designation,description } = req.body;
 
     const user = await User.findByIdAndUpdate(user_id, {
         $set: {
             headline,
             designation,
+            description
         },
     }).select(
         "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
@@ -485,6 +486,8 @@ const me = asyncHandler(async (req, res) => {
                     headline: { $first: "$headline" },
                     designation: { $first: "$designation" },
                     passingYear: { $first: "$passingYear" },
+                    description: { $first: "$description" },
+
                 },
             },
             {
@@ -498,6 +501,7 @@ const me = asyncHandler(async (req, res) => {
                     headline: 1,
                     designation: 1,
                     passingYear: 1,
+                    description: 1,
                 },
             },
         ]);
