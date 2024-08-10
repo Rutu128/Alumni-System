@@ -511,6 +511,7 @@ const me = asyncHandler(async (req, res) => {
         throw new ApiError(400, error, "Failed to get user details");
     }
 });
+// User Completely
 const updateProfile = asyncHandler(async (req, res) => {
     const {
         firstName,
