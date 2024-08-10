@@ -313,13 +313,13 @@ const addInfo = asyncHandler(async (req, res) => {
     if (!user_id) {
         throw new ApiError(404, "User dosen't fetch");
     }
-    const { headline, designation,description } = req.body;
+    const { headline, designation, description } = req.body;
 
     const user = await User.findByIdAndUpdate(user_id, {
         $set: {
             headline,
             designation,
-            description
+            description,
         },
     }).select(
         "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
@@ -487,7 +487,6 @@ const me = asyncHandler(async (req, res) => {
                     designation: { $first: "$designation" },
                     passingYear: { $first: "$passingYear" },
                     description: { $first: "$description" },
-
                 },
             },
             {
@@ -512,7 +511,41 @@ const me = asyncHandler(async (req, res) => {
         throw new ApiError(400, error, "Failed to get user details");
     }
 });
+const updateProfile = asyncHandler(async (req, res) => {
+    const {
+        firstName,
+        lastName,
+        c_id,
+        email,
+        passingYear,
+        dob,
+        designation,
+        headline,
+    } = req.body;
+    const user_id = req.user?._id;
+    if (!user_id) {
+        throw new ApiError(404, "User dosen't exist");
+    }
+    let user = await User.findById(user_id);
 
+    const updatedUser = await User.findByIdAndUpdate(user_id, {
+        $set: {
+            firstName: firstName ? firstName : user.firstName,
+            lastName: lastName ? lastName : user.lastName,
+            c_id: c_id ? c_id : user.c_id,
+            email: email ? email : user.email,
+            passingYear: passingYear ? passingYear : user.passingYear,
+            dob: dob ? dob : user.dob,
+            designation: designation ? designation : user.designation,
+            headline: headline ? headline : user.headline,
+        },
+    }).select("-password -_id -refreshToken -createdAt -updatedAt");
+    user = await User.findById(user_id).select("-password -_id -refreshToken -createdAt -updatedAt -isverified");
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, user, "success"));
+});
 export {
     registerUser,
     loginUser,
@@ -523,5 +556,6 @@ export {
     ping,
     addInfo,
     getUserDetails,
-    me
+    me,
+    updateProfile,
 };

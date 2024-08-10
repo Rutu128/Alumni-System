@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyJWT } from "../middleware/auth.middleware.js";
-import { addInfo, getUserDetails, me } from "../controller/user.controller.js";
+import { addInfo, getUserDetails, me, updateProfile } from "../controller/user.controller.js";
 import {
     getUserPosts,
     myLikes,
@@ -16,5 +16,5 @@ router.route("/me").get(verifyJWT, me);
 
 router.route("/addInfo").post(verifyJWT, addInfo);
 router.route("/getUser/:id").get(verifyJWT, getUserDetails);
-
+router.route("/update-profile").post(verifyJWT, updateProfile);
 export default router;
