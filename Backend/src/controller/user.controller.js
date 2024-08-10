@@ -341,7 +341,7 @@ const getUserDetails = asyncHandler(async (req, res) => {
         const userDetails = await User.aggregate([
             {
                 $match: {
-                    _id:id,
+                    _id: id,
                 },
             },
             {
@@ -376,10 +376,7 @@ const getUserDetails = asyncHandler(async (req, res) => {
                     "posts.isLiked": {
                         $cond: {
                             if: {
-                                $in: [
-                                    id,
-                                    "$likes.userId",
-                                ],
+                                $in: [id, "$likes.userId"],
                             },
                             then: true,
                             else: false,
@@ -417,7 +414,96 @@ const getUserDetails = asyncHandler(async (req, res) => {
             },
         ]);
 
-        return res.status(200).json(new ApiResponse(200, userDetails, "User details"));
+        return res
+            .status(200)
+            .json(new ApiResponse(200, userDetails, "User details"));
+    } catch (error) {
+        throw new ApiError(400, error, "Failed to get user details");
+    }
+});
+
+const me = asyncHandler(async (req, res) => {
+    try {
+        const user_id = req.user._id;
+        const id = new mongoose.Types.ObjectId(user_id);
+        const userDetails = await User.aggregate([
+            {
+                $match: {
+                    _id: id,
+                },
+            },
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "_id",
+                    foreignField: "userId",
+                    as: "posts",
+                },
+            },
+            {
+                $unwind: "$posts",
+            },
+            {
+                $lookup: {
+                    from: "postlikes",
+                    localField: "posts._id",
+                    foreignField: "postId",
+                    as: "likes",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "posts._id",
+                    foreignField: "postId",
+                    as: "comments",
+                },
+            },
+            {
+                $addFields: {
+                    "posts.isLiked": {
+                        $cond: {
+                            if: {
+                                $in: [id, "$likes.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    "posts.likesCount": { $size: "$likes" },
+                    "posts.commentsCount": { $size: "$comments" },
+                },
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    posts: { $push: "$posts" },
+                    firstName: { $first: "$firstName" },
+                    lastName: { $first: "$lastName" },
+                    email: { $first: "$email" },
+                    avatar: { $first: "$avatar" },
+                    headline: { $first: "$headline" },
+                    designation: { $first: "$designation" },
+                    passingYear: { $first: "$passingYear" },
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    email: 1,
+                    posts: 1,
+                    avatar: 1,
+                    headline: 1,
+                    designation: 1,
+                    passingYear: 1,
+                },
+            },
+        ]);
+        return res
+            .status(200)
+            .json(new ApiResponse(200, userDetails, "User details"));
     } catch (error) {
         throw new ApiError(400, error, "Failed to get user details");
     }
@@ -432,5 +518,6 @@ export {
     googleLogin,
     ping,
     addInfo,
-    getUserDetails
+    getUserDetails,
+    me
 };
