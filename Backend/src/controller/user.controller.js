@@ -541,11 +541,35 @@ const updateProfile = asyncHandler(async (req, res) => {
             headline: headline ? headline : user.headline,
         },
     }).select("-password -_id -refreshToken -createdAt -updatedAt");
-    user = await User.findById(user_id).select("-password -_id -refreshToken -createdAt -updatedAt -isverified");
+    user = await User.findById(user_id).select(
+        "-password -_id -refreshToken -createdAt -updatedAt -isverified"
+    );
 
-    return res
-        .status(200)
-        .json(new ApiResponse(200, user, "success"));
+    return res.status(200).json(new ApiResponse(200, user, "success"));
+});
+
+const updateAvatar = asyncHandler(async (req, res) => {
+    try {
+        const { avatar } = req.body;
+        const user_id = req.user._id;
+        let user = await User.findById(user_id);
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+        const updateAvatar = await User.findByIdAndUpdate(user._id, {
+            $set: {
+                avatar: avatar ? avatar : user.avatar,
+            },
+        });
+        user = await User.findById(user_id).select(
+            "-password -_id -refreshToken -createdAt -updatedAt -isVerified -dob -c_id -passingYear"
+        );
+        return res
+            .status(200)
+            .json(new ApiResponse(200, user, "Avatar updated successfully"));
+    } catch (error) {
+        throw new ApiError(400, error, "Failed to update avatar");
+    }
 });
 export {
     registerUser,
@@ -559,4 +583,5 @@ export {
     getUserDetails,
     me,
     updateProfile,
+    updateAvatar,
 };
