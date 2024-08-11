@@ -14,7 +14,7 @@ export default function Login() {
 
     const { userDetail, loginUser } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
-    
+
     log('<Login/> rendered', 1);
     const [userDetails, setUserDetails] = useState({
         email: '',
@@ -28,8 +28,8 @@ export default function Login() {
     function handleChange(e) {
         let name = e.target.name;
         let value = e.target.value;
-        
-        if(value !== value.trim()){
+
+        if (value !== value.trim()) {
             name += 'Error';
             value = 'Spaces are not allowed'
             setUserErrors(prevDetails => {
@@ -61,7 +61,7 @@ export default function Login() {
         return emailRegex.test(email);
     };
 
-    function displayError (field, message){
+    function displayError(field, message) {
         setUserErrors(prevDetails => {
             return {
                 ...prevDetails,
@@ -75,15 +75,15 @@ export default function Login() {
         e.preventDefault();
         setIsLoading(true);
 
-        if(userDetails.email.trim() === ""){
+        if (userDetails.email.trim() === "") {
             displayError('emailError', 'This field is required!');
             return;
-        } 
-        else if(userDetails.password.trim() === ""){
+        }
+        else if (userDetails.password.trim() === "") {
             displayError('passwordError', 'This field is required!');
             return;
-        } 
-        else if(!isValidEmail(userDetails.email)){
+        }
+        else if (!isValidEmail(userDetails.email)) {
             displayError('emailError', 'Enter a valid email!');
             return;
         }
@@ -95,17 +95,17 @@ export default function Login() {
 
         console.log(userStatus);
         setIsLoading(false);
-        if(userStatus.status === 404){
+        if (userStatus.status === 404) {
             displayError('emailError', 'User with entered email does not exist!');
             return;
         }
-        else if(userStatus.status === 401){
+        else if (userStatus.status === 401) {
             displayError('passwordError', 'Incorrect Password!');
             return;
         }
-        else if(userStatus.status === 200){
+        else if (userStatus.status === 200) {
             navigate('/');
-        } 
+        }
 
         console.log('email: ', userDetails.email, ' password: ', userDetails.password);
     }
@@ -134,6 +134,9 @@ export default function Login() {
                         value={userDetails.password}
                         errorText={userErrors.passwordError}
                         inputFor='login'
+                        onKeyUp={(e) => {
+                            e.key === "Enter" && handleSubmit(e)
+                        }}
                     />
                     <Button
                         className="login-button u-margin-bottom-small"
@@ -141,7 +144,7 @@ export default function Login() {
                         onClick={handleSubmit}
                     >
                         {isLoading ?
-                            <ReactLoading type={'spin'} width={'2rem'} height={'2rem'} className={"loader"} />
+                            <ReactLoading type={'bubbles'} width={'2rem'} height={'2rem'} className={"loader"} />
                             :
                             'Login'
                         }

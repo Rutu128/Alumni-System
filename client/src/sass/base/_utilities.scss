@@ -1,8 +1,7 @@
-.u-blk{
+.u-blk {
     display: block;
 }
-
-.u-il-blk{
+.u-il-blk {
     display: inline-block;
 }
 
@@ -10,28 +9,96 @@
     text-align: center;
 }
 
-.u-margin-bottom-s_small{
+.u-margin-bottom-s_small {
     margin-bottom: 1rem;
 }
-.u-margin-bottom-small{
+.u-margin-bottom-small {
     margin-bottom: 2rem;
 }
-.u-margin-bottom-medium{
+.u-margin-bottom-medium {
     margin-bottom: 3rem;
 }
-.u-margin-bottom-large{
+.u-margin-bottom-large {
     margin-bottom: 4rem;
 }
 
-.u-margin-right-small{
-    margin-right: .5rem;
+.u-padding-small {
+    padding: 1rem 2rem;
 }
 
-.u-float-right{
+.u-image-preview {
+    width: 100%;
+    height: 60%;
+    background-color: $color-theme-back-light;
+    border: 2px dashed $color-theme-dark;
+    margin-bottom: 1rem;
+    object-fit: cover;
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: $color-theme-dark;
+    font-weight: 700;
+}
+
+.u-input-primary {
+    border: 2px solid $color-theme-light;
+    outline: none;
+    padding: 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-stretch: 110%;
+    color: $color-font-dark;
+    background-color: $color-theme-back-light;
+    border-radius: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+
+    &:focus {
+        border: 2px solid $color-theme-dark;
+    }
+}
+
+.u-button {
+    &-primary {
+        @include button;
+        color: $color-font-light;
+        background-color: $color-theme-dark;
+    
+        &:hover {
+            box-shadow: 0 0 1rem rgba($color-theme-dark, 0.7);
+        }
+    }
+
+    &-secondary {
+        @include button;
+        color: $color-theme-dark;
+        background-color: $color-theme-back-light;
+
+        &:hover {
+            background-color: $color-theme-light;
+        }
+    }
+}
+
+.u-full-length-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    font-size: clamp(2rem, 5vw + 1rem, 6rem);
+}
+
+.u-margin-right-small {
+    margin-right: 0.5rem;
+}
+
+.u-float-right {
     float: right;
 }
 
-.u-dynamic-text{
+.u-dynamic-text {
     text-decoration: none;
     background-image: linear-gradient(to right bottom, #5593f6 0%, #fb5bf5 100%);
     // background-image: linear-gradient(to right bottom, #ffb804 0%, #7332fe 85%);
@@ -39,7 +106,7 @@
     -webkit-background-clip: text;
     background-clip: text;
 }
-.u-dynamic-text-link{
+.u-dynamic-text-link {
     text-decoration: none;
     background-image: linear-gradient(to right bottom, #5593f6 0%, #fb5bf5 100%);
     color: transparent;
@@ -47,8 +114,8 @@
     // background-clip: text;
 }
 
-.u-bold{
-    font-family: 'Mona-sans', sans-serif;
+.u-bold {
+    font-family: "Mona-sans", sans-serif;
     font-weight: 800;
     font-stretch: 115%;
 }
@@ -58,46 +125,51 @@
     font-stretch: 110%;
 }
 
-.react-icons{
-    margin: 0 .5rem;
+.react-icons {
+    margin: 0 0.5rem;
 }
 
 .u-phosphor-icons {
-    margin: 0rem .2rem -.2rem .2rem;
+    margin: 0rem 0.2rem -0.2rem 0.2rem;
 }
 
-.u-error-text{
+.u-font-dark {
+    // color: $color-theme-dark;
+    background-color: $color-theme-dark;
+}
+
+.u-error-text {
     width: 100%;
     position: absolute;
-    bottom: .7rem;
+    bottom: 0.7rem;
     left: 1.5rem;
     color: #fa4f4f;
-    font-size: .8rem;
+    font-size: 0.8rem;
     z-index: 10;
-    font-family: 'Bold', sans-serif;
+    font-family: "Bold", sans-serif;
 
-    .error-icon{
+    .error-icon {
         font-size: 1rem;
-        margin: 0 .3rem -.22rem 0;
+        margin: 0 0.3rem -0.22rem 0;
     }
 }
 
-.u-font-p{
-    font-size: .8rem;
+.u-font-p {
+    font-size: 0.8rem;
     font-weight: 400;
 }
 
-.u-flex-align-center{
+.u-flex-align-center {
     display: flex;
     align-items: center;
 }
 
-.u-flex-justify-center{
+.u-flex-justify-center {
     display: flex;
     justify-content: center;
 }
 
-.u-flex-both-center{
+.u-flex-both-center {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -109,4 +181,18 @@
     display: inline-block;
     color: $color-font-dark;
     font-stretch: 110%;
+}
+
+.toggle-text {
+    border: none;
+    outline: none;
+    color: $color-theme-dark;
+    background-color: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    padding-left: 0.3rem;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }

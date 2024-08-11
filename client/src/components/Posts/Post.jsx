@@ -19,6 +19,7 @@ export default function Post({ postData, likePost, likeComment, getComments, new
         comment: false,
         fetchedComments: [],
         newCommentLoading: false,
+        animateComment: false,
     });
 
     const commentRef = useRef();
@@ -53,6 +54,7 @@ export default function Post({ postData, likePost, likeComment, getComments, new
             setPostState(prevOption => ({
                 ...prevOption,
                 comment: !prevOption.comment,
+                animateComment: !prevOption.animateComment,
             }));
         }
     };
@@ -92,7 +94,7 @@ export default function Post({ postData, likePost, likeComment, getComments, new
             <div className="post__container">
                 <div className="post__head">
                     <div className="post__profile">
-                        <UserProfile initials={postData.user.initials} className="user-profile" />
+                        <UserProfile initials={postData.user.initials} profileSrc={postData.user.avatar} className="user-profile" />
                     </div>
                     <div className="post__userInfo">
                         <div className="user_name">
@@ -174,7 +176,7 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                 </div>
             </div>
             {postState.comment &&
-                <div className="post__comments">
+                <div className={`post__comments ${postState.animateComment && 'comment-animate'}`}>
                     <div className="new_comment">
                         <div className="profile_comm_user">
                             <ProfileImage />

@@ -4,7 +4,6 @@ import { log } from "../../log";
 
 export default function ProfileImage({className}) {
     const { userDetail } = useContext(UserContext);
-    console.log(userDetail);
     let profileImg = userDetail.avatar;
 
     if (profileImg === (undefined || null || "")) {

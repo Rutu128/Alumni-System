@@ -3,6 +3,7 @@ import uploadFiles from "../utils/UploadImage";
 import postApi from "../utils/postApi";
 import getApi from "../utils/getApi";
 import putApi from "../utils/putApi";
+import handleResponse from '../utils/responseHandler';
 
 export const PostContext = createContext({
     posts: [{
@@ -29,25 +30,6 @@ export const PostContext = createContext({
     newComment: () => { },
 })
 
-function handleResponse(res){
-    if(res.response){
-        if(res.response.status !== 200){
-            console.log('Catched an error: ', res.response.status);
-            return {
-                status: res.response.status,
-            }
-        }
-    }
-    else if(res.data){
-        if(res.data.statusCode === 200 | 202){
-            console.log('Api executed Successfully!');
-            return {
-                status: res.data.statusCode,
-            }
-        }
-    }
-}
-
 export default function PostContextProvider({ children }){
     const [posts, setPosts] = useState([])
 
@@ -56,7 +38,7 @@ export default function PostContextProvider({ children }){
         if(type !== 'text'){
             cloudUrls = await uploadFiles(files, type);
         }
-        console.log(cloudUrls);
+        // console.log(cloudUrls);
         console.log('Description : ' + description);
         try {
             const response = await postApi('/post/uploadPost', {

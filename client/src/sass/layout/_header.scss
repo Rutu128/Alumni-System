@@ -178,9 +178,12 @@
     &:visited{  
         padding: 0.3rem 0.8rem 0.3rem 0.8rem;
         width: 100%;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        // justify-content: center;
         text-decoration: none;
         color: $color-font-dark;
+
         
         p{
             display: inline-block;

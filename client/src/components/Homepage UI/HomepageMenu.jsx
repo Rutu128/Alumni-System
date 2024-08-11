@@ -11,7 +11,7 @@ import { UserContext } from "../../context/UserContext";
 export default function HomepageHeader2({ handleSelectMenu, selectedMenu }) {
 
     const navItems = [
-        { name: 'Home', icon: PiHouse, fillIcon: PiHouseFill, path: '/', isSelected: true },
+        { name: 'Home', icon: PiHouse, fillIcon: PiHouseFill, path: '/' },
         { name: 'Search', icon: PiMagnifyingGlass, fillIcon: PiMagnifyingGlassDuotone, path: '/testPage', isSelected: false },
         { name: 'Notifications', icon: PiBell, fillIcon: PiBellFill, path: '/testPage', isSelected: false },
         { name: 'Network', icon: PiUsers, fillIcon: PiUsersFill, path: '/testPage', isSelected: false },

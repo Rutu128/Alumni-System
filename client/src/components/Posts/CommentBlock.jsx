@@ -9,7 +9,7 @@ export default function CommentBlock({ data, handleCommentLike, ...props }) {
     return (
         <div className="comment_cont" {...props}>
             <div className="comment_profile">
-                <UserProfile initials={data.users?.initials} profileSrc={data.users?.profileSrc} />
+                <UserProfile initials={data.users?.initials} profileSrc={data.users?.avatar} />
             </div>
 
             <div className="comment_main">
