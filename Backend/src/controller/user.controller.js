@@ -522,6 +522,7 @@ const updateProfile = asyncHandler(async (req, res) => {
         dob,
         designation,
         headline,
+        avatar,
     } = req.body;
     const user_id = req.user?._id;
     if (!user_id) {
@@ -538,6 +539,7 @@ const updateProfile = asyncHandler(async (req, res) => {
             passingYear: passingYear ? passingYear : user.passingYear,
             dob: dob ? dob : user.dob,
             designation: designation ? designation : user.designation,
+            avatar: avatar ? avatar : user.avatar,
             headline: headline ? headline : user.headline,
         },
     }).select("-password -_id -refreshToken -createdAt -updatedAt");

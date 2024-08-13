@@ -140,6 +140,9 @@ export default function UserContextProvider({ children }) {
                     email: response.data.data.email,
                     initials: response.data.data.firstName[0] + response.data.data.lastName[0],
                     avatar: response.data.data.avatar,
+                    headline: response.data.data.headline,
+                    description: response.data.data.description,
+                    designation: response.data.data.designation,
                     isAuthenticated: true
                 }
             })
@@ -164,8 +167,13 @@ export default function UserContextProvider({ children }) {
         });
     }
 
-    function handleUpdateProfile(src){
-
+    async function handleUpdateProfile(profile_about){
+        const response = await postApi('/user/update-profile', profile_about);
+        const res = handleResponse(response);
+        if(res.status === 200) {
+            console.log('User updated');
+            handleGetUserDetails();
+        } 
     }
 
     async function handleGetUserDetails(){

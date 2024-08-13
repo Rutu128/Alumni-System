@@ -54,6 +54,19 @@
         }
 
         .part-left {
+            display: flex;
+            flex-direction: column;
+
+            .left-body{
+                flex: 1;
+                display: flex;
+                justify-content: center;
+
+                .preview-image {
+                    max-width: 20rem;
+                }
+            }
+
             .select-button {
                 width: 100%;
                 padding: 1rem;
@@ -150,6 +163,12 @@
 
         .part-right {
             position: relative;
+            display: flex;
+            flex-direction: column;
+
+            .right-body {
+                flex: 1;
+            }
 
             .description-box {
                 textarea {
@@ -162,6 +181,8 @@
                     font-family: 'Mona-sans', sans-serif;
                     resize: none;
                     outline: none;
+                    
+                    @include no-scrollbar;
 
                     &:focus{
                         border-color: $color-theme-dark;

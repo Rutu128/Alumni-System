@@ -11,7 +11,7 @@ export default async function uploadFiles(files) {
     return fileUrls;
 }
 
-async function uploadFile(file) {
+export async function uploadFile(file) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'alumni_sys_preset');

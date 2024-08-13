@@ -28,7 +28,7 @@ export default function Profile({ isUserProfile }) {
     return (
         <>
             <ModalContainer onReset={resetModal} ref={profileEdit} >
-                <ProfileEditModal closeModal={resetModal} about={userDetail.about} designation={userDetail.designation} />
+                <ProfileEditModal closeModal={resetModal} userDetail={userDetail} />
             </ModalContainer>
             <section className="profile">
                 <div className="profile__cont">
@@ -48,6 +48,8 @@ export default function Profile({ isUserProfile }) {
                                     </div>
                                     <div className="user-info u-light">
                                         {/* {userDetail.email} */}
+                                        {userDetail.headline}
+                                        <br />
                                         {userDetail.designation}
                                     </div>
                                 </div>

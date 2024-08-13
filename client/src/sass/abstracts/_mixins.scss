@@ -140,7 +140,8 @@
 
 @mixin horizontal-scrollbar{
     &::-webkit-scrollbar {
-        height: 8px; // Adjust the height of the scrollbar
+        height: 3px; // Adjust the height of the scrollbar
+        width: 4px;
     }
 
     &::-webkit-scrollbar-track {
@@ -172,5 +173,11 @@
         background: #fff; // Color of the scrollbar thumb
         border-radius: 10px; // Rounded corners for the thumb
         border: 2px solid #f1f1f1; // Space between thumb and track
+    }
+}
+
+@mixin no-scrollbar {
+    &::-webkit-scrollbar{
+        display: none;
     }
 }
