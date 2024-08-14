@@ -16,26 +16,7 @@
     }
 
     &__head {
-        width: 100%;
-        display: block;
-        border-bottom: 1px solid $color-grey-light-3;
-        
-        h1 {
-            // font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);
-            font-size: responsive-font-size(2.5);
-            font-weight: 900;
-            font-stretch: 120%;
-        }
-        
-        h2 {
-            font-size: responsive-font-size(1.5);
-            font-weight: 900;
-            font-stretch: 120%;
-        }
-
-        hr{
-            color: $color-theme-dark;
-        }
+        @include page-headers;
     }
 
     &__main {

@@ -1,0 +1,52 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+@import "../abstracts/functions";
+
+@import "../base/animation";
+@import "../base/utilities";
+@import "../base/typography";
+
+.search {
+    width: 100%;
+
+    &__body {
+        width: 100%;
+        padding: 1rem 0
+    }
+
+    &__head {
+        @include page-headers;
+    }
+
+    &__input {
+        width: 60%;
+        min-width: 20rem;
+        display: flex;
+
+        div:not(:last-child) {
+            margin-right: 1rem;
+        }
+
+        &--cont {
+            flex: 1;
+        }
+
+        &--submit {
+            
+            button {
+                width: auto;
+            }
+        }
+    }
+
+    &__result {
+
+        &--head {
+
+        }
+
+        &--body {
+
+        }
+    }
+}

@@ -168,12 +168,13 @@ export default function UserContextProvider({ children }) {
     }
 
     async function handleUpdateProfile(profile_about){
-        const response = await postApi('/user/update-profile', profile_about);
+        const response = await postApi('/user/addInfo', profile_about);
         const res = handleResponse(response);
         if(res.status === 200) {
             console.log('User updated');
             handleGetUserDetails();
-        } 
+            return res;
+        }
     }
 
     async function handleGetUserDetails(){

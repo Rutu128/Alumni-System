@@ -23,16 +23,11 @@ export default function ProfileEditModal({ closeModal }) {
         if (selectedFile) {
             setFile(selectedFile);
             setFileUrl(URL.createObjectURL(selectedFile));
-            // Reset input value to allow re-selecting the same file
             event.target.value = null;
         }
     };
 
     async function handleFileSubmit() {
-        // if (!file || about.trim() === '' || designation.trim() === '') {
-        //     createNotification('Please fill in all fields!', 'error');
-        //     return;
-        // }
         setIsLoading(true);
 
         if(file){
@@ -40,11 +35,15 @@ export default function ProfileEditModal({ closeModal }) {
             console.log(profile_url);
         }
         
-        // Perform your submit logic here
-        const response = await updateProfile({ avatar: (file ? profile_url.url : null), about, designation, headline });
+        const response = await updateProfile({ avatar: (file ? profile_url.url : null), description: about, designation, headline });
 
         setIsLoading(false);
-        closeModal();
+        if(response.status === 200){
+            createNotification('Profile updated successfully!', 'success');
+            closeModal();
+        } else {
+            return;
+        }
     }
 
     function handleCloseModal() {
@@ -115,7 +114,7 @@ export default function ProfileEditModal({ closeModal }) {
                                 className='u-input-primary'
                             />
                     </div>
-                    <button className="u-button-primary" onClick={handleFileSubmit}>
+                    <button className="u-button-primary u-flex-justify-center" onClick={handleFileSubmit}>
                         {isLoading ?
                             <ReactLoading type={'spin'} width={'1.6rem'} height={'1.6rem'} className={"loader"} />
                             :

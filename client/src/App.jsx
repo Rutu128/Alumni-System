@@ -12,6 +12,7 @@ import HomepageContent from './components/Homepage UI/HomepageContent';
 import PostContextProvider from './context/PostContext';
 import Profile from './components/Pages/Profile';
 import GlobalContextProvider from './context/GlobalContext';
+import Search from './components/Pages/Search';
 
 function App() {
   log('<App /> rendered');
@@ -30,6 +31,7 @@ function App() {
                 <Route path='/' index element={<HomepageContent />} />
                 <Route path='/testPage' element={<TestPage />} />
                 <Route path='/profile' element={<Profile />} />
+                <Route path='/search' element={<Search />} />
               </Route>
             </Routes>
           </Router>
