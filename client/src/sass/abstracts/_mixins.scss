@@ -1,0 +1,183 @@
+@mixin profile-img {
+    .dummy-profile, .profile-img{
+        width: 2.6rem;
+        // height: 2.6rem;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        display: inline;
+    }
+
+    .dummy-profile{
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Mona-sans';
+        font-weight: 600;
+        background-color: #7332fe;
+        color: $color-font-light;
+        font-size: 1rem;
+        border: none;
+        outline: none;
+        transition: all .3s;
+
+        &:hover{
+            background-color: $color-theme-dark;
+        }
+    }
+}
+
+@mixin button {
+    border: none;
+    outline: none;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-stretch: 100%;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+@mixin input{
+    .input-field{
+        width: 48%; /* Adjusted width to fit two fields side by side */
+    }
+
+    .input-field-login{
+        width: 100%;
+    }
+
+    .input-field, .input-field-login {
+        display: inline-block;
+        position: relative;
+        text-align: left;
+        margin-right: 1%;
+
+        label,
+        .invalid + label {
+            display: block;
+            margin-left: 1.4rem;
+            position: absolute;
+            top: .95rem;
+            left: 0;
+            color: $color-font-dark;
+            padding: 0 0.2rem;
+            transition: all 0.4s ease;
+            cursor: text;
+            z-index: 0;
+        }
+
+        input[value=""]:not(:focus) { color: transparent; }
+
+        input, select {
+            position: relative;
+            display: inline-block;
+            width: 100%; /* Full width within the container */
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+            border: 2px solid #8dc5dc;
+            outline: none;
+            border-radius: 2rem;
+            background-color: transparent !important;
+            font-family: 'Regular', sans-serif;
+            z-index: 1;
+            transition: all .3s;
+
+            &:focus {
+                border: 2px solid #42768c;
+            }
+        }
+
+        select{
+            // height: 3.1rem;
+            appearance: none;
+            padding: .87rem 1.2rem;
+        }
+
+
+        .error {
+            border: 2px solid #fa4f4f;
+        }
+
+        .showPassword, .hidePassword {
+            border: none;
+            outline: none;
+            background-color: transparent;
+            position: absolute;
+            top: 1.05rem;
+            right: .8rem;
+            font-size:1rem;
+            cursor: pointer;
+            z-index: 5;
+            color: $color-font-dark;
+
+            &:focus{
+                background-color: transparent;
+            }
+        }
+
+        input:focus + label,
+        select:focus + label,
+        .valid + label,
+        .showPassword:active + label {
+            background-color: #fff;
+            position: absolute;
+            top: -0.6rem;
+            left: 0;
+            z-index: 2;
+            color: #42768c;
+        }
+    }
+}
+
+@mixin hover-button-effect {
+    &:hover {
+        color: $color-font-dark;
+        background-color: $color-theme-back-light;
+    }
+}
+
+@mixin horizontal-scrollbar{
+    &::-webkit-scrollbar {
+        height: 3px; // Adjust the height of the scrollbar
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        border: 2px solid transparent;
+        background: transparent; // Background color of the scrollbar track
+        border-radius: 10px; // Rounded corners for the track
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-theme-light; // Color of the scrollbar thumb
+        border-radius: 10px; // Rounded corners for the thumb
+        border: 2px solid transparent; // Space between thumb and track
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: $color-theme-dark; // Color of the scrollbar thumb on hover
+    }
+
+    // Custom scrollbar styles for Edge and IE
+    &::-ms-scrollbar {
+        height: 8px; // Adjust the height of the scrollbar
+    }
+
+    &::-ms-scrollbar-track {
+        background: #f1f1f1; // Background color of the scrollbar track
+    }
+
+    &::-ms-scrollbar-thumb {
+        background: #fff; // Color of the scrollbar thumb
+        border-radius: 10px; // Rounded corners for the thumb
+        border: 2px solid #f1f1f1; // Space between thumb and track
+    }
+}
+
+@mixin no-scrollbar {
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "cSpell.words": [
+        "batchmates",
+        "charusat",
+        "cloudinary",
+        "getpost",
+        "signup",
+        "toastify"
+    ],
+    "docwriter.progress.trackFunctions": true,
+    "docwriter.progress.trackMethods": true,
+    "docwriter.progress.trackClasses": true,
+    "docwriter.progress.trackTypes": true
+}

@@ -1,0 +1,39 @@
+.send-button{
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background-color: $color-theme-light;
+
+    .send-icon{
+        margin: 0 0 0 -.1rem;
+    }
+}
+
+.circular__button{
+    position: absolute;
+    top: 3.1rem;
+    right: .4rem;
+    transform: translate(-50%, -50%);
+    width: 2.6rem;
+    height: 2.6rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: all .3s;
+    font-size: 1.2rem;
+
+    &:hover{
+        background-color: rgba($color-grey-light-3, .8);
+    }
+
+    .close-icon {
+        margin: 0 0 -.2rem 0;
+    }
+}

@@ -1,19 +1,18 @@
 .login {
-    height: 100vh;
     background-size: cover;
     display: flex;
     justify-content: left;
     align-items: center;
     color: $color-font-dark;
     font-family: "Regular", sans-serif;
-    display: flex;
-    justify-content: baseline; 
+    overflow-x: hidden;
+    overflow-y: auto;
 
     &-cont {
-        width: 45%;
+        width: 55%; /* Increased width */
         background-color: #fff;
         height: 100%;
-        padding: 0rem 5% 0 10%;
+        padding: 0rem 5% 0 5%; /* Adjusted padding */
         display: flex;
         align-items: center;
         font-size: 1rem;
@@ -22,81 +21,26 @@
             width: 100%;
             text-align: center;
 
-            h1{
+            h1 {
                 font-size: 3.5rem;
             }
 
-            .input-field {
-                display: block;
-                position: relative;
-                text-align: left;
-
-                label,
-                .invalid + label {
-                    display: block;
-                    margin-left: 1.4rem;
-                    position: absolute;
-                    top: .95rem;
-                    left: 0;
-                    color: $color-font-dark;
-                    padding: 0 0.2rem;
-                    transition: all 0.4s ease;
-                    cursor: text;
-                    z-index: 0;
-                }
-                input {
-                    position: relative;
-                    display: inline-block;
-                    min-width: 16rem;
-                    width: 100%;
-                    padding: 0.8rem 1.2rem;
-                    font-size: 1rem;
-                    border: 2px solid #8dc5dc;
-                    outline: none;
-                    border-radius: 2rem;
-                    background-color: transparent;
-                    font-family: 'Regular', sans-serif;
-                    z-index: 1;
-                    transition: all .3s;
-
-                    &:focus {
-                        border: 2px solid #42768c;
-                    }
-                }
-
-                .error {
-                    border: 2px solid #fa4f4f;
-                }
-
-                .showPassword, .hidePassword{
-                    border: none;
-                    outline: none;
-                    background-color: none;
-                    position: absolute;
-                    top: 1.05rem;
-                    right: 1.5rem;
-                    font-size:1rem;
-                    cursor: pointer;
-                    z-index: 5;
-                    color: $color-font-dark;
-                }
-
-                input:focus + label,
-                .valid + label,
-                .showPassword:active + label {
-                    background-color: #fff;
-                    position: absolute;
-                    top: -0.6rem;
-                    left: 0;
-                    z-index: 2;
-                    color: #42768c;
-                }
+            .input-field-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 1rem;
+                width: 100%;
             }
+
+            @include input;
 
             .login-button {
                 min-width: 16rem;
                 width: 100%;
-                display: inline-block;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
                 height: 3rem;
                 font-size: 1.2rem;
                 font-family: "Bold2", sans-serif;
@@ -104,6 +48,7 @@
                 border: 2px solid #8dc5dc;
                 background-color: #8dc5dc;
                 transition: all 0.2s ease;
+                text-align: center;
 
                 &:hover {
                     border: 2px solid #42768c;
@@ -154,9 +99,14 @@
             }
         }
     }
+
+    .narrow {
+        width: 45%;
+        padding: 0 5% 0 10%;
+    }
 }
 
-.separator{
+.separator {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -172,17 +122,17 @@
         padding: 0 1rem;
     }
 
-    .line{
+    .line {
         height: 1px;
         width: 80%;
         background-color: $color-font-dark;
     }
 }
 
-.auth-login{
+.auth-login {
     width: 100%;
-    
-    &-button{
+
+    &-button {
         font-family: 'Bold2', sans-serif;
         min-width: 16rem;
         text-align: left;
@@ -190,13 +140,14 @@
         height: 3rem;
         border-radius: 2rem;
         font-size: 1.2rem;
-        background-color: #fff;
+        background-image: linear-gradient(120deg, $color-font-light 0%, $color-font-light 50%, $color-font-dark 50%, $color-font-dark 100%);
+        background-size: 250%;
         border: 2px solid $color-font-dark;
-        transition: all .3s;
+        transition: all .5s;
         position: relative;
         text-align: right;
 
-        .google-icon{
+        .google-icon {
             position: absolute;
             top: .5rem;
             left: .7rem;
@@ -205,20 +156,21 @@
         }
 
         .description {
-            width:90%;
+            width: 90%;
             text-align: center;
         }
 
         &:hover {
-            background-color: $color-font-dark;
+            background-position: 100%;
             color: $color-font-light;
+            box-shadow: 0 0 3rem rgba($color-font-dark, .6);
         }
     }
 }
 
 .img {
     &-cont {
-        width: 55%;
+        width: 45%; /* Adjusted width */
         height: 100vh;
         display: flex;
         justify-content: center;
@@ -228,25 +180,40 @@
             width: 70%;
         }
     }
-    
+}
+
+.wider{
+    width: 55%;
 }
 
 @media (max-width: 768px) {
-    .login{
+    .login {
         width: 100%;
+        min-height: 100vh;
         text-align: center;
+        padding: 3rem 0;
+        overflow-y: auto;
 
-        h1{
+        h1 {
             font-size: 2.8rem;
         }
+        
+        .narrow{
+            width: 100%;
+            margin: none;
+            padding: 0 5% 0 5%;
+        }
 
-        &-cont{
+        &-cont {
             width: 100%;
             padding: 0 8%;
 
             &-main {
+                .input-field{
+                    width: 100%;
+                }
 
-                .separator{
+                .separator {
                     margin-bottom: 4rem;
                 }
             }

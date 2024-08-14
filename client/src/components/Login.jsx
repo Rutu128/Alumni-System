@@ -1,27 +1,38 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { log } from "../log";
 import Input from "./UI components/Input";
 import Button from "./UI components/Button";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+// import { Oval } from 'svg-loaders-react';
+import ReactLoading from 'react-loading';
+import React from "react";
 
 export default function Login() {
+    const navigate = useNavigate();
+
+    const { userDetail, loginUser } = useContext(UserContext);
+    const [isLoading, setIsLoading] = useState(false);
+
     log('<Login/> rendered', 1);
     const [userDetails, setUserDetails] = useState({
-        username: '',
+        email: '',
         password: '',
-        usernameError: '',
-        passwordError: ''
     })
+    const [userErrors, setUserErrors] = useState({
+        emailError: '',
+        passwordError: ''
+    });
 
     function handleChange(e) {
         let name = e.target.name;
         let value = e.target.value;
-        
-        if(value !== value.trim()){
+
+        if (value !== value.trim()) {
             name += 'Error';
             value = 'Spaces are not allowed'
-            setUserDetails(prevDetails => {
+            setUserErrors(prevDetails => {
                 return {
                     ...prevDetails,
                     [name]: value,
@@ -34,66 +45,110 @@ export default function Login() {
             return {
                 ...prevDetails,
                 [name]: value,
+            }
+        })
+
+        setUserErrors(prevErrors => {
+            return {
+                ...prevErrors,
                 [name + 'Error']: ''
             }
         })
     }
 
-    function handleSubmit() {
-        let errorMessage;
-        let errorField;
+    const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
 
-        if(userDetails.username.trim() === "" || userDetails.username.trim().length < 6){
-            errorMessage = 'Username must be minimum of 6 characters'
-            errorField = 'usernameError'
-        } 
-        else if (userDetails.password.trim() === "" || userDetails.password.trim().length < 6){
-            errorMessage = 'Password must be minimum of 6 characters'
-            errorField = 'passwordError'
-        } 
+    function displayError(field, message) {
+        setUserErrors(prevDetails => {
+            return {
+                ...prevDetails,
+                [field]: message,
+            }
+        })
+        setIsLoading(false);
+    }
 
-        if(errorMessage !== undefined){
-            setUserDetails(prevDetails => {
-                return {
-                    ...prevDetails,
-                    [errorField]: errorMessage,
-                }
-            })
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setIsLoading(true);
+
+        if (userDetails.email.trim() === "") {
+            displayError('emailError', 'This field is required!');
+            return;
+        }
+        else if (userDetails.password.trim() === "") {
+            displayError('passwordError', 'This field is required!');
+            return;
+        }
+        else if (!isValidEmail(userDetails.email)) {
+            displayError('emailError', 'Enter a valid email!');
             return;
         }
 
-        console.log('username: ', username, ' password: ', password);
+        const userStatus = await loginUser({
+            email: userDetails.email,
+            password: userDetails.password,
+        })
+
+        console.log(userStatus);
+        setIsLoading(false);
+        if (userStatus.status === 404) {
+            displayError('emailError', 'User with entered email does not exist!');
+            return;
+        }
+        else if (userStatus.status === 401) {
+            displayError('passwordError', 'Incorrect Password!');
+            return;
+        }
+        else if (userStatus.status === 200) {
+            navigate('/');
+        }
+
+        console.log('email: ', userDetails.email, ' password: ', userDetails.password);
     }
 
     return (
         <main className="login">
-            <section className="login-cont">
-                <div className="login-cont-main">
-                    <h1 className="heading-primary-dark u-margin-bottom-small">Login to <br /><span className="u-dynamic-text">Charusat Alumni</span></h1>
+            <section className="login-cont narrow">
+                <form className="login-cont-main">
+                    <h1 className="heading-primary-dark u-margin-bottom-small">Login to <br /><span className="u-dynamic-text">Alumni Hub</span></h1>
                     <Input
-                        labelText='Username'
-                        className={`u-margin-bottom-small ${userDetails.username === "" ? 'invalid' : 'valid'} ${userDetails.usernameError ? 'error' : ''}`}
+                        labelText='Email'
+                        className={`u-margin-bottom-small ${userDetails.email === "" ? 'invalid' : 'valid'} ${userErrors.emailError ? 'error' : ''}`}
                         type="text"
-                        name="username"
+                        name="email"
                         onChange={handleChange}
-                        value={userDetails.username}
-                        errorText={userDetails.usernameError}
+                        value={userDetails.email}
+                        errorText={userErrors.emailError}
+                        inputFor='login'
                     />
                     <Input
                         labelText='Password'
-                        className={`u-margin-bottom-small ${userDetails.password === "" ? 'invalid' : 'valid'} ${userDetails.passwordError ? 'error' : ''}`}
+                        className={`u-margin-bottom-small ${userDetails.password === "" ? 'invalid' : 'valid'} ${userErrors.passwordError ? 'error' : ''}`}
                         type="password"
                         name="password"
                         onChange={handleChange}
                         value={userDetails.password}
-                        errorText={userDetails.passwordError}
+                        errorText={userErrors.passwordError}
+                        inputFor='login'
+                        onKeyUp={(e) => {
+                            e.key === "Enter" && handleSubmit(e)
+                        }}
                     />
                     <Button
                         className="login-button u-margin-bottom-small"
-                        btnText='Login'
-                        type='primary'
+                        type='submit'
                         onClick={handleSubmit}
-                    />
+                    >
+                        {isLoading ?
+                            <ReactLoading type={'bubbles'} width={'2rem'} height={'2rem'} className={"loader"} />
+                            :
+                            'Login'
+                        }
+                    </Button>
                     <div className="sign-up u-margin-bottom-small">Don't have an account?
                         <div className="link u-dynamic-text-link">
                             <Link to="/signUp" className="link-element">Sign Up</Link>
@@ -114,9 +169,9 @@ export default function Login() {
                             </div>
                         </Button>
                     </div>
-                </div>
+                </form>
             </section>
-            <div className="img-cont">
+            <div className="img-cont wider">
                 <img src="/login-bg.svg" alt="login-illustration" />
             </div>
         </main>
