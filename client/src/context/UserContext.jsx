@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import postApi from "../utils/postApi";
 import getApi from "../utils/getApi";
 import { ToastContainer, toast } from 'react-toastify';
+import handleResponse from "../utils/responseHandler";
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,15 +14,20 @@ export const UserContext = createContext({
         lastName: String,
         email: String,
         initials: String,
-        profileImg: String,
+        avatar: String,
+        designation: String,
+        headline: String,
+        description: String,
         isAuthenticated: Boolean
     },
     loginUser: () => { },
     logoutUser: () => { },
     registerUser: () => { },
-    getUserDetails: () => { },
+    getUserPosts: () => { },
     authenticateUser: () => { },
     createNotification: () => { },
+    getUserDetails: () => { },
+    updateProfile: () => { },
 })
 
 
@@ -31,7 +37,10 @@ export default function UserContextProvider({ children }) {
         lastName: '',
         email: '',
         initials: '',
-        profileImg: '',
+        avatar: '',
+        designation: '',
+        headline: '',
+        description: '',
         isAuthenticated: false
     })
 
@@ -57,7 +66,7 @@ export default function UserContextProvider({ children }) {
                     lastName: responseData.data.user.lastName,
                     email: responseData.data.user.email,
                     initials: responseData.data.user.firstName[0] + responseData.data.user.lastName[0],
-                    profileImg: "",
+                    avatar: responseData.data.user.avatar,
                     isAuthenticated: true
                 }
             })
@@ -72,7 +81,7 @@ export default function UserContextProvider({ children }) {
         console.table(userDetails);
 
         const response = await postApi('/auth/signup', userDetails);
-        if(response.response){
+        if (response.response) {
             if (response.response.status === 409 || 500) {
                 return {
                     status: response.response.status,
@@ -91,7 +100,7 @@ export default function UserContextProvider({ children }) {
             lastName: '',
             email: '',
             initials: '',
-            profileImg: '',
+            avatar: '',
             isAuthenticated: false
         })
         return {
@@ -99,8 +108,14 @@ export default function UserContextProvider({ children }) {
         }
     }
 
-    function getUserDetails() {
+    async function handleGetUserPosts() {
+        const response = await getApi('/user/myPosts')
+        // console.log(response.data.data);
 
+        const res = handleResponse(response);
+        if (res.status === 200 | 202) {
+            return response.data.data;
+        }
     }
 
     async function handleAuthenticateUser() {
@@ -117,13 +132,19 @@ export default function UserContextProvider({ children }) {
 
         console.log(response);
         if (response.data.statusCode === 200 && response.data.success === true) {
-            setUserInfo({
-                firstName: response.data.data.firstName,
-                lastName: response.data.data.lastName,
-                email: response.data.data.email,
-                initials: response.data.data.firstName[0] + response.data.data.lastName[0],
-                profileImg: "",
-                isAuthenticated: true
+            setUserInfo(prevInfo => {
+                return {
+                    ...prevInfo,
+                    firstName: response.data.data.firstName,
+                    lastName: response.data.data.lastName,
+                    email: response.data.data.email,
+                    initials: response.data.data.firstName[0] + response.data.data.lastName[0],
+                    avatar: response.data.data.avatar,
+                    headline: response.data.data.headline,
+                    description: response.data.data.description,
+                    designation: response.data.data.designation,
+                    isAuthenticated: true
+                }
             })
             return {
                 status: response.data.statusCode,
@@ -146,14 +167,40 @@ export default function UserContextProvider({ children }) {
         });
     }
 
+    async function handleUpdateProfile(profile_about){
+        const response = await postApi('/user/addInfo', profile_about);
+        const res = handleResponse(response);
+        if(res.status === 200) {
+            console.log('User updated');
+            handleGetUserDetails();
+            return res;
+        }
+    }
+
+    async function handleGetUserDetails(){
+        const response = await getApi('/user/me');
+        const res = handleResponse(response);
+        if(res.status === 200 | 202){
+            const newData = response.data.data;
+            setUserInfo(prevInfo => {
+                return {
+                    ...prevInfo,
+                    ...newData[0],
+                }
+            })
+        }
+    }
+
     const ctxValue = {
         userDetail: userInfo,
         loginUser: handleLoginUser,
         logoutUser: handleLogoutUser,
         registerUser: handleRegisterUser,
-        getUserDetails: getUserDetails,
+        getUserPosts: handleGetUserPosts,
         authenticateUser: handleAuthenticateUser,
         createNotification: createNotification,
+        updateProfile: handleUpdateProfile,
+        getUserDetails: handleGetUserDetails,
     }
 
     return <UserContext.Provider value={ctxValue}>

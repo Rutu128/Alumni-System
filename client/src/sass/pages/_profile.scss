@@ -1,0 +1,138 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+@import "../abstracts/functions";
+
+@import "../base/animation";
+@import "../base/utilities";
+@import "../base/typography";
+
+
+
+.profile {
+    width: 100%;
+    color: $color-font-dark;
+
+    &__cont {
+    }
+
+    &__head {
+        @include page-headers;
+    }
+
+    &__main {
+        display: flex;
+        padding: 2rem 0 0 0;
+
+        @media (max-width: 1080px) {
+            flex-direction: column;
+        }
+    }
+
+    &__left {
+        width: 30%;
+
+        @media (max-width: 1080px) {
+            width: 100%;
+            display: flex;
+
+            .profile-image {
+                width: 30%;
+                padding: 2vw;
+
+                .full_length_image {
+                    // width: 35%;
+                }
+            }
+
+            .section-info {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                flex: 1;
+                padding: 0 1rem;
+            }
+        }
+
+        .profile-image {
+            position: relative;
+            padding: 1rem;
+        }
+
+        .section-info {
+            .edit-profile {
+                width: 100%;
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+                font-weight: 700;
+                margin: 0.7rem 0 0 0;
+                background-color: $color-theme-back-light;
+                border-radius: 1rem;
+
+                &:hover {
+                    background-color: $color-theme-light;
+                    cursor: pointer;
+                }
+
+                &-cont {
+                    width: 100%;
+                }
+            }
+
+            .user-info {
+                color: $color-grey-dark-3;
+                font-size: responsive-font-size(1);
+
+                @media (max-width: 1080px){
+                    padding-top: 0;
+                }
+
+                &-name {
+                    padding-top: 1rem;
+                    color: $color-font-dark;
+                    font-size: responsive-font-size(1.5);
+                }
+
+                &-email {
+                }
+            }
+        }
+    }
+
+    &__right {
+        flex: 1;
+        padding: 1rem 1rem 1rem 1.5rem;
+
+        @media (max-width: 1080px) {
+            padding: 0;
+        }
+    }
+
+    &__about {
+
+        .details{
+            padding-top: .5rem;
+            font-size: .9rem;
+
+            .about_text {
+                font-weight: 400;
+            }
+        }
+    }
+
+    &__posts{
+
+    }
+}
+
+@media (max-width: 768px) {
+    .profile {
+
+        &__head {
+            display: none;
+        }
+
+        &__main{
+            padding: 0 0 0 0;
+        }
+    }
+}

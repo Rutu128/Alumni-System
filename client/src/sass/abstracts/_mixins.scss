@@ -1,8 +1,10 @@
 @mixin profile-img {
     .dummy-profile, .profile-img{
         width: 2.6rem;
-        height: 2.6rem;
+        // height: 2.6rem;
+        aspect-ratio: 1 / 1;
         border-radius: 50%;
+        display: inline;
     }
 
     .dummy-profile{
@@ -22,6 +24,19 @@
             background-color: $color-theme-dark;
         }
     }
+}
+
+@mixin button {
+    border: none;
+    outline: none;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-stretch: 100%;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
 }
 
 @mixin input{
@@ -125,7 +140,8 @@
 
 @mixin horizontal-scrollbar{
     &::-webkit-scrollbar {
-        height: 8px; // Adjust the height of the scrollbar
+        height: 3px; // Adjust the height of the scrollbar
+        width: 4px;
     }
 
     &::-webkit-scrollbar-track {
@@ -158,4 +174,33 @@
         border-radius: 10px; // Rounded corners for the thumb
         border: 2px solid #f1f1f1; // Space between thumb and track
     }
+}
+
+@mixin no-scrollbar {
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+@mixin page-headers{
+    width: 100%;
+        display: block;
+        border-bottom: 1px solid $color-grey-light-3;
+        
+        h1 {
+            // font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);
+            font-size: responsive-font-size(2.5);
+            font-weight: 900;
+            font-stretch: 120%;
+        }
+        
+        h2 {
+            font-size: responsive-font-size(1.5);
+            font-weight: 900;
+            font-stretch: 120%;
+        }
+
+        hr{
+            color: $color-theme-dark;
+        }
 }

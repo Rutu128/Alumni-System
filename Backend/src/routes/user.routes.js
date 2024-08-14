@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyJWT } from "../middleware/auth.middleware.js";
-import { addInfo, getUserDetails } from "../controller/user.controller.js";
+import { addInfo, getUserDetails, me, updateAvatar, updateProfile } from "../controller/user.controller.js";
 import {
     getUserPosts,
     myLikes,
@@ -12,8 +12,10 @@ const router = Router();
 router.route("/myPosts").get(verifyJWT, myPosts);
 router.route("/myLikes").get(verifyJWT, myLikes);
 router.route("/posts/:id").get(verifyJWT, getUserPosts);
+router.route("/me").get(verifyJWT, me);
 
 router.route("/addInfo").post(verifyJWT, addInfo);
 router.route("/getUser/:id").get(verifyJWT, getUserDetails);
-
+router.route("/update-profile").post(verifyJWT, updateProfile);
+router.route("/update-avatar").post(verifyJWT, updateAvatar)
 export default router;

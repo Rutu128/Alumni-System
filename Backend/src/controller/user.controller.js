@@ -313,25 +313,28 @@ const addInfo = asyncHandler(async (req, res) => {
     if (!user_id) {
         throw new ApiError(404, "User dosen't fetch");
     }
-    const { headline, designation } = req.body;
+    const { headline, designation, description, avatar } = req.body;
+    let user = await User.findById(user_id);
 
-    const user = await User.findByIdAndUpdate(user_id, {
+    const updated_user = await User.findByIdAndUpdate(user_id, {
         $set: {
-            headline,
-            designation,
+            headline: headline ? headline : user.headline,
+            designation: designation ? designation : user.designation,
+            description: description ? description : user.description,
+            avatar: avatar ? avatar : user.avatar,
         },
     }).select(
         "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
     );
-    if (!user) {
+    if (!updated_user ) {
         throw new ApiError(500, "Failed to add info");
     }
-    const updated_user = await User.findById({ _id: user_id }).select(
+    user = await User.findById({ _id: user_id }).select(
         "-password -refreshToken -isVerified -createdAt -updatedAt -_id"
     );
     return res
         .status(200)
-        .json(new ApiResponse(200, updated_user, "info successfully added "));
+        .json(new ApiResponse(200, user, "info successfully added "));
 });
 
 const getUserDetails = asyncHandler(async (req, res) => {
@@ -341,7 +344,7 @@ const getUserDetails = asyncHandler(async (req, res) => {
         const userDetails = await User.aggregate([
             {
                 $match: {
-                    _id:id,
+                    _id: id,
                 },
             },
             {
@@ -376,10 +379,7 @@ const getUserDetails = asyncHandler(async (req, res) => {
                     "posts.isLiked": {
                         $cond: {
                             if: {
-                                $in: [
-                                    id,
-                                    "$likes.userId",
-                                ],
+                                $in: [id, "$likes.userId"],
                             },
                             then: true,
                             else: false,
@@ -417,12 +417,166 @@ const getUserDetails = asyncHandler(async (req, res) => {
             },
         ]);
 
-        return res.status(200).json(new ApiResponse(200, userDetails, "User details"));
+        return res
+            .status(200)
+            .json(new ApiResponse(200, userDetails, "User details"));
     } catch (error) {
         throw new ApiError(400, error, "Failed to get user details");
     }
 });
 
+const me = asyncHandler(async (req, res) => {
+    try {
+        const user_id = req.user._id;
+        const id = new mongoose.Types.ObjectId(user_id);
+        const userDetails = await User.aggregate([
+            {
+                $match: {
+                    _id: id,
+                },
+            },
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "_id",
+                    foreignField: "userId",
+                    as: "posts",
+                },
+            },
+            {
+                $unwind: "$posts",
+            },
+            {
+                $lookup: {
+                    from: "postlikes",
+                    localField: "posts._id",
+                    foreignField: "postId",
+                    as: "likes",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "posts._id",
+                    foreignField: "postId",
+                    as: "comments",
+                },
+            },
+            {
+                $addFields: {
+                    "posts.isLiked": {
+                        $cond: {
+                            if: {
+                                $in: [id, "$likes.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    "posts.likesCount": { $size: "$likes" },
+                    "posts.commentsCount": { $size: "$comments" },
+                },
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    posts: { $push: "$posts" },
+                    firstName: { $first: "$firstName" },
+                    lastName: { $first: "$lastName" },
+                    email: { $first: "$email" },
+                    avatar: { $first: "$avatar" },
+                    headline: { $first: "$headline" },
+                    designation: { $first: "$designation" },
+                    passingYear: { $first: "$passingYear" },
+                    description: { $first: "$description" },
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    email: 1,
+                    posts: 1,
+                    avatar: 1,
+                    headline: 1,
+                    designation: 1,
+                    passingYear: 1,
+                    description: 1,
+                },
+            },
+        ]);
+        return res
+            .status(200)
+            .json(new ApiResponse(200, userDetails, "User details"));
+    } catch (error) {
+        throw new ApiError(400, error, "Failed to get user details");
+    }
+});
+// User Completely
+const updateProfile = asyncHandler(async (req, res) => {
+    const {
+        firstName,
+        lastName,
+        c_id,
+        email,
+        passingYear,
+        dob,
+        designation,
+        headline,
+        avatar,
+        description,
+    } = req.body;
+    const user_id = req.user?._id;
+    if (!user_id) {
+        throw new ApiError(404, "User dosen't exist");
+    }
+    let user = await User.findById(user_id);
+
+    const updatedUser = await User.findByIdAndUpdate(user_id, {
+        $set: {
+            firstName: firstName ? firstName : user.firstName,
+            lastName: lastName ? lastName : user.lastName,
+            c_id: c_id ? c_id : user.c_id,
+            email: email ? email : user.email,
+            passingYear: passingYear ? passingYear : user.passingYear,
+            dob: dob ? dob : user.dob,
+            designation: designation ? designation : user.designation,
+            avatar: avatar ? avatar : user.avatar,
+            headline: headline ? headline : user.headline,
+            description: description ? description : user.description,
+        },
+    }).select("-password -_id -refreshToken -createdAt -updatedAt");
+    user = await User.findById(user_id).select(
+        "-password -_id -refreshToken -createdAt -updatedAt -isverified"
+    );
+
+    return res.status(200).json(new ApiResponse(200, user, "success"));
+});
+
+const updateAvatar = asyncHandler(async (req, res) => {
+    try {
+        const { avatar } = req.body;
+        const user_id = req.user._id;
+        let user = await User.findById(user_id);
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+        const updateAvatar = await User.findByIdAndUpdate(user._id, {
+            $set: {
+                avatar: avatar ? avatar : user.avatar,
+            },
+        });
+        user = await User.findById(user_id).select(
+            "-password -_id -refreshToken -createdAt -updatedAt -isVerified -dob -c_id -passingYear"
+        );
+        return res
+            .status(200)
+            .json(new ApiResponse(200, user, "Avatar updated successfully"));
+    } catch (error) {
+        throw new ApiError(400, error, "Failed to update avatar");
+    }
+});
 export {
     registerUser,
     loginUser,
@@ -432,5 +586,8 @@ export {
     googleLogin,
     ping,
     addInfo,
-    getUserDetails
+    getUserDetails,
+    me,
+    updateProfile,
+    updateAvatar,
 };

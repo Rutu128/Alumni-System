@@ -53,9 +53,15 @@ const userSchema = new Schema(
         },
         headline: {
             type: String,
+            default: "",
         },
         designation: {
-            typeof: String,
+            type: String,
+            default: "",
+        },
+        description:{
+            type: String,
+            default: "",
         },
         refershTokens: {
             type: String,

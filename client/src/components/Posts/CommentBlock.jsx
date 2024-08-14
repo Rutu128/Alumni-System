@@ -1,6 +1,6 @@
 import { formatDate } from "../../utils/formatDate";
 import { PiThumbsUpDuotone, PiThumbsUpFill } from "react-icons/pi";
-import UserProfile from "./UserProfile";
+import UserProfile from "./UserProfileImage";
 import { useReducer, useRef, useState } from "react";
 
 export default function CommentBlock({ data, handleCommentLike, ...props }) {
@@ -9,7 +9,7 @@ export default function CommentBlock({ data, handleCommentLike, ...props }) {
     return (
         <div className="comment_cont" {...props}>
             <div className="comment_profile">
-                <UserProfile initials={data.users?.initials} profileSrc={data.users?.profileSrc} />
+                <UserProfile initials={data.users?.initials} profileSrc={data.users?.avatar} />
             </div>
 
             <div className="comment_main">

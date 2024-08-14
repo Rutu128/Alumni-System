@@ -2,7 +2,7 @@
     color: $color-font-dark;
     margin: .5rem 0;
     border-radius: 1rem;
-    border: 2px solid $color-grey-light-3;
+    // border: 2px solid $color-grey-light-3;
     overflow: hidden;
     
     &__container {
@@ -82,9 +82,14 @@
 
     }
     
+    .comment-animate{
+        animation: slideDown .3s ease;
+    }
     &__comments {
         // background-color: $color-grey-light-3;
         border-top: 1px solid $color-grey-light-3;
+        transition: height .3s;
+
         
         .new_comment{
             display: flex;
