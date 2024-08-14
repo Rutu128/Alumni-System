@@ -314,8 +314,9 @@ const addInfo = asyncHandler(async (req, res) => {
         throw new ApiError(404, "User dosen't fetch");
     }
     const { headline, designation, description, avatar } = req.body;
+    let user = await User.findById(user_id);
 
-    const user = await User.findByIdAndUpdate(user_id, {
+    const updated_user = await User.findByIdAndUpdate(user_id, {
         $set: {
             headline: headline ? headline : user.headline,
             designation: designation ? designation : user.designation,
@@ -325,15 +326,15 @@ const addInfo = asyncHandler(async (req, res) => {
     }).select(
         "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
     );
-    if (!user) {
+    if (!updated_user ) {
         throw new ApiError(500, "Failed to add info");
     }
-    const updated_user = await User.findById({ _id: user_id }).select(
+    user = await User.findById({ _id: user_id }).select(
         "-password -refreshToken -isVerified -createdAt -updatedAt -_id"
     );
     return res
         .status(200)
-        .json(new ApiResponse(200, updated_user, "info successfully added "));
+        .json(new ApiResponse(200, user, "info successfully added "));
 });
 
 const getUserDetails = asyncHandler(async (req, res) => {
