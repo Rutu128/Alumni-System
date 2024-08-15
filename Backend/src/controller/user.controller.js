@@ -7,6 +7,7 @@ import { Verification } from "../db/verification.model.js";
 import mailer from "../utils/Mailer.js";
 import { randomBytes } from "crypto";
 import mongoose from "mongoose";
+import { text } from "express";
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -326,7 +327,7 @@ const addInfo = asyncHandler(async (req, res) => {
     }).select(
         "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
     );
-    if (!updated_user ) {
+    if (!updated_user) {
         throw new ApiError(500, "Failed to add info");
     }
     user = await User.findById({ _id: user_id }).select(
@@ -577,6 +578,21 @@ const updateAvatar = asyncHandler(async (req, res) => {
         throw new ApiError(400, error, "Failed to update avatar");
     }
 });
+
+const findUser = asyncHandler(async (req, res) => {
+    try {
+        const { search } = req.params;
+        const users = await User.find({
+            $or: [
+                { firstName: { $regex: `${search}`, $options: "i" } },
+                { lastName: { $regex: `${search}`, $options: "i" } },
+            ],
+        }).select("_id firstName lastName avatar");
+        return res.status(200).json(new ApiResponse(200, users, "Success"));
+    } catch (error) {
+        throw new ApiError(400, error, "Failed to find user");
+    }
+});
 export {
     registerUser,
     loginUser,
@@ -590,4 +606,5 @@ export {
     me,
     updateProfile,
     updateAvatar,
+    findUser,
 };
