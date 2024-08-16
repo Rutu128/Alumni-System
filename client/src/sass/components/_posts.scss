@@ -80,6 +80,9 @@
         justify-content: baseline;
         align-items: center;
 
+        .animate-like{
+            animation: like-animation .3s ease;
+        }
     }
     
     .comment-animate{
