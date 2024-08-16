@@ -7,7 +7,7 @@
         @if $value > 1 {
             @error "Percentage must be between 0 and 1";
         }
-        @return #{"width: " + ($value * 100%) + ";"};
+        @return #{"width: " + calc($value * 100%) + ";"};
     } @else {
         @error "Invalid width type";
     }
@@ -18,5 +18,5 @@
     $largest: $font-size * 1.5;
     $viewport-width: 100vw;
 
-    @return unquote("clamp(#{$smallest}rem, #{($font-size / 2)}vw + #{($font-size / 2)}rem, #{$largest}rem)");
+    @return unquote("clamp(#{$smallest}rem, #{calc($font-size / 2)}vw + #{calc($font-size / 2)}rem, #{$largest}rem)");
 }

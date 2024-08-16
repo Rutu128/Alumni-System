@@ -145,7 +145,7 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                         {postState.like
                             ?
                             <PiThumbsUpFill
-                                className='interaction-icons align'
+                                className='interaction-icons align animate-like'
                             />
                             :
                             <PiThumbsUpDuotone
