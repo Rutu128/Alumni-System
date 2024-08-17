@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { log } from '../log';
 import { Outlet, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import HomepageHeader from './Homepage UI/HomepageHeader';
 import { UserContext } from '../context/UserContext';

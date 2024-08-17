@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { log } from "../../log";
 import { PiUsers, PiUsersFill, PiThumbsUp, PiThumbsUpFill, PiBell, PiBellFill, PiHouse, PiHouseFill, PiGear, PiGearFill, PiMagnifyingGlass, PiMagnifyingGlassDuotone } from "react-icons/pi";
 
 import ProfileImage from "./ProfileImage";
@@ -9,6 +10,8 @@ import { UserContext } from "../../context/UserContext";
 
 
 export default function HomepageHeader2({ handleSelectMenu, selectedMenu }) {
+    log('<HomepageMenu /> rendered', 2);
+
 
     const navItems = [
         { name: 'Home', icon: PiHouse, fillIcon: PiHouseFill, path: '/' },
@@ -60,7 +63,7 @@ export default function HomepageHeader2({ handleSelectMenu, selectedMenu }) {
                     </div>
                     <div className="nav--item Profile">
                         <Link to={'/profile'} onClick={() => { handleSelectMenu('Profile') }} className={`link-profile ${selectedMenu === 'Profile' && 'highlight'}`}>
-                            <ProfileImage className='u-margin-right-small' />
+                            <ProfileImage />
                             <p>
                                 Profile
                             </p>

@@ -1,4 +1,7 @@
+import { log } from "../../log"
+
 export default function Suggestions() {
+    log('<Suggestions /> rendered', 3);
     return (
         <>
             <h1 className="u-margin-bottom-small">Suggestion block</h1>

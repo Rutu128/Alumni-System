@@ -52,21 +52,41 @@
     font-weight: 700;
 }
 
-.u-input-primary {
-    border: 2px solid $color-theme-light;
-    outline: none;
-    padding: 1rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    font-stretch: 110%;
-    color: $color-font-dark;
-    background-color: $color-theme-back-light;
-    border-radius: 1rem;
-    width: 100%;
-    margin-bottom: 1rem;
+.u-input {
+    &-primary {
+        border: 2px solid $color-theme-light;
+        outline: none;
+        padding: 1rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        font-stretch: 110%;
+        color: $color-font-dark;
+        background-color: $color-theme-back-light;
+        border-radius: 1rem;
+        width: 100%;
+        margin-bottom: 1rem;
 
-    &:focus {
-        border: 2px solid $color-theme-dark;
+        &:focus {
+            border: 2px solid $color-theme-dark;
+        }
+    }
+
+    &-secondary {
+        border: 2px solid $color-theme-light;
+        outline: none;
+        padding: .7rem 1rem;
+        font-size: .9rem;
+        font-weight: 500;
+        font-stretch: 110%;
+        color: $color-font-dark;
+        background-color: rgba($color: $color-theme-back-light, $alpha: .5);
+        border-radius: 1rem;
+        width: 100%;
+        margin-bottom: 1rem;
+
+        &:focus {
+            border: 2px solid $color-theme-dark;
+        }
     }
 }
 
@@ -75,7 +95,7 @@
         @include button;
         color: $color-font-light;
         background-color: $color-theme-dark;
-    
+
         &:hover {
             box-shadow: 0 0 1rem rgba($color-theme-dark, 0.7);
         }
@@ -203,5 +223,14 @@
 
     &:hover {
         text-decoration: underline;
+    }
+}
+
+.u-user-link {
+    &,
+    &:link,
+    &:visited {
+        text-decoration: none;
+        color: $color-font-dark;        
     }
 }

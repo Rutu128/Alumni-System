@@ -10,10 +10,13 @@ import ModalContainer from '../Modal UI/ModalContainer';
 import PostModal from '../Modal UI/PostModal';
 import { PostContext } from '../../context/PostContext';
 import ReactLoading from 'react-loading';
+import { log } from '../../log';
 import { ImageIcon } from '../Icon/HomepageIcons';
 
 
 export default function HomepageContentPost({ }) {
+    log('<HomepageContentPost/> rendered', 3);
+
     const [fileType, setFileType] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { submitNewPost } = useContext(PostContext);
@@ -57,7 +60,14 @@ export default function HomepageContentPost({ }) {
                             <ProfileImage />
                         </div>
                         <div className="post-input">
-                            <input ref={inputRef} type="text" placeholder='Type something...' />
+                            <input
+                                ref={inputRef}
+                                type="text"
+                                placeholder='Type something...'
+                                onKeyUp={(e) => {
+                                    e.key === "Enter" && handleSendClick()
+                                }}
+                            />
                         </div>
                         <div className="post-submit">
                             <button onClick={handleSendClick}>

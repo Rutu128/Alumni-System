@@ -1,42 +1,35 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import '../../sass/pages/_profile.scss';
 import ProfileImage from '../Homepage UI/ProfileImage';
+// import UserProfile from '../Posts/UserProfileImage';
 import { UserContext } from '../../context/UserContext';
+import { PiPencilSimpleDuotone } from "react-icons/pi";
 import ProfileInfo from '../UI components/ProfileInfo';
-import { useLocation } from 'react-router-dom';
-import UserProfileImage from '../Posts/UserProfileImage';
+import ModalContainer from '../Modal UI/ModalContainer';
+import ProfileEditModal from '../Modal UI/ProfileEditModal';
 
 
-export default function Profile() {
-    const { getUserDetails } = useContext(UserContext);
+export default function UserProfile() {
+    const { userDetail, getOwnerDetails } = useContext(UserContext);
+    const profileEdit = useRef();
 
-    const location = useLocation();
-    const { userId } = location.state || {};
+    function showProfileEdit() {
+        profileEdit.current.open();
+    }
 
-    const [userDetail, setUserDetail] = useState({
-        firstName: '',
-        lastName: '',
-        headline: '',
-        designation: '',
-        avatar: '',
-        initials: '',
-        posts: [],
-    });
+    function resetModal() {
+        profileEdit.current.close();
+    }
 
     useEffect(() => {
-        async function fetchUserDetails() {
-            // console.log(userId);
-            
-            const details = await getUserDetails(userId);
-            console.log(details);
-            
-            setUserDetail(details[0]);
-        }
-        fetchUserDetails();
+        getOwnerDetails();
     }, []);
 
     return (
         <>
+            <ModalContainer onReset={resetModal} ref={profileEdit} >
+                <ProfileEditModal closeModal={resetModal} userDetail={userDetail} />
+            </ModalContainer>
             <section className="profile">
                 <div className="profile__cont">
                     <div className="profile__head">
@@ -46,7 +39,7 @@ export default function Profile() {
                     <div className="profile__main">
                         <div className="profile__left">
                             <div className="profile-image">
-                                <UserProfileImage initials={userDetail.initials} profileSrc={userDetail.avatar} className={'full-length-image'} />
+                                <ProfileImage className={'full-length-image'} />
                             </div>
                             <div className="section-info">
                                 <div className="user-info">
@@ -60,10 +53,15 @@ export default function Profile() {
                                         {userDetail.designation}
                                     </div>
                                 </div>
+                                <div className="edit-profile-cont">
+                                    <button className="edit-profile u-button-secondary" onClick={showProfileEdit}>
+                                        Edit Profile
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div className="profile__right">
-                            {userDetail.firstName !== '' && <ProfileInfo userDetail={userDetail} notOwner={true} />}
+                            <ProfileInfo userDetail={userDetail} showProfileEdit={showProfileEdit} />
                         </div>
                     </div>
                 </div>
