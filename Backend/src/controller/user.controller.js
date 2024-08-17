@@ -386,8 +386,8 @@ const getUserDetails = asyncHandler(async (req, res) => {
                             else: false,
                         },
                     },
-                    "posts.likesCount": { $size: "$likes" },
-                    "posts.commentsCount": { $size: "$comments" },
+                    "posts.likes": { $size: "$likes" },
+                    "posts.comments": { $size: "$comments" },
                 },
             },
             {
