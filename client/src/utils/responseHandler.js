@@ -9,7 +9,6 @@ export default function handleResponse(res){
     }
     else if(res.data){
         if(res.data.statusCode === 200 | 202){
-            console.log('Api executed Successfully!');
             return {
                 status: res.data.statusCode,
             }

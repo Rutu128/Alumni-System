@@ -17,7 +17,9 @@ export const PostContext = createContext({
         user: {
             firstName: String,
             lastName: String,
-            initials: String
+            initials: String,
+            avatar: String,
+            _id: String,
         },
         likes: String,
     }],

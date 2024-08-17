@@ -2,9 +2,13 @@ import { formatDate } from "../../utils/formatDate";
 import { PiThumbsUpDuotone, PiThumbsUpFill } from "react-icons/pi";
 import UserProfile from "./UserProfileImage";
 import { useReducer, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function CommentBlock({ data, handleCommentLike, ...props }) {
     const [isLiked, setIsLiked] = useState(data.isLiked);
+    console.log(data);
+    const username = data.users.firstName + '_' + data.users.lastName;
+
 
     return (
         <div className="comment_cont" {...props}>
@@ -16,7 +20,9 @@ export default function CommentBlock({ data, handleCommentLike, ...props }) {
                 <div className="comment_body">
                     <div className="comment_user">
                         <div className="comment_user_name u-bold">
-                            {data.users.firstName + " " + data.users.lastName}
+                            <Link to={`/users/${username}`} state={{userId: data.users._id}} className="u-user-link">
+                                {data.users.firstName + " " + data.users.lastName}
+                            </Link>
                         </div>
                     </div>
 

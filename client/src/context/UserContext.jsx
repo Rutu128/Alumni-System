@@ -26,8 +26,10 @@ export const UserContext = createContext({
     getUserPosts: () => { },
     authenticateUser: () => { },
     createNotification: () => { },
-    getUserDetails: () => { },
+    getOwnerDetails: () => { },
     updateProfile: () => { },
+    getUserDetails: () => { },
+    searchUser: () => { },
 })
 
 
@@ -177,17 +179,40 @@ export default function UserContextProvider({ children }) {
         }
     }
 
-    async function handleGetUserDetails(){
+    async function handleGetOwnerDetails(){
         const response = await getApi('/user/me');
         const res = handleResponse(response);
         if(res.status === 200 | 202){
             const newData = response.data.data;
+            console.log(newData);
+            
             setUserInfo(prevInfo => {
                 return {
                     ...prevInfo,
                     ...newData[0],
                 }
             })
+        }
+    }
+
+    async function handleGetUserDetails(userId){
+        const response = await getApi(`/user/getUser/${userId}`);
+        
+        const res = handleResponse(response);
+        if(res.status === 200 | 202){
+            const newData = response.data.data;
+            return newData;
+        }
+    }
+
+    async function handleSearchUser(searchText){
+        const response = await getApi(`/user/find/${searchText}`);
+                
+        const res = handleResponse(response);
+        if(res.status === 200 | 202){
+            return response.data.data;
+        } else {
+            console.log(response.data);
         }
     }
 
@@ -200,7 +225,9 @@ export default function UserContextProvider({ children }) {
         authenticateUser: handleAuthenticateUser,
         createNotification: createNotification,
         updateProfile: handleUpdateProfile,
+        getOwnerDetails: handleGetOwnerDetails,
         getUserDetails: handleGetUserDetails,
+        searchUser: handleSearchUser,
     }
 
     return <UserContext.Provider value={ctxValue}>

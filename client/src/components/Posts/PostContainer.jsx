@@ -2,8 +2,10 @@ import { useContext } from "react";
 import ProfileImage from "../Homepage UI/ProfileImage";
 import { PostContext } from "../../context/PostContext";
 import Post from "./Post";
+import { log } from "../../log";
 
 export default function PostContainer(props) {
+    log('<PostContainer /> rendered', 3);
     const { posts, likePost, likeComment, getComments, newComment } = useContext(PostContext);
 
     return (

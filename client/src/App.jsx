@@ -10,6 +10,7 @@ import TestPage from './components/Homepage UI/TestPage';
 import LandingPage from './components/LandingPage';
 import HomepageContent from './components/Homepage UI/HomepageContent';
 import PostContextProvider from './context/PostContext';
+import UserProfile from './components/Pages/UserProfile';
 import Profile from './components/Pages/Profile';
 import GlobalContextProvider from './context/GlobalContext';
 import Search from './components/Pages/Search';
@@ -30,9 +31,12 @@ function App() {
               <Route path="/" element={<Homepage />}>
                 <Route path='/' index element={<HomepageContent />} />
                 <Route path='/testPage' element={<TestPage />} />
-                <Route path='/profile' element={<Profile />} />
+                <Route path='/profile' element={<UserProfile  />} />
                 <Route path='/search' element={<Search />} />
+                <Route path='/users/:username' element={<Profile />} />
               </Route>
+                {/* <Route path=':username' element={<Profile isUserProfile={false} />} />
+              </Route> */}
             </Routes>
           </Router>
         </PostContextProvider>

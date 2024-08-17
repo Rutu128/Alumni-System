@@ -2,9 +2,10 @@ import HomepageContentPost from "./HomepageContentPost";
 import Suggestions from "./Suggestions";
 import ImageUpload from "../UI components/ImageUpload";
 import PostContainer from "../Posts/PostContainer";
+import { log } from "../../log";
 
 export default function HomepageContent({ profileImg, initials, ...props }) {
-
+    log('<HomepageContent /> rendered', 2);
 
     return (
         <>

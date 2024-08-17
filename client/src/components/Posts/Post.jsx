@@ -1,6 +1,7 @@
 /* The above code is a React functional component called `Post` that represents a post in a social
 media application. Here is a summary of what the code is doing: */
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import UserProfile from "./UserProfileImage";
 import { formatDate } from "../../utils/formatDate";
 
@@ -9,10 +10,12 @@ import ProfileImage from '../Homepage UI/ProfileImage';
 import { isImage, isVideo, isPdf, getProcessedPdfUrl } from '../../utils/urlProcessor';
 import SendButton from '../UI components/SendButton';
 import CommentBlock from './CommentBlock';
+import { log } from '../../log';
 
 
 export default function Post({ postData, likePost, likeComment, getComments, newComment: postNewComment, modalView = false }) {
-    
+    // log('<Post /> rendered', 4);
+
     const [postState, setPostState] = useState({
         isLiked: postData.isLiked,
         like: postData.isLiked,
@@ -23,6 +26,8 @@ export default function Post({ postData, likePost, likeComment, getComments, new
     });
 
     const commentRef = useRef();
+
+    const username = postData.user.firstName + '_' + postData.user.lastName;
 
     useEffect(() => {
         if (postState.comment && postState.fetchedComments.length === 0) {
@@ -45,7 +50,7 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                 like: !prevOption.like,
             }));
             console.log(postData._id);
-            
+
             const res = await likePost(postData._id);
             if (res === 200) {
                 postData.likes += postState.like ? -1 : 1;
@@ -59,9 +64,9 @@ export default function Post({ postData, likePost, likeComment, getComments, new
         }
     };
 
-    async function handleLikeComment(id){
+    async function handleLikeComment(id) {
         const res = await likeComment(id);
-        if(res.status === 200){
+        if (res.status === 200) {
             fetchComments();
         }
     }
@@ -98,7 +103,9 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                     </div>
                     <div className="post__userInfo">
                         <div className="user_name">
-                            {postData.user.firstName + ' ' + postData.user.lastName}
+                            <Link to={`/users/${username}`} state={{ userId: postData.user._id }} className='u-user-link'>
+                                {postData.user.firstName + ' ' + postData.user.lastName}
+                            </Link>
                         </div>
                         <div className="post_date">
                             {formatDate(postData.createdAt)}
@@ -106,7 +113,9 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                     </div>
                 </div>
                 <div className="post__description">
-                    {postData.description}
+                    <p className="description--text">
+                        {postData.description}
+                    </p>
                 </div>
                 <div className="post__content">
                     {postData.content.length > 0 &&
@@ -188,7 +197,7 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                                 placeholder='Add a comment...'
                                 onKeyUp={(e) => {
                                     e.key === "Enter" && newComment()
-                                }} 
+                                }}
                             />
                         </div>
                         <div className="comment-submit" onClick={newComment}>
