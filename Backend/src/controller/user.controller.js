@@ -401,6 +401,7 @@ const getUserDetails = asyncHandler(async (req, res) => {
                     headline: { $first: "$headline" },
                     designation: { $first: "$designation" },
                     passingYear: { $first: "$passingYear" },
+                    description: { $first: "$description" },
                 },
             },
             {
@@ -414,6 +415,7 @@ const getUserDetails = asyncHandler(async (req, res) => {
                     headline: 1,
                     designation: 1,
                     passingYear: 1,
+                    description: 1,
                 },
             },
         ]);
