@@ -45,7 +45,7 @@ import ProfileImage from "./ProfileImage";
 import SiteIcon from "../UI components/SiteIcon";
 import { PiBell } from "react-icons/pi";
 import { Link } from "react-router-dom";
-
+import React from "react";
 export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
     const navigate = useNavigate();
 

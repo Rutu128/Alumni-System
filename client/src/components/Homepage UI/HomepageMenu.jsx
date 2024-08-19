@@ -6,7 +6,7 @@ import ProfileImage from "./ProfileImage";
 import SiteIcon from "../UI components/SiteIcon";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
-
+import React from "react";
 
 export default function HomepageHeader2({ isLoggedIn, initials }) {
     const [selectedMenu, setSelectedMenu] = useState('Home');

@@ -11,6 +11,7 @@ import LoadingScreen from './Homepage UI/LoadingScreen';
 
 import '../sass/pages/_homepage.scss';
 import { PostContext } from '../context/PostContext';
+import React from 'react';
 
 export default function Homepage() {
     log('<Homepage /> rendered', 1);
