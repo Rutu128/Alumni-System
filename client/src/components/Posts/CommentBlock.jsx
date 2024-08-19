@@ -47,7 +47,7 @@ export default function CommentBlock({ data, handleCommentLike, ...props }) {
                         {isLiked
                             ?
                             <PiThumbsUpFill
-                                className='interaction-icons align'
+                                className='interaction-icons align animate-like'
                             />
                             :
                             <PiThumbsUpDuotone

@@ -15,7 +15,8 @@ import { ImageIcon } from '../Icon/HomepageIcons';
 
 
 export default function HomepageContentPost({ }) {
-    log('<HomepageContentPost/> rendered', 3);
+    log('<HomepageContentPost/> rendered', 3
+    );
 
     const [fileType, setFileType] = useState('');
     const [isLoading, setIsLoading] = useState(false);

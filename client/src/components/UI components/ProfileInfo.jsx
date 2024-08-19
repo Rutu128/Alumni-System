@@ -3,7 +3,7 @@ import { UserContext } from "../../context/UserContext";
 import UserPostContainer from "../Posts/UserPostContainer";
 import Loading from "react-loading";
 
-export default function ProfileInfo({ userDetail, notOwner = false, showProfileEdit = () => {} }) {
+export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = () => {} }) {
     const [userPosts, setUserPosts] = useState([]);
     const [showFullText, setShowFullText] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -86,10 +86,13 @@ export default function ProfileInfo({ userDetail, notOwner = false, showProfileE
                 </div>
                 {userPosts.length === 0 ?
                     <div className="fallback">
-                        {isLoading ? <Loading type="spin" color="#333" width={'2rem'} height={'2rem'} className={"loader"} /> : 'No posts to show'}
+                        {/* {isLoading ? <Loading type="spin" color="#333" width={'2rem'} height={'2rem'} className={"loader"} /> : 'No posts to show'} */}
+                        <div className="u-fallback-illustration">
+                            <img src="./illustrations/no-post.svg" alt="" />
+                        </div>
                     </div>
                     :
-                    <UserPostContainer posts={userPosts} />
+                    <UserPostContainer posts={userPosts} notOwner={notOwner} />
                 }
             </section>
         </>

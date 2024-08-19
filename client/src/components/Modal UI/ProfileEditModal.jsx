@@ -83,14 +83,14 @@ export default function ProfileEditModal({ closeModal }) {
                 <div className="part-right">
                     <div className="right-body">
                         <h2>About:</h2>
-                        <div className="description-box">
+                        <div className="u-description-box">
                             <textarea
                                 value={about}
                                 onChange={(e) => setAbout(e.target.value)}
                                 name="about"
                                 id="about"
                                 placeholder="Enter about..."
-                                className='u-input-primary'
+                                className='u-post-description'
                             />
                         </div>
                         <h2>Designation:</h2>

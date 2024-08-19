@@ -10,6 +10,7 @@ import LoadingScreen from './Homepage UI/LoadingScreen';
 
 import '../sass/pages/_homepage.scss';
 import { PostContext } from '../context/PostContext';
+import { GlobalContext } from '../context/GlobalContext';
 
 export default function Homepage() {
     log('<Homepage /> rendered', 1);
@@ -17,7 +18,7 @@ export default function Homepage() {
     const { getPosts } = useContext(PostContext);
 
     const [isLoading, setIsLoading] = useState(userDetail.isAuthenticated ? false : true);
-    const [selectedMenu, setSelectedMenu] = useState('Home');
+    const {selectedMenu, setSelectedMenu} = useContext(GlobalContext);
 
     const navigate = useNavigate();
 

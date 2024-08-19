@@ -15,7 +15,7 @@ export default function PostContainer(props) {
                     return (
                         <div key={index}>
                             <Post postData={post} getComments={getComments} newComment={newComment} likePost={likePost} likeComment={likeComment} />
-                            <div className="separator"></div>
+                            {/* <div className="separator"></div> */}
                         </div>
                     )
                 })}

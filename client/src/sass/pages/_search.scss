@@ -65,14 +65,6 @@
             border-radius: 1rem;
             overflow: hidden;
             border: 2px solid $color-theme-light;
-
-            .fallback{
-                padding: 2rem;
-                text-align: center;
-                font-size: 1rem;
-                color: $color-theme-dark;
-                background-color: $color-theme-back-light;
-            }
         }
 
         &--item{
@@ -108,6 +100,13 @@
     .search {
         &__input {
             width: 100%;
+        }
+
+        &__result{
+
+            &--body {
+                width: 100%;
+            }
         }
     }
 }

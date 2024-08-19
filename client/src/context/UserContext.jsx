@@ -200,6 +200,7 @@ export default function UserContextProvider({ children }) {
         
         const res = handleResponse(response);
         if(res.status === 200 | 202){
+            console.log(response.data.data);
             const newData = response.data.data;
             return newData;
         }

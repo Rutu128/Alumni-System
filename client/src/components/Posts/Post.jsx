@@ -5,15 +5,18 @@ import { Link } from 'react-router-dom';
 import UserProfile from "./UserProfileImage";
 import { formatDate } from "../../utils/formatDate";
 
-import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill } from "react-icons/pi";
+import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill, PiDotsThreeVerticalBold } from "react-icons/pi";
 import ProfileImage from '../Homepage UI/ProfileImage';
 import { isImage, isVideo, isPdf, getProcessedPdfUrl } from '../../utils/urlProcessor';
 import SendButton from '../UI components/SendButton';
 import CommentBlock from './CommentBlock';
 import { log } from '../../log';
+import Loading from 'react-loading';
+import parse from 'html-react-parser';
 
 
-export default function Post({ postData, likePost, likeComment, getComments, newComment: postNewComment, modalView = false }) {
+
+export default function Post({ postData, likePost, likeComment, getComments, newComment: postNewComment, modalView = false, notOwner }) {
     // log('<Post /> rendered', 4);
 
     const [postState, setPostState] = useState({
@@ -21,8 +24,10 @@ export default function Post({ postData, likePost, likeComment, getComments, new
         like: postData.isLiked,
         comment: false,
         fetchedComments: [],
+        fetchingComments: false,
         newCommentLoading: false,
         animateComment: false,
+        commentCount: postData.comments,
     });
 
     const commentRef = useRef();
@@ -36,10 +41,18 @@ export default function Post({ postData, likePost, likeComment, getComments, new
     }, [postState.comment]);
 
     const fetchComments = async () => {
+        setPostState(prevOption => {
+            return {
+                ...prevOption,
+                fetchingComments: true
+            }
+        });
         const comments = await getComments(postData._id);
         setPostState(prevOption => ({
             ...prevOption,
             fetchedComments: comments,
+            fetchingComments: false,
+            commentCount: comments.length,
         }));
     };
 
@@ -111,11 +124,18 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                             {formatDate(postData.createdAt)}
                         </div>
                     </div>
+                    {!notOwner &&
+                        <div className="post_actions">
+                            <button className="action-button u-button u-button-tertiary u-icon-button-tertiary">
+                                <PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />
+                            </button>
+                        </div>
+                    }
                 </div>
                 <div className="post__description">
-                    <p className="description--text">
-                        {postData.description}
-                    </p>
+                    <div className="description--text parsed-editor-text">
+                        {parse(postData.description)}
+                    </div>
                 </div>
                 <div className="post__content">
                     {postData.content.length > 0 &&
@@ -146,7 +166,7 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                     </div>
                     <div>|</div>
                     <div className="comments">
-                        {postData.comments + ' Comments'}
+                        {postState.commentCount + ' Comments'}
                     </div>
                 </div>
                 <div className="post__foot">
@@ -204,11 +224,16 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                             <SendButton isLoading={postState.newCommentLoading} />
                         </div>
                     </div>
+                    {/* {postState.fetchingComments ? 
+                        <div className="u-fallback">
+                            <Loading type='spin' color='$color-theme-light' width={'2rem'} height={'2rem'} />
+                        </div> 
+                        : */}
                     {(postState.fetchedComments.length > 0) &&
                         postState.fetchedComments.map((comment, index) => (
                             <CommentBlock data={comment} handleCommentLike={handleLikeComment} key={index} />
-                        ))
-                    }
+                        ))}
+
                 </div>
             }
         </div>

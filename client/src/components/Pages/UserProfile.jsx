@@ -7,21 +7,25 @@ import { PiPencilSimpleDuotone } from "react-icons/pi";
 import ProfileInfo from '../UI components/ProfileInfo';
 import ModalContainer from '../Modal UI/ModalContainer';
 import ProfileEditModal from '../Modal UI/ProfileEditModal';
+import { GlobalContext } from '../../context/GlobalContext';
 
 
 export default function UserProfile() {
     const { userDetail, getOwnerDetails } = useContext(UserContext);
     const profileEdit = useRef();
+    const { setSelectedMenu } = useContext(GlobalContext);
 
+    
     function showProfileEdit() {
         profileEdit.current.open();
     }
-
+    
     function resetModal() {
         profileEdit.current.close();
     }
-
+    
     useEffect(() => {
+        setSelectedMenu('Profile');
         getOwnerDetails();
     }, []);
 
@@ -61,7 +65,7 @@ export default function UserProfile() {
                             </div>
                         </div>
                         <div className="profile__right">
-                            <ProfileInfo userDetail={userDetail} showProfileEdit={showProfileEdit} />
+                            <ProfileInfo userDetail={userDetail} showProfileEdit={showProfileEdit} notOwner={false} />
                         </div>
                     </div>
                 </div>

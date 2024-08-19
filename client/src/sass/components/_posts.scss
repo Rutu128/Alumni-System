@@ -2,7 +2,7 @@
     color: $color-font-dark;
     margin: .5rem 0;
     border-radius: 1rem;
-    border: 2px solid $color-grey-light-3;
+    border: 2px solid rgba($color-theme-dark, .1);
     overflow: hidden;
 
     @media (max-width: 768px){
@@ -25,6 +25,7 @@
     &__userInfo {
         margin-left: .5rem;
         font-stretch: 110%;
+        flex: 1;
         
         .user_name{
             font-weight: 700;
@@ -41,6 +42,7 @@
         padding: .5rem 1rem;
         font-weight: 450;
         font-size: .85rem;
+        white-space: pre-wrap;
     }
 
     &__content {
@@ -236,6 +238,10 @@
 
             &:hover{
                 background-color: $color-theme-back-light;
+            }
+
+            .animate-like{
+                animation: like-animation .3s ease;
             }
         }
 

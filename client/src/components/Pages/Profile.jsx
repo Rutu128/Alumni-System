@@ -5,14 +5,11 @@ import { UserContext } from '../../context/UserContext';
 import ProfileInfo from '../UI components/ProfileInfo';
 import { useLocation } from 'react-router-dom';
 import UserProfileImage from '../Posts/UserProfileImage';
+import { GlobalContext } from '../../context/GlobalContext';
 
 
 export default function Profile() {
-    const { getUserDetails } = useContext(UserContext);
-
-    const location = useLocation();
-    const { userId } = location.state || {};
-
+    
     const [userDetail, setUserDetail] = useState({
         firstName: '',
         lastName: '',
@@ -22,10 +19,15 @@ export default function Profile() {
         initials: '',
         posts: [],
     });
+    
+    const location = useLocation();
+    const { userId } = location.state || {};
+    
+    const { getUserDetails } = useContext(UserContext);
 
     useEffect(() => {
         async function fetchUserDetails() {
-            // console.log(userId);
+            console.log(userId);
             
             const details = await getUserDetails(userId);
             console.log(details);
@@ -46,7 +48,7 @@ export default function Profile() {
                     <div className="profile__main">
                         <div className="profile__left">
                             <div className="profile-image">
-                                <UserProfileImage initials={userDetail.initials} profileSrc={userDetail.avatar} className={'full-length-image'} />
+                                <UserProfileImage profileSrc={userDetail.avatar} className={'full-length-image'} />
                             </div>
                             <div className="section-info">
                                 <div className="user-info">

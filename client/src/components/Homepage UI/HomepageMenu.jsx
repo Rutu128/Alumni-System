@@ -5,21 +5,21 @@ import { PiUsers, PiUsersFill, PiThumbsUp, PiThumbsUpFill, PiBell, PiBellFill, P
 
 import ProfileImage from "./ProfileImage";
 import SiteIcon from "../UI components/SiteIcon";
-import { useContext, useState } from "react";
-import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
+import { GlobalContext } from "../../context/GlobalContext";
 
 
-export default function HomepageHeader2({ handleSelectMenu, selectedMenu }) {
+export default function HomepageMenu() {
     log('<HomepageMenu /> rendered', 2);
-
+    const { selectedMenu, setSelectedMenu } = useContext(GlobalContext);
 
     const navItems = [
         { name: 'Home', icon: PiHouse, fillIcon: PiHouseFill, path: '/' },
-        { name: 'Search', icon: PiMagnifyingGlass, fillIcon: PiMagnifyingGlassDuotone, path: '/search', isSelected: false },
-        { name: 'Notifications', icon: PiBell, fillIcon: PiBellFill, path: '/testPage', isSelected: false },
-        { name: 'Network', icon: PiUsers, fillIcon: PiUsersFill, path: '/testPage', isSelected: false },
-        { name: 'Interactions', icon: PiThumbsUp, fillIcon: PiThumbsUpFill, path: '/testPage', isSelected: false },
-        { name: 'Settings', icon: PiGear, fillIcon: PiGearFill, path: '/testPage', isSelected: false },
+        { name: 'Search', icon: PiMagnifyingGlass, fillIcon: PiMagnifyingGlassDuotone, path: '/search' },
+        { name: 'Notifications', icon: PiBell, fillIcon: PiBellFill, path: '/testPage' },
+        { name: 'Network', icon: PiUsers, fillIcon: PiUsersFill, path: '/testPage' },
+        { name: 'Interactions', icon: PiThumbsUp, fillIcon: PiThumbsUpFill, path: '/testPage' },
+        { name: 'Settings', icon: PiGear, fillIcon: PiGearFill, path: '/testPage' },
     ]
     
 
@@ -42,7 +42,7 @@ export default function HomepageHeader2({ handleSelectMenu, selectedMenu }) {
                         const IconComponent = isSelected ? item.fillIcon : item.icon;
                         return (
                             <div className={"nav--item " + item.name} key={index}>
-                                <Link onClick={() => { handleSelectMenu(item.name) }} to={item.path} className={`nav--link ${selectedMenu === item.name && 'highlight'}`}>
+                                <Link onClick={() => { setSelectedMenu(item.name) }} to={item.path} className={`nav--link ${selectedMenu === item.name && 'highlight'}`}>
                                     <IconComponent className='nav--icons' />
                                     <p>
                                         {item.name}
@@ -54,7 +54,7 @@ export default function HomepageHeader2({ handleSelectMenu, selectedMenu }) {
                 </div>
                 <div className="menu__footer">
                     <div className="nav--item">
-                        <Link to={'/testPage'} onClick={() => { handleSelectMenu('Settings') }} className={`nav--link ${selectedMenu === 'Settings' && 'highlight'}`}>
+                        <Link to={'/testPage'} onClick={() => { setSelectedMenu('Settings') }} className={`nav--link ${selectedMenu === 'Settings' && 'highlight'}`}>
                             <PiGear className="nav--icons" />
                             <p>
                                 Settings
@@ -62,7 +62,7 @@ export default function HomepageHeader2({ handleSelectMenu, selectedMenu }) {
                         </Link>
                     </div>
                     <div className="nav--item Profile">
-                        <Link to={'/profile'} onClick={() => { handleSelectMenu('Profile') }} className={`link-profile ${selectedMenu === 'Profile' && 'highlight'}`}>
+                        <Link to={'/profile'} onClick={() => { setSelectedMenu('Profile') }} className={`link-profile ${selectedMenu === 'Profile' && 'highlight'}`}>
                             <ProfileImage />
                             <p>
                                 Profile
@@ -74,8 +74,3 @@ export default function HomepageHeader2({ handleSelectMenu, selectedMenu }) {
         </div>
     )
 }
-
-//remaining work
-//  -removing menu__header and menu__footer for mobile devices
-//  -removing notification from menu__navigation and displaying it in header
-//  -selected menu highlighting

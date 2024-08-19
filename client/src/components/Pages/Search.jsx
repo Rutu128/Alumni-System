@@ -5,14 +5,20 @@ import { UserContext } from "../../context/UserContext";
 import { PiMagnifyingGlass } from "react-icons/pi";
 import UserProfileImage from "../Posts/UserProfileImage";
 import { Link } from "react-router-dom";
+import { GlobalContext } from "../../context/GlobalContext";
 
 export default function Search() {
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
     const { searchUser } = useContext(UserContext);
+    const { setSelectedMenu } = useContext(GlobalContext);
 
     const delay = 200;
+
+    useEffect(() => {
+        setSelectedMenu('Search');
+    }, [])
 
     useEffect(() => {
         if (searchText === '') return;
@@ -55,28 +61,35 @@ export default function Search() {
                 <div className="search__result">
                     <div className="search__result--head"></div>
                     <div className="search__result--body">
-                        {searchResults.length === 0 ? 
-                        <div className="fallback">
-                            Enter search text
-                        </div>
-                        :
-                        searchResults.map((user, index) => {
-                            const username = user.firstName + '_' + user.lastName;
-                            return (
-                                <div className="search__result--item" key={index}>
-                                    <Link to={`/users/${username}`} state={{userId: user._id}}>
-                                        <div className="search__result--item--image">
-                                            <UserProfileImage profileSrc={user.avatar} />
-                                        </div>
-                                        <div className="search__result--item--info">
-                                            <div className="search__result--item--name">
-                                                {user.firstName + ' ' + user.lastName}
-                                            </div>
-                                        </div>
-                                    </Link>
+                        {searchResults.length === 0 || searchText === "" ?
+                            <div className="u-fallback">
+                                <div className="u-fallback-illustration">
+                                    {/* <img src="/illustrations/search.webm" alt="" /> */}
+                                    <video loop autoPlay muted playsInline>
+                                        <source src="/illustrations/search.webm" type="video/webm" />
+                                            Your browser does not support the video tag.
+                                    </video>
                                 </div>
-                            )
-                        })}
+                                Enter search text
+                            </div>
+                            :
+                            searchResults.map((user, index) => {
+                                const username = user.firstName + '_' + user.lastName;
+                                return (
+                                    <div className="search__result--item" key={index}>
+                                        <Link to={`/users/${username}`} state={{ userId: user._id }}>
+                                            <div className="search__result--item--image">
+                                                <UserProfileImage profileSrc={user.avatar} />
+                                            </div>
+                                            <div className="search__result--item--info">
+                                                <div className="search__result--item--name">
+                                                    {user.firstName + ' ' + user.lastName}
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                )
+                            })}
                     </div>
                 </div>
             </div>
