@@ -8,28 +8,19 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
     const [showFullText, setShowFullText] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    const { getUserPosts } = useContext(UserContext);
+    const { getUserPosts, getOwnerPosts } = useContext(UserContext);
 
     useEffect(() => {
+        console.log('Fetching User Posts...');
         handleFetchPosts();
     }, []);
 
     async function handleFetchPosts() {
         let posts;
         if(notOwner){
-            let userPosts = userDetail.posts;
-            posts = userPosts.map(post => {
-                return {
-                    ...post,
-                    user: {
-                        firstName: userDetail.firstName,
-                        lastName: userDetail.lastName,
-                        avatar: userDetail.avatar,
-                    }
-                }
-            });
+            posts = await getUserPosts(userDetail._id);
         } else {
-            posts = await getUserPosts();
+            posts = await getOwnerPosts();
         }
         console.log(posts);
         setUserPosts(posts);
@@ -85,14 +76,21 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
                     <h2>Posts</h2>
                 </div>
                 {userPosts.length === 0 ?
-                    <div className="fallback">
+                    <div className="u-fallback">
                         {/* {isLoading ? <Loading type="spin" color="#333" width={'2rem'} height={'2rem'} className={"loader"} /> : 'No posts to show'} */}
                         <div className="u-fallback-illustration">
                             <img src="./illustrations/no-post.svg" alt="" />
                         </div>
+                        <div className="u-fallback-text">
+                            {isLoading ? 
+                                <Loading type="spin" color="#333" width={'2rem'} height={'2rem'} className={"loader"} /> 
+                                : 
+                                <h3>No posts to show</h3>
+                            }
+                        </div>
                     </div>
                     :
-                    <UserPostContainer posts={userPosts} notOwner={notOwner} />
+                    <UserPostContainer handleFetchPosts={handleFetchPosts} posts={userPosts} notOwner={notOwner} />
                 }
             </section>
         </>

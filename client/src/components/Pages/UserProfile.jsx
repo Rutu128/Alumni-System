@@ -27,7 +27,7 @@ export default function UserProfile() {
     useEffect(() => {
         setSelectedMenu('Profile');
         getOwnerDetails();
-    }, []);
+    }, []); 
 
     return (
         <>

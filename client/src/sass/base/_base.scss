@@ -38,3 +38,19 @@ input {
     font-family: 'Mona-sans', sans-serif;
     font-weight: 600;
 }
+
+[popover], :popover-open {
+    position: absolute !important;
+    bottom: 0 !important;
+    right: 0 !important;
+}
+
+:popover-open {
+    width: 200px;
+    height: 100px;
+    position: absolute;
+    inset: unset;
+    bottom: 5px;
+    right: 5px;
+    margin: 0;
+}

@@ -1,5 +1,5 @@
 @mixin profile-img {
-    .dummy-profile{
+    .dummy-profile {
         width: 2.6rem;
         // height: 2.6rem;
         aspect-ratio: 1 / 1;
@@ -23,7 +23,7 @@
         width: 100%;
         // aspect-ratio:;
     }
-    
+
     .image-wrapper img {
         width: 100%;
         height: 100%;
@@ -31,20 +31,20 @@
         display: block;
     }
 
-    .dummy-profile{
+    .dummy-profile {
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        font-family: 'Mona-sans';
+        font-family: "Mona-sans";
         font-weight: 600;
         background-color: #7332fe;
         color: $color-font-light;
         font-size: 1rem;
         border: none;
         outline: none;
-        transition: all .3s;
+        transition: all 0.3s;
 
-        &:hover{
+        &:hover {
             background-color: $color-theme-dark;
         }
     }
@@ -63,16 +63,17 @@
     width: 100%;
 }
 
-@mixin input{
-    .input-field{
+@mixin input {
+    .input-field {
         width: 48%; /* Adjusted width to fit two fields side by side */
     }
 
-    .input-field-login{
+    .input-field-login {
         width: 100%;
     }
 
-    .input-field, .input-field-login {
+    .input-field,
+    .input-field-login {
         display: inline-block;
         position: relative;
         text-align: left;
@@ -83,7 +84,7 @@
             display: block;
             margin-left: 1.4rem;
             position: absolute;
-            top: .95rem;
+            top: 0.95rem;
             left: 0;
             color: $color-font-dark;
             padding: 0 0.2rem;
@@ -92,9 +93,12 @@
             z-index: 0;
         }
 
-        input[value=""]:not(:focus) { color: transparent; }
+        input[value=""]:not(:focus) {
+            color: transparent;
+        }
 
-        input, select {
+        input,
+        select {
             position: relative;
             display: inline-block;
             width: 100%; /* Full width within the container */
@@ -104,39 +108,39 @@
             outline: none;
             border-radius: 2rem;
             background-color: transparent !important;
-            font-family: 'Regular', sans-serif;
+            font-family: "Regular", sans-serif;
             z-index: 1;
-            transition: all .3s;
+            transition: all 0.3s;
 
             &:focus {
                 border: 2px solid #42768c;
             }
         }
 
-        select{
+        select {
             // height: 3.1rem;
             appearance: none;
-            padding: .87rem 1.2rem;
+            padding: 0.87rem 1.2rem;
         }
-
 
         .error {
             border: 2px solid #fa4f4f;
         }
 
-        .showPassword, .hidePassword {
+        .showPassword,
+        .hidePassword {
             border: none;
             outline: none;
             background-color: transparent;
             position: absolute;
             top: 1.05rem;
-            right: .8rem;
-            font-size:1rem;
+            right: 0.8rem;
+            font-size: 1rem;
             cursor: pointer;
             z-index: 5;
             color: $color-font-dark;
 
-            &:focus{
+            &:focus {
                 background-color: transparent;
             }
         }
@@ -162,7 +166,7 @@
     }
 }
 
-@mixin horizontal-scrollbar{
+@mixin horizontal-scrollbar {
     &::-webkit-scrollbar {
         height: 3px; // Adjust the height of the scrollbar
         width: 4px;
@@ -201,30 +205,37 @@
 }
 
 @mixin no-scrollbar {
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
         opacity: 0;
     }
 }
 
-@mixin page-headers{
+@mixin page-headers {
     width: 100%;
-        display: block;
-        border-bottom: 1px solid $color-grey-light-3;
-        
-        h1 {
-            // font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);
-            font-size: responsive-font-size(2.5);
-            font-weight: 900;
-            font-stretch: 120%;
-        }
-        
-        h2 {
-            font-size: responsive-font-size(1.5);
-            font-weight: 900;
-            font-stretch: 120%;
-        }
+    display: block;
+    padding-bottom: 3px;
+    border-bottom: 1px solid $color-grey-light-3;
 
-        hr{
-            color: $color-theme-dark;
-        }
+    h1 {
+        // font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);
+        font-size: responsive-font-size(2.5);
+        font-weight: 800;
+        font-stretch: 120%;
+    }
+
+    h2 {
+        font-size: responsive-font-size(1.5);
+        font-weight: 900;
+        font-stretch: 120%;
+    }
+
+    h3 {
+        font-size: responsive-font-size(1.2);
+        font-weight: 700;
+        font-stretch: 120%;
+    }
+
+    @media (max-width: 768px){
+        display: none;
+    }
 }

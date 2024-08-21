@@ -8,9 +8,11 @@ export default function handleResponse(res){
         }
     }
     else if(res.data){
-        if(res.data.statusCode === 200 | 202){
+        if((res.data.statusCode === 200 | 202) || (res.status === 200 | 202)){
+            console.log('Success');
+            
             return {
-                status: res.data.statusCode,
+                status: 200,
             }
         }
     }

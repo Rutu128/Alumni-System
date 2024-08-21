@@ -62,7 +62,7 @@ export default function Search() {
                     <div className="search__result--head"></div>
                     <div className="search__result--body">
                         {searchResults.length === 0 || searchText === "" ?
-                            <div className="u-fallback">
+                            <div className="u-fallback u-back-light">
                                 <div className="u-fallback-illustration">
                                     {/* <img src="/illustrations/search.webm" alt="" /> */}
                                     <video loop autoPlay muted playsInline>

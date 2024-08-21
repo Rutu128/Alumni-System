@@ -4,6 +4,7 @@ import postApi from "../utils/postApi";
 import getApi from "../utils/getApi";
 import putApi from "../utils/putApi";
 import handleResponse from '../utils/responseHandler';
+import deleteApi from "../utils/deleteApi";
 
 export const PostContext = createContext({
     posts: [{
@@ -30,6 +31,7 @@ export const PostContext = createContext({
     likeComment: () => { },
     getComments: () => { },
     newComment: () => { },
+    deletePost: () => { },
 })
 
 export default function PostContextProvider({ children }){
@@ -123,6 +125,11 @@ export default function PostContextProvider({ children }){
         }
     }
 
+    async function handleDeletePost(id){
+        const response = await deleteApi('/post/delete/' + id);
+        return handleResponse(response);
+    }
+
     const ctxValue = {
         posts: posts,
         submitNewPost: handleNewPost,
@@ -131,6 +138,7 @@ export default function PostContextProvider({ children }){
         likeComment: handleLikeComment,
         getComments: handleGetComments,
         newComment: handleNewComment,
+        deletePost: handleDeletePost,
     }
 
     return <PostContext.Provider value={ctxValue}>

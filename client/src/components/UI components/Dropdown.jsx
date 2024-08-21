@@ -1,24 +1,45 @@
-import { useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from 'react';
 
-export default function Dropdown({ heading, children, ...props }) {
+export default function Dropdown({ label, icon: Icon, buttonClassName, children }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [dropdownClasses, setDropdownClasses] = useState('');
+    const dropdownRef = useRef(null);
 
-    // function handleDropdown(){
-    //     setIsOpen(true);
-    //     setDropdownClasses('showDropdown');
-    // }
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setIsOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            window.addEventListener('click', handleClickOutside);
+        } else {
+            window.removeEventListener('click', handleClickOutside);
+        }
+
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, [isOpen]);
 
     return (
-        <div className="dropdown" {...props}>
-            <button className="dropdown__heading" onClick={() => setIsOpen(openState => !openState)}>
-                {heading}
-                <FaChevronDown className="dropdown__icon" />
+        <div className="dropdown" ref={dropdownRef}>
+            <button
+                className={`dropdown__button ${buttonClassName}`}
+                onClick={toggleDropdown}
+            >
+                {Icon}
+                {label ? label : null}
             </button>
-            <div className={`dropdown_links ${isOpen ? 'showDropdown' : 'hidden'}`}>
-                {children}
-            </div>
+            {isOpen && (
+                <div className={`dropdown__menu ${isOpen && 'animate-dropdown'}`}>
+                    {children}
+                </div>
+            )}
         </div>
-    )
+    );
 }

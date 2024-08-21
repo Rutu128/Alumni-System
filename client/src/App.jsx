@@ -14,6 +14,7 @@ import UserProfile from './components/Pages/UserProfile';
 import Profile from './components/Pages/Profile';
 import GlobalContextProvider from './context/GlobalContext';
 import Search from './components/Pages/Search';
+import Settings from './components/Pages/Settings';
 
 function App() {
   log('<App /> rendered');
@@ -31,9 +32,10 @@ function App() {
               <Route path="/" element={<Homepage />}>
                 <Route path='/' index element={<HomepageContent />} />
                 <Route path='/testPage' element={<TestPage />} />
-                <Route path='/profile' element={<UserProfile  />} />
-                <Route path='/search' element={<Search />} />
                 <Route path='/users/:username' element={<Profile />} />
+                <Route path='/search' element={<Search />} />
+                <Route path='/settings' element={<Settings />} />
+                <Route path='/profile' element={<UserProfile />} />
               </Route>
                 {/* <Route path=':username' element={<Profile isUserProfile={false} />} />
               </Route> */}

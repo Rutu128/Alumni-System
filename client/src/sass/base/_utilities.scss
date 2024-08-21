@@ -64,7 +64,7 @@
         background-color: $color-theme-back-light;
         border-radius: 1rem;
         width: 100%;
-        margin-bottom: 1rem;
+        margin-bottom: responsive-font-size(1);
 
         &:focus {
             border: 2px solid $color-theme-dark;
@@ -160,11 +160,27 @@
 
 .u-phosphor-icons {
     margin: 0rem 0.2rem -0.2rem 0.14rem;
+
+    &-settings{
+        margin: 0rem 0 -.18rem 0;
+    }
+}
+
+.u-icon-font{
+    font-size: 1.2rem;
+}
+
+.u-icon-margin-r {
+    margin-right: 0.3rem;
 }
 
 .u-font-dark {
     // color: $color-theme-dark;
     background-color: $color-theme-dark;
+}
+
+.u-back-light{
+    background: $color-theme-back-light;
 }
 
 .u-error-text {
@@ -257,7 +273,7 @@
     padding: 1rem 2rem;
     font-size: 1rem;
     color: $color-theme-dark;
-    background-color: $color-theme-back-light;
+    background-color: transparent;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -269,6 +285,11 @@
             width: 100%;
             height: auto;
         }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
     }
 }
 
@@ -276,11 +297,12 @@
     
     background-color: $color-theme-back-light;
     padding: .5rem .8rem;
-    height: 10rem;
+    height: responsive-font-size(8);
     min-height: 5rem;
     border-radius: 1rem;
     border: 2px solid $color-theme-light;
     flex: 1;
+    margin-bottom: responsive-font-size(1);
     
     @include no-scrollbar;
     
@@ -430,4 +452,8 @@
             background-color: $color-theme-back-light;
         }
     }
+}
+
+.u-section-header{
+    @include page-headers;
 }

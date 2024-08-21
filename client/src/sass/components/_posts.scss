@@ -38,6 +38,40 @@
         }
     }
 
+    &__menu {
+        width: 10rem;
+        border-radius: .5rem;
+        overflow: hidden;
+
+        .menu--item{
+            width: 100%;
+            padding: .5rem 1rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: .8rem;
+            font-weight: 700;
+            color: $color-theme-dark;
+            // border-radius: 1rem;
+            // margin-right: .5rem;
+            cursor: pointer;
+            transition: all .3s;
+
+            &:hover{
+                background-color: $color-theme-back-light;
+            }
+        }
+
+        .item-red {
+            color: $color-red;
+            background: rgba($color-red, .2);
+
+            &:hover{
+                background-color: rgba($color-red, .3);
+            }
+        }
+    }
+
     &__description{
         padding: .5rem 1rem;
         font-weight: 450;

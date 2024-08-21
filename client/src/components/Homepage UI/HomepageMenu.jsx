@@ -54,7 +54,7 @@ export default function HomepageMenu() {
                 </div>
                 <div className="menu__footer">
                     <div className="nav--item">
-                        <Link to={'/testPage'} onClick={() => { setSelectedMenu('Settings') }} className={`nav--link ${selectedMenu === 'Settings' && 'highlight'}`}>
+                        <Link to={'/settings'} onClick={() => { setSelectedMenu('Settings') }} className={`nav--link ${selectedMenu === 'Settings' && 'highlight'}`}>
                             <PiGear className="nav--icons" />
                             <p>
                                 Settings

@@ -24,6 +24,7 @@ export const UserContext = createContext({
     logoutUser: () => { },
     registerUser: () => { },
     getUserPosts: () => { },
+    getOwnerPosts: () => { },
     authenticateUser: () => { },
     createNotification: () => { },
     getOwnerDetails: () => { },
@@ -96,24 +97,37 @@ export default function UserContextProvider({ children }) {
         }
     }
 
-    function handleLogoutUser() {
-        setUserInfo({
-            firstName: '',
-            lastName: '',
-            email: '',
-            initials: '',
-            avatar: '',
-            isAuthenticated: false
-        })
-        return {
-            logoutStatus: 200
+    async function handleLogoutUser() {
+        const response = await axios.get('/auth/logout');
+        
+        const res = handleResponse(response);
+        console.log(res);
+
+        if(res.status === 200){
+            setUserInfo({
+                firstName: '',
+                lastName: '',
+                email: '',
+                initials: '',
+                avatar: '',
+                isAuthenticated: false
+            })
+            return {
+                status: 200
+            }
         }
     }
 
-    async function handleGetUserPosts() {
-        const response = await getApi('/user/myPosts')
-        // console.log(response.data.data);
-
+    async function handleGetUserPosts(id) {
+        const response = await getApi('/user/posts/' + id);
+        const res = handleResponse(response);
+        if (res.status === 200 | 202) {
+            return response.data.data;
+        }
+    }
+    
+    async function handleGetOwnerPosts() {
+        const response = await getApi('/user/myPosts');
         const res = handleResponse(response);
         if (res.status === 200 | 202) {
             return response.data.data;
@@ -223,6 +237,7 @@ export default function UserContextProvider({ children }) {
         logoutUser: handleLogoutUser,
         registerUser: handleRegisterUser,
         getUserPosts: handleGetUserPosts,
+        getOwnerPosts: handleGetOwnerPosts,
         authenticateUser: handleAuthenticateUser,
         createNotification: createNotification,
         updateProfile: handleUpdateProfile,

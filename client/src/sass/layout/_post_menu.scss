@@ -163,6 +163,7 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            color: $color-font-dark;
 
             .right-body {
                 flex: 1;
@@ -234,6 +235,10 @@
             .select-button {
                 margin-bottom: 0;
                 font-size: 0.8rem;
+            }
+
+            .image-container{
+                padding: 2% 20%;
             }
         }
     }

@@ -63,7 +63,7 @@ export default function ProfileEditModal({ closeModal }) {
             <div className="post-body">
                 <div className="part-left">
                     <div className="left-body">
-                        <div className="u-padding-small">
+                        <div className="image-container u-padding-small">
                             {file ? (
                                 <img src={fileUrl} className="preview-image u-full-length-image" alt="Selected Image" />
                             ) : (

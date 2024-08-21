@@ -1,11 +1,11 @@
 /* The above code is a React functional component called `Post` that represents a post in a social
 media application. Here is a summary of what the code is doing: */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import UserProfile from "./UserProfileImage";
 import { formatDate } from "../../utils/formatDate";
 
-import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill, PiDotsThreeVerticalBold } from "react-icons/pi";
+import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill, PiDotsThreeVerticalBold, PiTrash } from "react-icons/pi";
 import ProfileImage from '../Homepage UI/ProfileImage';
 import { isImage, isVideo, isPdf, getProcessedPdfUrl } from '../../utils/urlProcessor';
 import SendButton from '../UI components/SendButton';
@@ -13,10 +13,12 @@ import CommentBlock from './CommentBlock';
 import { log } from '../../log';
 import Loading from 'react-loading';
 import parse from 'html-react-parser';
+import Dropdown from '../UI components/Dropdown';
+import { UserContext } from '../../context/UserContext';
 
 
 
-export default function Post({ postData, likePost, likeComment, getComments, newComment: postNewComment, modalView = false, notOwner }) {
+export default function Post({ postData, likePost, likeComment, getComments, newComment: postNewComment, deletePost, modalView = false, notOwner, handleFetchPosts }) {
     // log('<Post /> rendered', 4);
 
     const [postState, setPostState] = useState({
@@ -28,7 +30,10 @@ export default function Post({ postData, likePost, likeComment, getComments, new
         newCommentLoading: false,
         animateComment: false,
         commentCount: postData.comments,
+        showMenu: false,
     });
+
+    const { getOwnerDetails, createNotification } = useContext(UserContext);
 
     const commentRef = useRef();
 
@@ -84,6 +89,16 @@ export default function Post({ postData, likePost, likeComment, getComments, new
         }
     }
 
+    async function handleDeletePost() {
+        if(notOwner) return;
+        const res = await deletePost(postData._id);
+        if(res.status === 200){
+            console.log('Post deleted');
+            createNotification('Post deleted', 'success');
+            handleFetchPosts();
+        }
+    }
+
     const newComment = async () => {
         setPostState(prevState => {
             return {
@@ -125,11 +140,17 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                         </div>
                     </div>
                     {!notOwner &&
-                        <div className="post_actions">
-                            <button className="action-button u-button u-button-tertiary u-icon-button-tertiary">
-                                <PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />
-                            </button>
-                        </div>
+                        <Dropdown label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
+                            <div className="post__menu">
+                                <button 
+                                    className='u-button menu--item item-red'
+                                    onClick={handleDeletePost}
+                                >
+                                    <PiTrash className='u-icon-font u-icon-margin-r' />
+                                    Delete
+                                </button>
+                            </div>
+                        </Dropdown>
                     }
                 </div>
                 <div className="post__description">
@@ -239,3 +260,19 @@ export default function Post({ postData, likePost, likeComment, getComments, new
         </div>
     );
 }
+
+
+{/* <div className="post__actions">
+                            <button 
+                                className="action-button u-button u-button-tertiary u-icon-button-tertiary" 
+                                onFocus={() => setPostState(prev => { return { ...prev, showMenu: !prev.showMenu } })}
+                            >
+                                <PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />
+                            </button>
+                            {postState.showMenu &&
+                                <div className='post__actions--menu'>
+                                    <h1>Actions menu</h1>
+                                    <button className='menu-button'>Delete</button>
+                                </div>
+                            }
+                        </div> */}
