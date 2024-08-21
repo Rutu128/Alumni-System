@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { UserContext } from "../../context/UserContext"
 import { log } from "../../log";
+import React from "react";
 
 export default function ProfileImage({ className }) {
     const { userDetail } = useContext(UserContext);

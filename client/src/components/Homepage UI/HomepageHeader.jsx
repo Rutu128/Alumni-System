@@ -8,6 +8,9 @@ import { log } from "../../log";
 export default function HomepageHeader({ handleSelectMenu, selectedMenu }) {
     log('<HomepageHeader /> rendered', 2);
 
+import React from "react";
+export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
+    const navigate = useNavigate();
 
     return (
         <header className="header">
