@@ -341,174 +341,186 @@ const addInfo = asyncHandler(async (req, res) => {
 const getUserDetails = asyncHandler(async (req, res) => {
     try {
         const user_id = req.params.id;
-        const id = new mongoose.Types.ObjectId(user_id);
-        const userDetails = await User.aggregate([
-            {
-                $match: {
-                    _id: id,
-                },
-            },
-            {
-                $lookup: {
-                    from: "posts",
-                    localField: "_id",
-                    foreignField: "userId",
-                    as: "posts",
-                },
-            },
-            {
-                $unwind: "$posts",
-            },
-            {
-                $lookup: {
-                    from: "postlikes",
-                    localField: "posts._id",
-                    foreignField: "postId",
-                    as: "likes",
-                },
-            },
-            {
-                $lookup: {
-                    from: "comments",
-                    localField: "posts._id",
-                    foreignField: "postId",
-                    as: "comments",
-                },
-            },
-            {
-                $addFields: {
-                    "posts.isLiked": {
-                        $cond: {
-                            if: {
-                                $in: [id, "$likes.userId"],
-                            },
-                            then: true,
-                            else: false,
-                        },
-                    },
-                    "posts.likes": { $size: "$likes" },
-                    "posts.comments": { $size: "$comments" },
-                },
-            },
-            {
-                $group: {
-                    _id: "$_id",
-                    posts: { $push: "$posts" },
-                    firstName: { $first: "$firstName" },
-                    lastName: { $first: "$lastName" },
-                    email: { $first: "$email" },
-                    avatar: { $first: "$avatar" },
-                    headline: { $first: "$headline" },
-                    designation: { $first: "$designation" },
-                    passingYear: { $first: "$passingYear" },
-                    description: { $first: "$description" },
-                },
-            },
-            {
-                $project: {
-                    _id: 1,
-                    firstName: 1,
-                    lastName: 1,
-                    email: 1,
-                    posts: 1,
-                    avatar: 1,
-                    headline: 1,
-                    designation: 1,
-                    passingYear: 1,
-                    description: 1,
-                },
-            },
-        ]);
+        // const id = new mongoose.Types.ObjectId(user_id);
+        // const userDetails = await User.aggregate([
+        //     {
+        //         $match: {
+        //             _id: id,
+        //         },
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: "posts",
+        //             localField: "_id",
+        //             foreignField: "userId",
+        //             as: "posts",
+        //         },
+        //     },
+        //     {
+        //         $unwind: "$posts",
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: "postlikes",
+        //             localField: "posts._id",
+        //             foreignField: "postId",
+        //             as: "likes",
+        //         },
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: "comments",
+        //             localField: "posts._id",
+        //             foreignField: "postId",
+        //             as: "comments",
+        //         },
+        //     },
+        //     {
+        //         $addFields: {
+        //             "posts.isLiked": {
+        //                 $cond: {
+        //                     if: {
+        //                         $in: [id, "$likes.userId"],
+        //                     },
+        //                     then: true,
+        //                     else: false,
+        //                 },
+        //             },
+        //             "posts.likes": { $size: "$likes" },
+        //             "posts.comments": { $size: "$comments" },
+        //         },
+        //     },
+        //     {
+        //         $group: {
+        //             _id: "$_id",
+        //             posts: { $push: "$posts" },
+        //             firstName: { $first: "$firstName" },
+        //             lastName: { $first: "$lastName" },
+        //             email: { $first: "$email" },
+        //             avatar: { $first: "$avatar" },
+        //             headline: { $first: "$headline" },
+        //             designation: { $first: "$designation" },
+        //             passingYear: { $first: "$passingYear" },
+        //             description: { $first: "$description" },
+        //         },
+        //     },
+        //     {
+        //         $project: {
+        //             _id: 1,
+        //             firstName: 1,
+        //             lastName: 1,
+        //             email: 1,
+        //             posts: 1,
+        //             avatar: 1,
+        //             headline: 1,
+        //             designation: 1,
+        //             passingYear: 1,
+        //             description: 1,
+        //         },
+        //     },
+        // ]);
 
+        // return res
+        //     .status(200)
+        //     .json(new ApiResponse(200, userDetails, "User details"));
+        const userDetails = await User.findById(user_id).select(
+            "firstName lastName email avatar headline designation passingYear description c_id"
+        );
         return res
             .status(200)
             .json(new ApiResponse(200, userDetails, "User details"));
     } catch (error) {
-        throw new ApiError(400, error, "Failed to get user details");
+        throw new ApiError(400, error, "Failed to fetch user details");
     }
 });
 
 const me = asyncHandler(async (req, res) => {
     try {
         const user_id = req.user._id;
-        const id = new mongoose.Types.ObjectId(user_id);
-        const userDetails = await User.aggregate([
-            {
-                $match: {
-                    _id: id,
-                },
-            },
-            {
-                $lookup: {
-                    from: "posts",
-                    localField: "_id",
-                    foreignField: "userId",
-                    as: "posts",
-                },
-            },
-            {
-                $unwind: "$posts",
-            },
-            {
-                $lookup: {
-                    from: "postlikes",
-                    localField: "posts._id",
-                    foreignField: "postId",
-                    as: "likes",
-                },
-            },
-            {
-                $lookup: {
-                    from: "comments",
-                    localField: "posts._id",
-                    foreignField: "postId",
-                    as: "comments",
-                },
-            },
-            {
-                $addFields: {
-                    "posts.isLiked": {
-                        $cond: {
-                            if: {
-                                $in: [id, "$likes.userId"],
-                            },
-                            then: true,
-                            else: false,
-                        },
-                    },
-                    "posts.likesCount": { $size: "$likes" },
-                    "posts.commentsCount": { $size: "$comments" },
-                },
-            },
-            {
-                $group: {
-                    _id: "$_id",
-                    posts: { $push: "$posts" },
-                    firstName: { $first: "$firstName" },
-                    lastName: { $first: "$lastName" },
-                    email: { $first: "$email" },
-                    avatar: { $first: "$avatar" },
-                    headline: { $first: "$headline" },
-                    designation: { $first: "$designation" },
-                    passingYear: { $first: "$passingYear" },
-                    description: { $first: "$description" },
-                },
-            },
-            {
-                $project: {
-                    _id: 1,
-                    firstName: 1,
-                    lastName: 1,
-                    email: 1,
-                    posts: 1,
-                    avatar: 1,
-                    headline: 1,
-                    designation: 1,
-                    passingYear: 1,
-                    description: 1,
-                },
-            },
-        ]);
+        // const id = new mongoose.Types.ObjectId(user_id);
+        // const userDetails = await User.aggregate([
+        //     {
+        //         $match: {
+        //             _id: id,
+        //         },
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: "posts",
+        //             localField: "_id",
+        //             foreignField: "userId",
+        //             as: "posts",
+        //         },
+        //     },
+        //     {
+        //         $unwind: "$posts",
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: "postlikes",
+        //             localField: "posts._id",
+        //             foreignField: "postId",
+        //             as: "likes",
+        //         },
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: "comments",
+        //             localField: "posts._id",
+        //             foreignField: "postId",
+        //             as: "comments",
+        //         },
+        //     },
+        //     {
+        //         $addFields: {
+        //             "posts.isLiked": {
+        //                 $cond: {
+        //                     if: {
+        //                         $in: [id, "$likes.userId"],
+        //                     },
+        //                     then: true,
+        //                     else: false,
+        //                 },
+        //             },
+        //             "posts.likesCount": { $size: "$likes" },
+        //             "posts.commentsCount": { $size: "$comments" },
+        //         },
+        //     },
+        //     {
+        //         $group: {
+        //             _id: "$_id",
+        //             posts: { $push: "$posts" },
+        //             firstName: { $first: "$firstName" },
+        //             lastName: { $first: "$lastName" },
+        //             email: { $first: "$email" },
+        //             avatar: { $first: "$avatar" },
+        //             headline: { $first: "$headline" },
+        //             designation: { $first: "$designation" },
+        //             passingYear: { $first: "$passingYear" },
+        //             description: { $first: "$description" },
+        //         },
+        //     },
+        //     {
+        //         $project: {
+        //             _id: 1,
+        //             firstName: 1,
+        //             lastName: 1,
+        //             email: 1,
+        //             posts: 1,
+        //             avatar: 1,
+        //             headline: 1,
+        //             designation: 1,
+        //             passingYear: 1,
+        //             description: 1,
+        //         },
+        //     },
+        // ]);
+        // return res
+        //     .status(200)
+        //     .json(new ApiResponse(200, userDetails, "User details"));
+        const userDetails = await User.findById(user_id).select(
+            "firstName lastName email avatar headline designation passingYear description c_id"
+        );
         return res
             .status(200)
             .json(new ApiResponse(200, userDetails, "User details"));
