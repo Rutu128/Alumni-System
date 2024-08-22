@@ -79,7 +79,7 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
                     <div className="u-fallback">
                         {/* {isLoading ? <Loading type="spin" color="#333" width={'2rem'} height={'2rem'} className={"loader"} /> : 'No posts to show'} */}
                         <div className="u-fallback-illustration">
-                            <img src="./illustrations/no-post.svg" alt="" />
+                            <img src="/illustrations/no-post.svg" alt=" " />
                         </div>
                         <div className="u-fallback-text">
                             {isLoading ? 

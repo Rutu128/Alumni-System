@@ -14,8 +14,8 @@
 }
 
 @function responsive-font-size($font-size) {
-    $smallest: $font-size / 1.4;
-    $largest: $font-size * 1.5;
+    $smallest: calc($font-size / 1.4);
+    $largest: calc($font-size * 1.5);
     $viewport-width: 100vw;
 
     @return unquote("clamp(#{$smallest}rem, #{calc($font-size / 2)}vw + #{calc($font-size / 2)}rem, #{$largest}rem)");

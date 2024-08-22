@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import UserProfile from "./UserProfileImage";
 import { formatDate } from "../../utils/formatDate";
 
-import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill, PiDotsThreeVerticalBold, PiTrash } from "react-icons/pi";
+import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill, PiDotsThreeVerticalBold, PiTrash, PiArrowsOut, PiLinkSimple } from "react-icons/pi";
 import ProfileImage from '../Homepage UI/ProfileImage';
-import { isImage, isVideo, isPdf, getProcessedPdfUrl } from '../../utils/urlProcessor';
+import { isImage, isVideo, isPdf, getProcessedPdfUrl } from '../../utils/Uploads/urlProcessor';
 import SendButton from '../UI components/SendButton';
 import CommentBlock from './CommentBlock';
 import { log } from '../../log';
@@ -15,10 +15,12 @@ import Loading from 'react-loading';
 import parse from 'html-react-parser';
 import Dropdown from '../UI components/Dropdown';
 import { UserContext } from '../../context/UserContext';
+import { PostContext } from '../../context/PostContext';
+import { useEmojiFont } from '../../Hooks/useEmojiFont';
 
 
 
-export default function Post({ postData, likePost, likeComment, getComments, newComment: postNewComment, deletePost, modalView = false, notOwner, handleFetchPosts }) {
+export default function Post({ postData, modalView = false, notOwner, handleFetchPosts }) {
     // log('<Post /> rendered', 4);
 
     const [postState, setPostState] = useState({
@@ -34,8 +36,12 @@ export default function Post({ postData, likePost, likeComment, getComments, new
     });
 
     const { getOwnerDetails, createNotification } = useContext(UserContext);
+    const { likePost, likeComment, getComments, newComment: postNewComment, deletePost } = useContext(PostContext);
+
 
     const commentRef = useRef();
+    const textRef = useRef(null);
+    useEmojiFont(textRef);
 
     const username = postData.user.firstName + '_' + postData.user.lastName;
 
@@ -120,7 +126,7 @@ export default function Post({ postData, likePost, likeComment, getComments, new
     }
 
     return (
-        <div className="post">
+        <div className={`post ${modalView ? 'post-modalView' : null}`}>
             {modalView &&
                 <button className='post-head-close' onClick={handleCloseModal}><PiX className='post-head-icon' /></button>
             }
@@ -139,22 +145,39 @@ export default function Post({ postData, likePost, likeComment, getComments, new
                             {formatDate(postData.createdAt)}
                         </div>
                     </div>
-                    {!notOwner &&
                         <Dropdown label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
                             <div className="post__menu">
-                                <button 
+                                <button
+                                    className='u-button menu--item'
+                                >
+                                    <PiArrowsOut className='u-icon-font u-icon-margin-r' />
+                                    Open in expanded view
+                                </button>
+                                <button
+                                    className='u-button menu--item'
+                                >
+                                    <PiShare className='u-icon-font u-icon-margin-r' />
+                                    Share
+                                </button>
+                                <button
+                                    className='u-button menu--item'
+                                >
+                                    <PiLinkSimple className='u-icon-font u-icon-margin-r' />
+                                    Copy link
+                                </button>
+                                {!notOwner &&
+                                    <button 
                                     className='u-button menu--item item-red'
                                     onClick={handleDeletePost}
                                 >
                                     <PiTrash className='u-icon-font u-icon-margin-r' />
                                     Delete
-                                </button>
+                                </button>}
                             </div>
                         </Dropdown>
-                    }
                 </div>
                 <div className="post__description">
-                    <div className="description--text parsed-editor-text">
+                    <div ref={textRef} className="description--text parsed-editor-text emoji-text">
                         {parse(postData.description)}
                     </div>
                 </div>

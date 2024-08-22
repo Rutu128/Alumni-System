@@ -6,7 +6,7 @@ export const GlobalContext = createContext({
 });
 
 export default function GlobalContextProvider({ children }) {
-    const [selectedMenu, setSelectedMenu] = useState('');
+    const [selectedMenu, setSelectedMenu] = useState('Home');
 
     function handleSetSelectedMenu(name) {
         setSelectedMenu(name);

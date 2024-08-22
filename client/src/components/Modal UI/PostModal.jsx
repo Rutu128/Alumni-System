@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from 'react';
-import uploadFiles from '../../utils/UploadImage';
+import uploadFiles from '../../utils/Uploads/UploadImage';
 import { PiX } from "react-icons/pi";
 import { PostContext } from '../../context/PostContext';
 import ReactLoading from 'react-loading';
@@ -11,7 +11,7 @@ export default function PostModal({ fileType, closeModal }) {
     const [file, setFile] = useState([]);
     const [fileUrl, setFileUrl] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [description, setDescription] = useState('');
+    // const [description, setDescription] = useState('');
 
     const { submitNewPost } = useContext(PostContext);
     const { createNotification } = useContext(UserContext);
@@ -46,13 +46,13 @@ export default function PostModal({ fileType, closeModal }) {
     };
 
     async function handleFileSubmit() {
-        if (file.length === 0 && description === (null || undefined || "")) {
+        if (file.length === 0 && descriptionRef.current.value === (null || undefined || "")) {
             createNotification('Empty fields!', 'error');
             return;
         }
         setIsLoading(true);
 
-        const response = await submitNewPost(file, fileType, description);
+        const response = await submitNewPost(file, fileType, descriptionRef.current.value);
         console.log(response);
         if (response.status === 200) {
             createNotification('Post created!', 'success');

@@ -1,8 +1,8 @@
 import { createContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import postApi from "../utils/postApi";
-import getApi from "../utils/getApi";
+import postApi from "../utils/API/postApi";
+import getApi from "../utils/API/getApi";
 import { ToastContainer, toast } from 'react-toastify';
 import handleResponse from "../utils/responseHandler";
 

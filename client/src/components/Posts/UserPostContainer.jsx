@@ -19,11 +19,11 @@ export default function PostContainer({ handleFetchPosts, posts, notOwner }) {
                                 <Post 
                                     notOwner={notOwner} 
                                     postData={post} 
-                                    getComments={getComments} 
-                                    newComment={newComment} 
-                                    likePost={likePost} 
-                                    likeComment={likeComment} 
-                                    deletePost={deletePost}
+                                    // getComments={getComments} 
+                                    // newComment={newComment} 
+                                    // likePost={likePost} 
+                                    // likeComment={likeComment} 
+                                    // deletePost={deletePost}
                                     handleFetchPosts={handleFetchPosts}
                                 />
                                 {/* <div className="separator"></div> */}

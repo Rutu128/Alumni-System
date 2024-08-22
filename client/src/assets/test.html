@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+    <title>Emoji Font Handling</title>
+    <style>
+        @font-face {
+            font-family: 'Noto Color Emoji';
+            src: url('/NotoColorEmoji-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        /* @font-face {
+            font-family: 'Mona-sans';
+            src: url('/Mona_Sans/Mona-Sans.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        body {
+            font-family: 'Mona-sans',sans-serif;
+        } */
+
+        .emoji {
+            font-family: 'Noto Color Emoji', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <p id="text">This is some regular text with an emoji 😊🌟🌟.</p>
+
+    <script>
+        // Function to check and replace emojis with a span to apply the Noto Color Emoji font
+        function applyEmojiFont(node) {
+            const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}]/gu;
+
+            node.childNodes.forEach(child => {
+                if (child.nodeType === Node.TEXT_NODE) {
+                    const replacedNode = document.createElement('span');
+                    replacedNode.innerHTML = child.nodeValue.replace(emojiRegex, match => `<span class="emoji">${match}</span>`);
+                    node.replaceChild(replacedNode, child);
+                }
+            });
+        }
+
+        applyEmojiFont(document.getElementById('text'));
+    </script>
+</body>
+</html>

@@ -1,10 +1,10 @@
 import { createContext, useState } from "react";
-import uploadFiles from "../utils/UploadImage";
-import postApi from "../utils/postApi";
-import getApi from "../utils/getApi";
-import putApi from "../utils/putApi";
+import uploadFiles from "../utils/Uploads/UploadImage";
+import postApi from "../utils/API/postApi";
+import getApi from "../utils/API/getApi";
+import putApi from "../utils/API/putApi";
 import handleResponse from '../utils/responseHandler';
-import deleteApi from "../utils/deleteApi";
+import deleteApi from "../utils/API/deleteApi";
 
 export const PostContext = createContext({
     posts: [{
@@ -39,10 +39,16 @@ export default function PostContextProvider({ children }){
 
     async function handleNewPost(files, type, description){
         let cloudUrls = [];
+        // if(!files || files.length === 0){
+        //     return {
+        //         status: 400,
+        //         message: 'No files selected'
+        //     };
+        // }
         if(type !== 'text'){
             cloudUrls = await uploadFiles(files, type);
         }
-        // console.log(cloudUrls);
+        console.log(cloudUrls);
         console.log('Description : ' + description);
         try {
             const response = await postApi('/post/uploadPost', {

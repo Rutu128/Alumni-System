@@ -8,7 +8,6 @@ import SiteIcon from "../UI components/SiteIcon";
 import { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 
-import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import React from "react";
 

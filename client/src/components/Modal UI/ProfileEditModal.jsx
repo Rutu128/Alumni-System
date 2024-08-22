@@ -3,7 +3,7 @@ import { PiX } from "react-icons/pi";
 import { UserContext } from '../../context/UserContext';
 import ReactLoading from 'react-loading';
 import ProfileImage from '../Homepage UI/ProfileImage';
-import { uploadFile } from '../../utils/UploadImage';
+import { uploadFile } from '../../utils/Uploads/UploadImage';
 
 export default function ProfileEditModal({ closeModal }) {
     const { createNotification, userDetail, updateProfile } = useContext(UserContext);

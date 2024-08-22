@@ -457,3 +457,25 @@
 .u-section-header{
     @include page-headers;
 }
+
+.u-navigate-back {
+    // padding: .5rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    font-size: 1.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: .5rem;
+    cursor: pointer;
+    border-radius: .3rem;
+
+    &:hover{
+        background-color: $color-theme-back-light;
+    }
+
+    .back-icon {
+        // margin: 0 0 0 0;
+        // padding:  0 0 0 0;
+    }
+}

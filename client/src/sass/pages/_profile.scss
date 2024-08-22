@@ -16,6 +16,12 @@
     }
 
     &__head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        h1{
+            display: inline-block;
+        }
         @include page-headers;
     }
 

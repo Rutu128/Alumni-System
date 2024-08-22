@@ -168,8 +168,8 @@
 
 @mixin horizontal-scrollbar {
     &::-webkit-scrollbar {
-        height: 3px; // Adjust the height of the scrollbar
-        width: 4px;
+        height: 5px; // Adjust the height of the scrollbar
+        width: 5px;
     }
 
     &::-webkit-scrollbar-track {

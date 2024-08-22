@@ -39,18 +39,23 @@ input {
     font-weight: 600;
 }
 
-[popover], :popover-open {
-    position: absolute !important;
-    bottom: 0 !important;
-    right: 0 !important;
-}
+// [popover], :popover-open {
+//     position: absolute !important;
+//     bottom: 0 !important;
+//     right: 0 !important;
+// }
 
-:popover-open {
-    width: 200px;
-    height: 100px;
-    position: absolute;
-    inset: unset;
-    bottom: 5px;
-    right: 5px;
-    margin: 0;
+// :popover-open {
+//     width: 200px;
+//     height: 100px;
+//     position: absolute;
+//     inset: unset;
+//     bottom: 5px;
+//     right: 5px;
+//     margin: 0;
+// }
+
+/* This selector targets emojis specifically */
+.emoji{
+    font-family: 'Noto Color Emoji', sans-serif;
 }

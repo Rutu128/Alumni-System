@@ -81,10 +81,11 @@
                 transition: background-color .3s;
                 color: $color-font-dark;
                 font-size: .9rem;
+                outline: none;
                 // font-weight: 650;
                 font-stretch: 110%;
                 
-                &:hover {
+                &:hover, &:focus {
                     background-color: $color-theme-back-light;
                 }
                 

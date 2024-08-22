@@ -102,6 +102,7 @@
                     align-items: center;
                     justify-content: space-evenly;
                     text-align: center;
+                    scroll-snap-type: x mandatory;
 
                     @include horizontal-scrollbar;
 
@@ -113,6 +114,7 @@
                         width: 100%; // Set a fixed width, adjust as needed
                         display: flex;
                         justify-content: center;
+                        scroll-snap-align: start;
 
                         &:last-child {
                             margin-right: 0;

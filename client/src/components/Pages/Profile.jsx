@@ -6,6 +6,7 @@ import ProfileInfo from '../UI components/ProfileInfo';
 import { useLocation } from 'react-router-dom';
 import UserProfileImage from '../Posts/UserProfileImage';
 import { GlobalContext } from '../../context/GlobalContext';
+import NavigateBack from '../UI components/NavigateBack';
 
 
 export default function Profile() {
@@ -17,7 +18,6 @@ export default function Profile() {
         designation: '',
         avatar: '',
         initials: '',
-        posts: [],
     });
     
     const location = useLocation();
@@ -32,7 +32,7 @@ export default function Profile() {
             const details = await getUserDetails(userId);
             console.log(details);
             
-            setUserDetail(details[0]);
+            setUserDetail(details);
         }
         fetchUserDetails();
     }, []);
@@ -42,6 +42,7 @@ export default function Profile() {
             <section className="profile">
                 <div className="profile__cont">
                     <div className="profile__head">
+                        <NavigateBack />
                         <h1>Profile</h1>
                         {/* <hr /> */}
                     </div>

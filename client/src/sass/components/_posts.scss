@@ -3,7 +3,12 @@
     margin: .5rem 0;
     border-radius: 1rem;
     border: 2px solid rgba($color-theme-dark, .1);
-    overflow: hidden;
+    // overflow: hidden;
+
+    &-modalView {
+        display: flex;
+        justify-content: flex-start;
+    }
 
     @media (max-width: 768px){
         border: none;
@@ -30,53 +35,80 @@
         .user_name{
             font-weight: 700;
             font-size:.9rem;
+            display: inline;
 
             a, a:visited, a:link{
                 color: $color-font-dark;
                 text-decoration: none;
             }
         }
+
+        // .post_date{
+        //     display: inline;
+        //     font-size: .7rem;
+        //     font-weight: 500;
+        //     font-stretch: 110%;
+        //     color: $color-grey-dark-2;
+        //     padding-left: .5rem;
+        // }
     }
 
     &__menu {
-        width: 10rem;
-        border-radius: .5rem;
+        min-width: 10rem;
+        width: 16rem;
+        border-radius: .8rem;
         overflow: hidden;
+        background-color: $color-white;
+        border: 1px solid $color-grey-light-3;
+        box-shadow: 0 0 3rem rgba($color-black, .2);
 
         .menu--item{
             width: 100%;
-            padding: .5rem 1rem;
+            padding: .6rem 1rem;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             font-size: .8rem;
-            font-weight: 700;
-            color: $color-theme-dark;
+            font-weight: 600;
+            color: $color-font-dark;
+            background: transparent;
             // border-radius: 1rem;
             // margin-right: .5rem;
             cursor: pointer;
             transition: all .3s;
 
             &:hover{
-                background-color: $color-theme-back-light;
+                background-color: rgba($color-theme-back-light, .8);
             }
         }
 
         .item-red {
             color: $color-red;
-            background: rgba($color-red, .2);
+            // background: rgba($color-red, .2);
 
             &:hover{
-                background-color: rgba($color-red, .3);
+                background-color: rgba($color-red, .2);
             }
         }
     }
 
     &__description{
         padding: .5rem 1rem;
-        font-weight: 450;
+        // font-weight: 450;
         font-size: .85rem;
         white-space: pre-wrap;
+        
+        .emoji-text {
+            font-family: 'Mona-sans', sans-serif;
+        }
+        
+        .emoji-text:lang(zh-Hans), 
+        .emoji-text:lang(zh-Hant), 
+        .emoji-text:lang(ja), 
+        .emoji-text:lang(ko), 
+        .emoji-text:lang(emoji) {
+            font-family: 'Noto Color Emoji', sans-serif;
+        }
     }
 
     &__content {
@@ -88,6 +120,7 @@
             display: flex;
             flex-direction: row;
             overflow-x: auto;
+            scroll-snap-type: x mandatory;
 
             // &::-webkit-scrollbar{
             //     display: none;
@@ -100,6 +133,7 @@
                 width: 100%;
                 display: flex;
                 justify-content: center;
+                scroll-snap-align: start;
 
                 img, video{
                     max-width: 100%;
@@ -128,7 +162,10 @@
         align-items: center;
 
         .animate-like{
-            animation: like-animation .3s ease;
+            // width: 100%;
+            // background-image: url('/bg/loghin-bg.gif');
+            transform-origin:0 100%;
+            animation: like-animation .5s ease;
         }
     }
     
@@ -228,9 +265,9 @@
         font-weight: 450;
     }
 
-    &_profile{
+    // &_profile{
 
-    }
+    // }
 
     &_main{
         min-width: 30%;
