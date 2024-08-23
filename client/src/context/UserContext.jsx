@@ -203,7 +203,7 @@ export default function UserContextProvider({ children }) {
             setUserInfo(prevInfo => {
                 return {
                     ...prevInfo,
-                    ...newData[0],
+                    ...newData,
                 }
             })
         }

@@ -80,6 +80,10 @@
             &:hover{
                 background-color: rgba($color-theme-back-light, .8);
             }
+
+            &:not(:last-child){
+                border-bottom: 1px solid $color-grey-light-3;
+            }
         }
 
         .item-red {
@@ -94,20 +98,13 @@
 
     &__description{
         padding: .5rem 1rem;
-        // font-weight: 450;
-        font-size: .85rem;
-        white-space: pre-wrap;
-        
-        .emoji-text {
-            font-family: 'Mona-sans', sans-serif;
-        }
-        
-        .emoji-text:lang(zh-Hans), 
-        .emoji-text:lang(zh-Hant), 
-        .emoji-text:lang(ja), 
-        .emoji-text:lang(ko), 
-        .emoji-text:lang(emoji) {
-            font-family: 'Noto Color Emoji', sans-serif;
+
+        .description--text{
+            font-weight: 450;
+            font-stretch: 105%;
+            font-size: .85rem;
+            white-space: pre-wrap;
+            line-height: 1.2;
         }
     }
 

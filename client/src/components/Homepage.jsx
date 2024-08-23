@@ -55,7 +55,7 @@ export default function Homepage() {
     return (
         <main className='homepage'>
             <HomepageHeader handleSelectMenu={handleSelectMenu} selectedMenu={selectedMenu} />
-            <section className="sideMenu">
+            <section className={`sideMenu ${!isLoading && 'slideAnimation'}`}>
                 <HomepageMenu handleSelectMenu={handleSelectMenu} selectedMenu={selectedMenu} />
             </section>
             <section className="main">

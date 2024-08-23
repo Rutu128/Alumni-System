@@ -10,7 +10,7 @@ import NavigateBack from '../UI components/NavigateBack';
 
 
 export default function Profile() {
-    
+
     const [userDetail, setUserDetail] = useState({
         firstName: '',
         lastName: '',
@@ -19,19 +19,19 @@ export default function Profile() {
         avatar: '',
         initials: '',
     });
-    
+
     const location = useLocation();
     const { userId } = location.state || {};
-    
+
     const { getUserDetails } = useContext(UserContext);
 
     useEffect(() => {
         async function fetchUserDetails() {
             console.log(userId);
-            
+
             const details = await getUserDetails(userId);
             console.log(details);
-            
+
             setUserDetail(details);
         }
         fetchUserDetails();
@@ -56,11 +56,13 @@ export default function Profile() {
                                     <div className="user-info-name u-bold">
                                         {userDetail.firstName + ' ' + userDetail.lastName}
                                     </div>
-                                    <div className="user-info u-light">
-                                        {/* {userDetail.email} */}
-                                        {userDetail.headline}
-                                        <br />
-                                        {userDetail.designation}
+                                    <div className="u-light">
+                                        <div className="user-info-cell">
+                                            {userDetail.headline}
+                                        </div>
+                                        <div className="user-info-cell">
+                                            {userDetail.designation}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

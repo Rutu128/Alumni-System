@@ -36,6 +36,10 @@
     }
 }
 
+.slideAnimation{
+    animation: slideIn 0.5s ease;
+}
+
 .loading{
     width: 100vw;
     height: 100vh;

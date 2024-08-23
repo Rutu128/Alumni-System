@@ -50,11 +50,13 @@ export default function UserProfile() {
                                     <div className="user-info-name u-bold">
                                         {userDetail.firstName + ' ' + userDetail.lastName}
                                     </div>
-                                    <div className="user-info u-light">
-                                        {/* {userDetail.email} */}
-                                        {userDetail.headline}
-                                        <br />
-                                        {userDetail.designation}
+                                    <div className="u-light">
+                                        <div className="user-info-cell">
+                                            {userDetail.headline}
+                                        </div>
+                                        <div className="user-info-cell">
+                                            {userDetail.designation}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="edit-profile-cont">

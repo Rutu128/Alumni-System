@@ -59,6 +59,20 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
                     <h2>About</h2>
                 </div>
                 <div className="details u-flex-justify-center">
+                    <div className="about_college_info">
+                        <div className="info--cell">
+                            <div className="info--head">Student ID</div>
+                            <div className="info--value">{userDetail.c_id}</div>
+                        </div>
+                        <div className="info--cell">
+                            <div className="info--head">Batch</div>
+                            <div className="info--value">{userDetail.passingYear}</div>
+                        </div>
+                        <div className="info--cell">
+                            <div className="info--head">Email</div>
+                            <div className="info--value">{userDetail.email}</div>
+                        </div>
+                    </div>
                     <div className="about_text">
                         {renderAboutText()}
                         {userDetail.description &&

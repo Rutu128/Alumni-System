@@ -65,7 +65,9 @@ export default function HomepageMenu() {
                     </div>
                     <div className="nav--item Profile">
                         <Link to={'/profile'} onClick={() => { setSelectedMenu('Profile') }} className={`link-profile ${selectedMenu === 'Profile' && 'highlight'}`}>
-                            <ProfileImage />
+                            <div className="menu-profile-cont">
+                                <ProfileImage />
+                            </div>
                             <p>
                                 Profile
                             </p>
