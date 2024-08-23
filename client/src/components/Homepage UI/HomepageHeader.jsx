@@ -17,11 +17,13 @@ export default function HomepageHeader({ handleSelectMenu, selectedMenu }) {
                 </div>
                 <div className="section section--right">
                     <Link to={'/testPage'} onClick={() => { handleSelectMenu('Notifications') }} className={`header__nav--item ${selectedMenu === 'Notifications' && 'highlight'}`}>
-                        {selectedMenu === 'Notifications' ?
-                            <PiBellFill className="header__nav--icon" />
-                            :
-                            <PiBell className="header__nav--icon" />
-                        }
+                        <span className="icon-cont">
+                            {selectedMenu === 'Notifications' ?
+                                <PiBellFill className="header__nav--icon" />
+                                :
+                                <PiBell className="header__nav--icon" />
+                            }
+                        </span>
                     </Link>
                     <Link to={'/profile'} onClick={() => { handleSelectMenu('Profile') }} className={`link-profile ${selectedMenu === 'Profile' && 'highlight'}`}>
                         <ProfileImage />

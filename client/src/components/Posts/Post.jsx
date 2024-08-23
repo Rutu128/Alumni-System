@@ -1,11 +1,11 @@
 /* The above code is a React functional component called `Post` that represents a post in a social
 media application. Here is a summary of what the code is doing: */
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserProfile from "./UserProfileImage";
 import { formatDate } from "../../utils/formatDate";
 
-import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill, PiDotsThreeVerticalBold, PiTrash, PiArrowsOut, PiLinkSimple } from "react-icons/pi";
+import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill, PiDotsThreeVerticalBold, PiTrash, PiArrowsOut, PiLinkSimple, PiX } from "react-icons/pi";
 import ProfileImage from '../Homepage UI/ProfileImage';
 import { isImage, isVideo, isPdf, getProcessedPdfUrl } from '../../utils/Uploads/urlProcessor';
 import SendButton from '../UI components/SendButton';
@@ -39,6 +39,8 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
     const { likePost, likeComment, getComments, newComment: postNewComment, deletePost } = useContext(PostContext);
 
 
+    const location = useLocation();
+    const navigate = useNavigate();
     const commentRef = useRef();
     const textRef = useRef(null);
     useEmojiFont(textRef);
@@ -46,7 +48,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
     const username = postData.user.firstName + '_' + postData.user.lastName;
 
     useEffect(() => {
-        if (postState.comment && postState.fetchedComments.length === 0) {
+        if ((postState.comment || modalView) && postState.fetchedComments.length === 0) {
             fetchComments();
         }
     }, [postState.comment]);
@@ -96,9 +98,9 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
     }
 
     async function handleDeletePost() {
-        if(notOwner) return;
+        if (notOwner) return;
         const res = await deletePost(postData._id);
-        if(res.status === 200){
+        if (res.status === 200) {
             console.log('Post deleted');
             createNotification('Post deleted', 'success');
             handleFetchPosts();
@@ -125,11 +127,12 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
         }
     }
 
+    const closeDropdown = () => {
+
+    }
+
     return (
         <div className={`post ${modalView ? 'post-modalView' : null}`}>
-            {modalView &&
-                <button className='post-head-close' onClick={handleCloseModal}><PiX className='post-head-icon' /></button>
-            }
             <div className="post__container">
                 <div className="post__head">
                     <div className="post__profile">
@@ -145,36 +148,49 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                             {formatDate(postData.createdAt)}
                         </div>
                     </div>
-                        <Dropdown label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
-                            <div className="post__menu">
-                                <button
-                                    className='u-button menu--item'
-                                >
+                    <Dropdown label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
+                        <div className="post__menu">
+                            <button
+                                className='u-button menu--item'
+                                onClick={() => {
+                                    if (modalView) {
+                                        navigate(-1);
+                                    } else {
+                                        navigate(`/post/${postData._id}`, { state: { background: location } })
+                                    }
+                                }
+                                }
+                            >
+                                {modalView ?
+                                    <PiX className='u-icon-font u-icon-margin-r' />
+                                    :
                                     <PiArrowsOut className='u-icon-font u-icon-margin-r' />
-                                    Open in expanded view
-                                </button>
+                                }
+                                {modalView ? 'Close' : 'Open in expanded view'}
+                            </button>
+                            <button
+                                className='u-button menu--item'
+                            >
+                                <PiShare className='u-icon-font u-icon-margin-r' />
+                                Share
+                            </button>
+                            <button
+                                className='u-button menu--item'
+                                onClick={() => navigator.clipboard.writeText(`${window.location.origin}/post/${postData._id}`)}
+                            >
+                                <PiLinkSimple className='u-icon-font u-icon-margin-r' />
+                                Copy link
+                            </button>
+                            {!notOwner &&
                                 <button
-                                    className='u-button menu--item'
-                                >
-                                    <PiShare className='u-icon-font u-icon-margin-r' />
-                                    Share
-                                </button>
-                                <button
-                                    className='u-button menu--item'
-                                >
-                                    <PiLinkSimple className='u-icon-font u-icon-margin-r' />
-                                    Copy link
-                                </button>
-                                {!notOwner &&
-                                    <button 
                                     className='u-button menu--item item-red'
                                     onClick={handleDeletePost}
                                 >
                                     <PiTrash className='u-icon-font u-icon-margin-r' />
                                     Delete
                                 </button>}
-                            </div>
-                        </Dropdown>
+                        </div>
+                    </Dropdown>
                 </div>
                 <div className="post__description">
                     <div ref={textRef} className="description--text parsed-editor-text emoji-text">
@@ -248,7 +264,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                     </button>
                 </div>
             </div>
-            {postState.comment &&
+            {(postState.comment || modalView) &&
                 <div className={`post__comments ${postState.animateComment && 'comment-animate'}`}>
                     <div className="new_comment">
                         <div className="profile_comm_user">

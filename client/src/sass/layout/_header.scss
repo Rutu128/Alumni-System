@@ -133,17 +133,30 @@
 .nav {
     &--item {
         font-size: 1rem;
+        font-weight: 500;
+        font-stretch: 110%;
         border-radius: 0.8rem;
         overflow: hidden;
         margin-bottom: 0.4rem;
+        transition: all .3s;
         
-        &:hover {
-            background-color: $color-theme-back-light;
+        &:hover, &:focus {
+            background-color: rgba($color-theme-back-light, .6);
         }
         
         .highlight {
+            font-weight: 700;
             background-color: $color-theme-back-light;
+
+            .icon-cont{
+                color: $color-theme-dark;
+            }
+
+            p{
+                color: $color-theme-dark;
+            }
         }
+
     }
 
     &--link {
@@ -252,7 +265,7 @@
         .nav--item {
             // flex: 1;
             display: inline-block;
-            width: 4rem;
+            width: 3.2rem;
 
             .nav--link {
                 display: flex;
@@ -267,7 +280,7 @@
                         6vw,
                         1.8rem
                     );
-                    margin: -0.2rem 0 -0.1rem 0;
+                    margin: 0rem 0 -0.2rem 0;
                 }
             }
 
