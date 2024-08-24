@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, cloneElement } from 'react';
 
-export default function Dropdown({ label, icon: Icon, buttonClassName, children }) {
-    const [isOpen, setIsOpen] = useState(false);
+export default function Dropdown({ isOpen, setIsOpen, label, icon: Icon, buttonClassName, children }) {
     const dropdownRef = useRef(null);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
 
+    const closeDropdown = () => {
+        setIsOpen(false);
+    };
+
     const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setIsOpen(false);
+            closeDropdown();
         }
     };
 
@@ -26,6 +29,13 @@ export default function Dropdown({ label, icon: Icon, buttonClassName, children 
         };
     }, [isOpen]);
 
+    const childrenWithProps = React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+            return cloneElement(child, { closeDropdown });
+        }
+        return child;
+    });
+
     return (
         <div className="dropdown" ref={dropdownRef}>
             <button
@@ -37,7 +47,7 @@ export default function Dropdown({ label, icon: Icon, buttonClassName, children 
             </button>
             {isOpen && (
                 <div className={`dropdown__menu ${isOpen && 'animate-dropdown'}`}>
-                    {children}
+                    {childrenWithProps}
                 </div>
             )}
         </div>

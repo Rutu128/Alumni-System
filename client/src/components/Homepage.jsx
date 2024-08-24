@@ -40,7 +40,7 @@ export default function Homepage() {
         const response = await authenticateUser();
         if (response.status === 200) {
             console.log('Authorized user');
-            getPosts(1);
+            await getPosts(1);
             setIsLoading(false);
         } else if (response.status === 401) {
             setIsLoading(false);

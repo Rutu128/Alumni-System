@@ -10,13 +10,25 @@
     }
 }
 
+// @keyframes slideDown {
+//     0% {
+//         height: 0;
+//     }
+
+//     100% {
+//         height: 15rem;
+//     }
+// }
+
 @keyframes slideDown {
     0% {
-        height: 0;
+        max-height: 0;
+        opacity: 0;
     }
 
     100% {
-        height: 10rem;
+        max-height: 100vh; // Set this to a value larger than the expected height
+        opacity: 1;
     }
 }
 
@@ -57,5 +69,17 @@
 
     100% {
         transform: translateX(0);
+    }
+}
+
+@keyframes loadingBalls {
+    0% {
+        left: -5%;
+    }
+    70% {
+        left: 100%;
+    }
+    100%{
+        left: 100%;
     }
 }

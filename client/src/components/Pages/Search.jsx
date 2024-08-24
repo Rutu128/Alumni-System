@@ -197,6 +197,7 @@ export default function Search() {
                                 value={searchText} 
                                 onChange={handleSearchInput} 
                                 ref={searchInputRef}
+                                autoFocus
                             />
                             <PiMagnifyingGlass className="search--icon u-phosphor-icons" />
                         </div>

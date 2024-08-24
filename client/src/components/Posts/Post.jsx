@@ -34,6 +34,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
         commentCount: postData.comments,
         showMenu: false,
     });
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const { getOwnerDetails, createNotification } = useContext(UserContext);
     const { likePost, likeComment, getComments, newComment: postNewComment, deletePost } = useContext(PostContext);
@@ -148,16 +149,17 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                             {formatDate(postData.createdAt)}
                         </div>
                     </div>
-                    <Dropdown label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
+                    <Dropdown isOpen={dropdownOpen} setIsOpen={setDropdownOpen} label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
                         <div className="post__menu">
                             <button
                                 className='u-button menu--item'
-                                onClick={() => {
+                                onClick={(e) => {
                                     if (modalView) {
                                         navigate(-1);
                                     } else {
                                         navigate(`/post/${postData._id}`, { state: { background: location } })
                                     }
+                                    setDropdownOpen(false);
                                 }
                                 }
                             >
@@ -176,7 +178,11 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                             </button>
                             <button
                                 className='u-button menu--item'
-                                onClick={() => navigator.clipboard.writeText(`${window.location.origin}/post/${postData._id}`)}
+                                onClick={(e) => {
+                                    navigator.clipboard.writeText(`${window.location.origin}/post/${postData._id}`)
+                                    createNotification('Link copied to clipboard', 'success');
+                                    setDropdownOpen(false);
+                                }}
                             >
                                 <PiLinkSimple className='u-icon-font u-icon-margin-r' />
                                 Copy link
@@ -184,7 +190,10 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                             {!notOwner &&
                                 <button
                                     className='u-button menu--item item-red'
-                                    onClick={handleDeletePost}
+                                    onClick={(e) => {
+                                        handleDeletePost();
+                                        setDropdownOpen(false);
+                                    }}
                                 >
                                     <PiTrash className='u-icon-font u-icon-margin-r' />
                                     Delete
@@ -278,6 +287,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                                 onKeyUp={(e) => {
                                     e.key === "Enter" && newComment()
                                 }}
+                                autoFocus
                             />
                         </div>
                         <div className="comment-submit" onClick={newComment}>
@@ -289,11 +299,13 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                             <Loading type='spin' color='$color-theme-light' width={'2rem'} height={'2rem'} />
                         </div> 
                         : */}
-                    {(postState.fetchedComments.length > 0) &&
-                        postState.fetchedComments.map((comment, index) => (
-                            <CommentBlock data={comment} handleCommentLike={handleLikeComment} key={index} />
-                        ))}
-
+                    <div className="comment--cont">
+                        {(postState.fetchedComments.length > 0) &&
+                            postState.fetchedComments.map((comment, index) => (
+                                <CommentBlock data={comment} handleCommentLike={handleLikeComment} key={index} />
+                            ))
+                        }
+                    </div>
                 </div>
             }
         </div>

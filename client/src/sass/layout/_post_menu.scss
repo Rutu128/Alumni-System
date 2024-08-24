@@ -16,6 +16,12 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 0.5rem;
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        background-color: $color-white;
+        padding: 1rem;
 
         h1 {
             font-size: clamp(1rem, 1.8rem, 2rem);
@@ -48,6 +54,8 @@
         .part-right {
             flex: 1;
             padding: 1rem 1rem 0 1rem;
+            display: flex;
+            justify-content: center;
         }
 
         .part-left {
@@ -83,7 +91,7 @@
             }
 
             .post-file-preview {
-                max-width: 20rem;
+                max-width: 21rem;
                 height: 200px; // Set a fixed height, adjust as needed
                 padding: 1rem;
                 background-color: $color-theme-back-light;

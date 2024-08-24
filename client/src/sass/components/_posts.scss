@@ -12,6 +12,8 @@
         min-height: 50vh;
         border: none;
 
+        @include no-scrollbar;
+
         .post__container {
             flex: 1;
             // width: 100%;
@@ -199,17 +201,24 @@
     }
     
     .comment-animate{
-        animation: slideDown .3s ease;
+        animation: slideDown .5s ease forwards;
     }
     &__comments {
         // background-color: $color-grey-light-3;
         border-top: 1px solid $color-grey-light-3;
-        transition: height .3s;
-        max-height: 25rem;
-        overflow-y: auto;
+        transition: max-height .3s;
         position: relative;
+        overflow: hidden;
+        max-height: 0;
+
         
-        @include no-scrollbar;
+        .comment--cont{
+            overflow-y: auto;
+            max-height: 25rem;
+            
+            @include no-scrollbar;
+        }
+        
 
         
         .new_comment{
@@ -303,6 +312,7 @@
         padding: .5rem 1rem;
         font-size: .8rem;
         font-weight: 450;
+        max-width: 90%;
     }
 
     &_profile{
