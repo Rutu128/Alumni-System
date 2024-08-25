@@ -208,7 +208,7 @@
         border-top: 1px solid $color-grey-light-3;
         transition: max-height .3s;
         position: relative;
-        overflow: hidden;
+        // overflow: hidden;
         max-height: 0;
 
         
@@ -238,13 +238,15 @@
                 padding: 0 1rem;
                 background-color: inherit;
                 
-                input {
+                &-field {
+                    position: relative;
                     width: 100%;
-                    padding: .7rem;
+                    padding: .7rem .9rem;
                     outline: none;
                     border: 2px solid $color-theme-dark;
                     border-radius: 2rem;
                     font-weight: 450;
+                    z-index: 10;
                 }
             }
             

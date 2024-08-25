@@ -10,15 +10,13 @@ import ProfileImage from '../Homepage UI/ProfileImage';
 import { isImage, isVideo, isPdf, getProcessedPdfUrl } from '../../utils/Uploads/urlProcessor';
 import SendButton from '../UI components/SendButton';
 import CommentBlock from './CommentBlock';
-import { log } from '../../log';
-import Loading from 'react-loading';
 import parse from 'html-react-parser';
 import Dropdown from '../UI components/Dropdown';
 import { UserContext } from '../../context/UserContext';
 import { PostContext } from '../../context/PostContext';
 import { useEmojiFont } from '../../Hooks/useEmojiFont';
-
-
+import InputEmoji from 'react-input-emoji';
+import {  } from 'react-input-emoji';
 
 export default function Post({ postData, modalView = false, notOwner, handleFetchPosts }) {
     // log('<Post /> rendered', 4);
@@ -34,6 +32,8 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
         commentCount: postData.comments,
         showMenu: false,
     });
+
+    const [comment, setComment] = useState('');
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const { getOwnerDetails, createNotification } = useContext(UserContext);
@@ -115,10 +115,10 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                 newCommentLoading: true,
             }
         })
-        const res = await postNewComment(postData._id, commentRef.current.value);
+        const res = await postNewComment(postData._id, comment);
         if (res.status === 200) {
             fetchComments();
-            commentRef.current.value = "";
+            setComment('');
             setPostState(prevState => {
                 return {
                     ...prevState,
@@ -280,7 +280,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                             <ProfileImage />
                         </div>
                         <div className="comment-input">
-                            <input
+                            {/* <input
                                 type="text"
                                 ref={commentRef}
                                 placeholder='Add a comment...'
@@ -288,6 +288,16 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                                     e.key === "Enter" && newComment()
                                 }}
                                 autoFocus
+                            /> */}
+                            <InputEmoji 
+                                placeholder='Add a comment...'
+                                inputClass='comment-input-field'
+                                value={comment}
+                                onChange={setComment}
+                                fontFamily='Mona-sans, sans-serif'
+                                autoFocus
+                                theme='light'
+                                keepOpened
                             />
                         </div>
                         <div className="comment-submit" onClick={newComment}>
