@@ -3,14 +3,25 @@
     margin: .5rem 0;
     border-radius: 1rem;
     border: 2px solid rgba($color-theme-dark, .1);
+    width: 100%;
     // overflow: hidden;
+
+    &__regular{
+        width: 100%;
+    }
 
     &-modalView {
         width: 100%;
         display: flex;
         justify-content: baseline;
-        min-height: 50vh;
+        align-items: flex-start;
+        min-height: 65vh;
+        // max-height: 70vh;
+        height: auto;
+        padding: 0 .5rem;
         border: none;
+        overflow: visible;
+        margin:  0 0;
 
         @include no-scrollbar;
 
@@ -21,13 +32,17 @@
 
         .post__comments{
             flex: 1;
+            border-top: none;
+            width: 100%;
+            @include no-scrollbar;
         }
 
-        @media (max-width: 768px){
+        @media (max-width: 1080px){
             flex-direction: column;
-            width: 100vw;
-            height: 90vh;
-            min-height: 90vh;
+            // width: 100vw;
+            max-height: 90vh;
+            height: auto;
+            min-height: 72vh;
             margin: 0 0;
             border-radius: 0;
 
@@ -38,6 +53,7 @@
 
             .post__comments{
                 flex: none;
+                overflow: hidden;
             }
         }
     }
@@ -235,7 +251,7 @@
             .comment-input{
                 flex: 1;
                 display: inline-block;
-                padding: 0 1rem;
+                // padding: 0 1rem;
                 background-color: inherit;
                 
                 &-field {

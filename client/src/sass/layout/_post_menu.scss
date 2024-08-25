@@ -4,7 +4,9 @@
         min-width: 50vw;
         max-width: 80vw;
         overflow-x: hidden;
-        
+        max-height: 80vh;
+        background-color: $color-white;
+        z-index: 1;
 
         h2 {
             margin-bottom: 0.4rem;
@@ -15,7 +17,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.5rem;
+        // margin-bottom: 0.5rem;
         position: sticky;
         top: 0;
         left: 0;
@@ -25,8 +27,8 @@
 
         h1 {
             font-size: clamp(1rem, 1.8rem, 2rem);
-            font-weight: 800;
-            font-stretch: 110%;
+            font-weight: 650;
+            font-stretch: 125%;
         }
 
         &-close {
@@ -174,6 +176,10 @@
             display: flex;
             flex-direction: column;
             color: $color-font-dark;
+            overflow-y: auto;
+            max-height: 60vh;
+
+            @include horizontal-scrollbar;
 
             .right-body {
                 flex: 1;
@@ -199,13 +205,16 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                // position: absolute;
+                // bottom: 0;
+                // left: 0;
 
                 &:hover {
                     box-shadow: 0 0 2rem rgba($color-theme-dark, 0.5);
                 }
 
                 @media (max-width: 768px) {
-                    position: static;
+                    // position: static;
                     width: 100%;
                 }
             }

@@ -62,7 +62,7 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
                     <div className="about_college_info">
                         <div className="info--cell">
                             <div className="info--head">Student ID</div>
-                            <div className="info--value">{userDetail.c_id}</div>
+                            <div className="info--value">{userDetail.c_id?.toUpperCase()}</div>
                         </div>
                         <div className="info--cell">
                             <div className="info--head">Batch</div>

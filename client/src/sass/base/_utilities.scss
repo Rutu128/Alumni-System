@@ -74,12 +74,12 @@
     &-secondary {
         border: 2px solid $color-theme-light;
         outline: none;
-        padding: .7rem 1rem;
-        font-size: .9rem;
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
         font-weight: 500;
         font-stretch: 110%;
         color: $color-font-dark;
-        background-color: rgba($color: $color-theme-back-light, $alpha: .5);
+        background-color: rgba($color: $color-theme-back-light, $alpha: 0.5);
         border-radius: 1rem;
         width: 100%;
         margin-bottom: 1rem;
@@ -161,12 +161,12 @@
 .u-phosphor-icons {
     margin: 0rem 0.2rem -0.2rem 0.14rem;
 
-    &-settings{
-        margin: 0rem 0 -.18rem 0;
+    &-settings {
+        margin: 0rem 0 -0.18rem 0;
     }
 }
 
-.u-icon-font{
+.u-icon-font {
     font-size: 1.2rem;
 }
 
@@ -179,7 +179,7 @@
     background-color: $color-theme-dark;
 }
 
-.u-back-light{
+.u-back-light {
     background: $color-theme-back-light;
 }
 
@@ -229,13 +229,13 @@
     // font-weight: 300;
 }
 
-.u-button-tertiary{
+.u-button-tertiary {
     background-color: transparent;
-    padding: .4rem;
+    padding: 0.4rem;
     font-size: 1.4rem;
 }
 
-.u-icon-button-tertiary{
+.u-icon-button-tertiary {
     background: transparent;
     border-radius: 50%;
     font-size: 1.5rem;
@@ -266,11 +266,11 @@
     &:link,
     &:visited {
         text-decoration: none;
-        color: $color-font-dark;        
+        color: $color-font-dark;
     }
 }
 
-.u-fallback{
+.u-fallback {
     padding: 1rem 2rem;
     font-size: 1rem;
     color: $color-theme-dark;
@@ -279,7 +279,7 @@
     align-items: center;
     flex-direction: column;
 
-    &-illustration{
+    &-illustration {
         width: 80%;
 
         video {
@@ -294,19 +294,19 @@
     }
 }
 
-.u-description-box{
-    
+.u-description-box {
     background-color: $color-theme-back-light;
-    padding: .5rem .8rem;
+    padding: 0.5rem 0.8rem;
     height: responsive-font-size(8);
     min-height: 5rem;
+    height: 10rem;
     border-radius: 1rem;
     border: 2px solid $color-theme-light;
     flex: 1;
     margin-bottom: responsive-font-size(1);
-    
+
     @include no-scrollbar;
-    
+
     .u-post-description {
         font-family: "Mona-sans", sans-serif;
         font-weight: 500;
@@ -315,22 +315,22 @@
         background: transparent;
         width: 100%;
         height: 100%;
-        min-height: 4rem;
+        min-height: 6rem;
         border: none;
         outline: none;
         resize: none;
-        overflow-y: hidden;
-        
+        // overflow-y: hidden;
+        @include no-scrollbar;
     }
 }
 
-.u-text-editor{
+.u-text-editor {
     font-family: "Mona-sans", sans-serif;
     font-weight: 500;
     font-stretch: 110%;
 }
 
-.quill{
+.quill {
     width: 100%;
     height: 100%;
     border: 2px solid $color-theme-light;
@@ -345,36 +345,53 @@
     font-family: "Mona-sans", sans-serif;
 }
 
-.ql-editor{
+.ql-editor {
     flex: 1;
     max-height: 22vh;
     overflow-y: auto;
     font-family: "Mona-sans", sans-serif;
 
-    @media screen and (max-width: 768px){
+    @media screen and (max-width: 768px) {
         max-height: 20vh;
     }
 }
 
 .parsed-editor-text {
-    font-family: 'Mona-sans', sans-serif;
+    font-family: "Mona-sans", sans-serif;
     line-height: 1;
     font-weight: 500;
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         font-weight: 700;
         margin-bottom: 0.5rem;
     }
 
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.8rem; }
-    h3 { font-size: 1.6rem; }
-    h4 { font-size: 1.4rem; }
-    h5 { font-size: 1.2rem; }
-    h6 { font-size: 1rem; }
+    h1 {
+        font-size: 2rem;
+    }
+    h2 {
+        font-size: 1.8rem;
+    }
+    h3 {
+        font-size: 1.6rem;
+    }
+    h4 {
+        font-size: 1.4rem;
+    }
+    h5 {
+        font-size: 1.2rem;
+    }
+    h6 {
+        font-size: 1rem;
+    }
 
     p {
-        margin-bottom: .2rem;
+        margin-bottom: 0.2rem;
     }
 
     strong {
@@ -398,14 +415,14 @@
     }
 
     code {
-        font-family: 'Courier New', Courier, monospace;
+        font-family: "Courier New", Courier, monospace;
         background-color: $color-theme-light;
         padding: 0.2rem 0.4rem;
         border-radius: 0.3rem;
     }
 
     pre {
-        font-family: 'Courier New', Courier, monospace;
+        font-family: "Courier New", Courier, monospace;
         background-color: $color-theme-light;
         padding: 1rem;
         border-radius: 0.5rem;
@@ -413,7 +430,8 @@
         margin-bottom: 1rem;
     }
 
-    ul, ol {
+    ul,
+    ol {
         // margin: 1rem 0;
         padding-left: 1.5rem;
     }
@@ -444,7 +462,8 @@
         border-collapse: collapse;
         margin-bottom: 1rem;
 
-        th, td {
+        th,
+        td {
             padding: 0.5rem;
             border: 1px solid $color-theme-light;
         }
@@ -455,7 +474,7 @@
     }
 }
 
-.u-section-header{
+.u-section-header {
     @include page-headers;
 }
 
@@ -463,20 +482,45 @@
     // padding: .5rem;
     width: 2.2rem;
     height: 2.2rem;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-right: .5rem;
+    margin-right: 0.5rem;
     cursor: pointer;
-    border-radius: .3rem;
+    border-radius: 0.3rem;
+    color: $color-grey-light-1;
 
-    &:hover{
+    &:hover {
+        color: $color-font-dark;
         background-color: $color-theme-back-light;
     }
 
     .back-icon {
         // margin: 0 0 0 0;
         // padding:  0 0 0 0;
+    }
+}
+
+.u-textarea {
+    width: 100%;
+    max-width: 30rem;
+    height: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    font-stretch: 110%;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid $color-theme-light;
+
+    .textarea-input {
+        // max-height: 8rem;
+        font-family: "Mona-sans", sans-serif;
+        font-weight: 500;
+        font-stretch: 110%;
+        // border-radius: 2rem;
+        // height: 2.9rem;
+
+        @include no-scrollbar;
     }
 }

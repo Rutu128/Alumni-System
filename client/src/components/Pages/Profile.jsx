@@ -43,7 +43,7 @@ export default function Profile() {
                 <div className="profile__cont">
                     <div className="profile__head">
                         <NavigateBack />
-                        <h1>Profile</h1>
+                        <h1>{`${userDetail.firstName}'s Profile`}</h1>
                         {/* <hr /> */}
                     </div>
                     <div className="profile__main">

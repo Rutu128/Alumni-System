@@ -16,7 +16,7 @@ import { UserContext } from '../../context/UserContext';
 import { PostContext } from '../../context/PostContext';
 import { useEmojiFont } from '../../Hooks/useEmojiFont';
 import InputEmoji from 'react-input-emoji';
-import {  } from 'react-input-emoji';
+import { } from 'react-input-emoji';
 
 export default function Post({ postData, modalView = false, notOwner, handleFetchPosts }) {
     // log('<Post /> rendered', 4);
@@ -252,19 +252,21 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                         }
                         Like
                     </button>
-                    <button className="post-interactions" onClick={() => handleSelection('comment')}>
-                        {postState.comment
-                            ?
-                            <PiChatTeardropTextFill
-                                className='interaction-icons align'
-                            />
-                            :
-                            <PiChatTeardropText
-                                className='interaction-icons align'
-                            />
-                        }
-                        Comment
-                    </button>
+                    {!modalView &&
+                        <button className="post-interactions" onClick={() => handleSelection('comment')}>
+                            {postState.comment
+                                ?
+                                <PiChatTeardropTextFill
+                                    className='interaction-icons align'
+                                />
+                                :
+                                <PiChatTeardropText
+                                    className='interaction-icons align'
+                                />
+                            }
+                            Comment
+                        </button>
+                    }
                     <button className="post-interactions" onClick={() => handleSelection('share')}>
                         <PiShare
                             className={`interaction-icons`}
@@ -289,7 +291,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                                 }}
                                 autoFocus
                             /> */}
-                            <InputEmoji 
+                            <InputEmoji
                                 placeholder='Add a comment...'
                                 inputClass='comment-input-field'
                                 value={comment}

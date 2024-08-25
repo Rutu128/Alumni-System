@@ -208,6 +208,7 @@
 @mixin no-scrollbar {
     &::-webkit-scrollbar {
         opacity: 0;
+        display: none;
     }
 }
 
@@ -215,7 +216,11 @@
     width: 100%;
     display: block;
     padding-bottom: 3px;
-    border-bottom: 1px solid $color-grey-light-3;
+    border-bottom: 2px solid $color-grey-light-3;
+
+    &:has(h2){
+        border-bottom: none;
+    }
 
     h1 {
         // font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);
@@ -225,7 +230,7 @@
     }
 
     h2 {
-        font-size: responsive-font-size(1.5);
+        font-size: responsive-font-size(1.8);
         font-weight: 600;
         font-stretch: 120%;
     }

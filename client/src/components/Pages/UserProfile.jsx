@@ -37,7 +37,7 @@ export default function UserProfile() {
             <section className="profile">
                 <div className="profile__cont">
                     <div className="profile__head">
-                        <h1>Profile</h1>
+                        <h1>Your Profile</h1>
                         {/* <hr /> */}
                     </div>
                     <div className="profile__main">
