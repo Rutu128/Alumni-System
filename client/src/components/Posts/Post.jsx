@@ -17,6 +17,7 @@ import { PostContext } from '../../context/PostContext';
 import { useEmojiFont } from '../../Hooks/useEmojiFont';
 import InputEmoji from 'react-input-emoji';
 import { } from 'react-input-emoji';
+import VideoPost from '../UI components/Video';
 
 export default function Post({ postData, modalView = false, notOwner, handleFetchPosts }) {
     // log('<Post /> rendered', 4);
@@ -213,10 +214,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                                 <div className="media-container" key={index}>
                                     {isImage(content.url) && <img src={content.url} alt="Post media" />}
                                     {isVideo(content.url) && (
-                                        <video controls>
-                                            <source src={content.url} type="video/mp4" />
-                                            Your browser does not support the video tag.
-                                        </video>
+                                        <VideoPost src={content.url} />
                                     )}
                                     {isPdf(content.url) && (
                                         <img
