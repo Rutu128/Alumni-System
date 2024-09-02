@@ -124,7 +124,7 @@ export default function Search() {
     const { searchUser } = useContext(UserContext);
     const { setSelectedMenu } = useContext(GlobalContext);
 
-    const delay = 200;
+    const delay = 500;
 
     useEffect(() => {
         setSelectedMenu('Search');

@@ -29,9 +29,10 @@ export default function ProfileEditModal({ closeModal }) {
 
     async function handleFileSubmit() {
         setIsLoading(true);
+        let profile_url;
 
         if(file){
-            const profile_url = await uploadFile(file);
+            profile_url = await uploadFile(file);
             console.log(profile_url);
         }
         

@@ -98,7 +98,7 @@ export default function UserContextProvider({ children }) {
     }
 
     async function handleLogoutUser() {
-        const response = await axios.get('/auth/logout');
+        const response = await postApi('/auth/logout');
         
         const res = handleResponse(response);
         console.log(res);
@@ -151,15 +151,7 @@ export default function UserContextProvider({ children }) {
             setUserInfo(prevInfo => {
                 return {
                     ...prevInfo,
-                    firstName: response.data.data.firstName,
-                    lastName: response.data.data.lastName,
-                    email: response.data.data.email,
-                    initials: response.data.data.firstName[0] + response.data.data.lastName[0],
-                    avatar: response.data.data.avatar,
-                    headline: response.data.data.headline,
-                    description: response.data.data.description,
-                    designation: response.data.data.designation,
-                    isAuthenticated: true
+                    ...response.data.data,
                 }
             })
             return {
@@ -188,7 +180,7 @@ export default function UserContextProvider({ children }) {
         const res = handleResponse(response);
         if(res.status === 200) {
             console.log('User updated');
-            handleGetUserDetails();
+            handleGetOwnerDetails();
             return res;
         }
     }
