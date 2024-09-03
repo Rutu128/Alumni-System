@@ -17,6 +17,7 @@ import Search from './components/Pages/Search';
 import Settings from './components/Pages/Settings';
 import ExpandedPostModal from './components/Modal UI/ExpandedPostModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import MultiStepSignUp from './components/Auth/MultiStepSignUp';
 
 function App() {
   log('<App /> rendered');
@@ -32,6 +33,7 @@ function App() {
             <Routes location={background || location}>
               <Route path="/login" element={<Login />} />
               <Route path='/signup' element={<SignUp />} />
+              <Route path='/signupBeta' element={<MultiStepSignUp />} />
               <Route path='/yearbook' element={<Yearbook />} />
               <Route path="/" element={<Homepage />}>
                 <Route path='/' index element={<HomepageContent />} />

@@ -20,7 +20,7 @@ import { } from 'react-input-emoji';
 import VideoPost from '../UI components/Video';
 import FollowButton from '../UI components/FollowButton';
 
-export default function Post({ postData, modalView = false, notOwner, handleFetchPosts }) {
+export default function Post({ postData, modalView = false, notOwner, handleFetchPosts, profileView=false }) {
     // log('<Post /> rendered', 4);
 
     const [postState, setPostState] = useState({
@@ -153,9 +153,12 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                             {formatDate(postData.createdAt)}
                         </div>
                     </div>
-                    <div className="post_actions u-margin-right-small">
-                        <FollowButton isFollowing={false} isSmall={true} />
-                    </div>
+                    {
+                        !profileView &&
+                        <div className="post_actions u-margin-right-small">
+                            <FollowButton isFollowing={false} isSmall={true} />
+                        </div>
+                    }
                     <Dropdown isOpen={dropdownOpen} setIsOpen={setDropdownOpen} label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
                         <div className="post__menu">
                             <button

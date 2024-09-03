@@ -25,6 +25,7 @@ export default function PostContainer({ handleFetchPosts, posts, notOwner }) {
                                     // likeComment={likeComment} 
                                     // deletePost={deletePost}
                                     handleFetchPosts={handleFetchPosts}
+                                    profileView={true}
                                 />
                                 {/* <div className="separator"></div> */}
                             </div>
