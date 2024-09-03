@@ -3,11 +3,15 @@ import { PiThumbsUpDuotone, PiThumbsUpFill } from "react-icons/pi";
 import UserProfile from "./UserProfileImage";
 import { useReducer, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useEmojiFont } from "../../Hooks/useEmojiFont";
 
 export default function CommentBlock({ data, handleCommentLike, ...props }) {
     const [isLiked, setIsLiked] = useState(data.isLiked);
     console.log(data);
     const username = data.users.firstName + '_' + data.users.lastName;
+
+    const commentRef = useRef(null);
+    useEmojiFont(commentRef);
 
 
     return (
@@ -26,7 +30,7 @@ export default function CommentBlock({ data, handleCommentLike, ...props }) {
                         </div>
                     </div>
 
-                    <div className="comment_text">
+                    <div ref={commentRef} className="comment_text">
                         {data.comment}
                     </div>
 

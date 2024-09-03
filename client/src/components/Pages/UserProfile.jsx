@@ -37,7 +37,7 @@ export default function UserProfile() {
             <section className="profile">
                 <div className="profile__cont">
                     <div className="profile__head">
-                        <h1>Profile</h1>
+                        <h1>Your Profile</h1>
                         {/* <hr /> */}
                     </div>
                     <div className="profile__main">
@@ -50,11 +50,13 @@ export default function UserProfile() {
                                     <div className="user-info-name u-bold">
                                         {userDetail.firstName + ' ' + userDetail.lastName}
                                     </div>
-                                    <div className="user-info u-light">
-                                        {/* {userDetail.email} */}
-                                        {userDetail.headline}
-                                        <br />
-                                        {userDetail.designation}
+                                    <div className="u-light">
+                                        <div className="user-info-cell">
+                                            {userDetail.headline}
+                                        </div>
+                                        <div className="user-info-cell">
+                                            {userDetail.designation}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="edit-profile-cont">

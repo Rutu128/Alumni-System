@@ -11,7 +11,9 @@ import LoadingScreen from './Homepage UI/LoadingScreen';
 import '../sass/pages/_homepage.scss';
 import { PostContext } from '../context/PostContext';
 import { GlobalContext } from '../context/GlobalContext';
-// import React from 'react';
+
+import { useLocation } from "react-router-dom";
+import ExpandedPostModal from "./Modal UI/ExpandedPostModal";
 
 export default function Homepage() {
     log('<Homepage /> rendered', 1);
@@ -19,7 +21,11 @@ export default function Homepage() {
     const { getPosts } = useContext(PostContext);
 
     const [isLoading, setIsLoading] = useState(userDetail.isAuthenticated ? false : true);
-    const {selectedMenu, setSelectedMenu} = useContext(GlobalContext);
+    const { selectedMenu, setSelectedMenu } = useContext(GlobalContext);
+
+    const location = useLocation();
+    const isPostModal = location.pathname.startsWith("/post/");
+    const isModal = location.state && location.state.modal;
 
     const navigate = useNavigate();
 
@@ -34,7 +40,7 @@ export default function Homepage() {
         const response = await authenticateUser();
         if (response.status === 200) {
             console.log('Authorized user');
-            getPosts(1);
+            await getPosts(1);
             setIsLoading(false);
         } else if (response.status === 401) {
             setIsLoading(false);
@@ -55,7 +61,7 @@ export default function Homepage() {
     return (
         <main className='homepage'>
             <HomepageHeader handleSelectMenu={handleSelectMenu} selectedMenu={selectedMenu} />
-            <section className="sideMenu">
+            <section className={`sideMenu ${!isLoading && 'slideAnimation'}`}>
                 <HomepageMenu handleSelectMenu={handleSelectMenu} selectedMenu={selectedMenu} />
             </section>
             <section className="main">
@@ -65,6 +71,7 @@ export default function Homepage() {
                     </div>
                 </main>
             </section>
+            {isModal && isPostModal && <ExpandedPostModal isModal={true} />}
         </main>
     )
 }

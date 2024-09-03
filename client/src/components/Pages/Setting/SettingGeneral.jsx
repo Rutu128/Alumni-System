@@ -1,5 +1,9 @@
 export default function SettingGeneral(){
     return (
-        <h1>General Settings</h1>
+        <>
+            <div className="u-section-header">
+                <h3>General Settings</h3>
+            </div>
+        </>
     )
 }

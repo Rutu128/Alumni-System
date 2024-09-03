@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { log } from "../../log";
-import { PiUsers, PiUsersFill, PiThumbsUp, PiThumbsUpFill, PiBell, PiBellFill, PiHouse, PiHouseFill, PiGear, PiGearFill, PiMagnifyingGlass, PiMagnifyingGlassDuotone } from "react-icons/pi";
+import { PiUsers, PiUsersDuotone, PiThumbsUp, PiThumbsUpDuotone, PiBell, PiBellDuotone, PiHouse, PiHouseDuotone, PiGear, PiGearFill, PiMagnifyingGlass, PiMagnifyingGlassDuotone, PiGearDuotone } from "react-icons/pi";
 
 import ProfileImage from "./ProfileImage";
 import SiteIcon from "../UI components/SiteIcon";
@@ -16,23 +16,23 @@ export default function HomepageMenu() {
     const { selectedMenu, setSelectedMenu } = useContext(GlobalContext);
 
     const navItems = [
-        { name: 'Home', icon: PiHouse, fillIcon: PiHouseFill, path: '/' },
+        { name: 'Home', icon: PiHouse, fillIcon: PiHouseDuotone, path: '/' },
         { name: 'Search', icon: PiMagnifyingGlass, fillIcon: PiMagnifyingGlassDuotone, path: '/search' },
-        { name: 'Notifications', icon: PiBell, fillIcon: PiBellFill, path: '/testPage' },
-        { name: 'Network', icon: PiUsers, fillIcon: PiUsersFill, path: '/testPage' },
-        { name: 'Interactions', icon: PiThumbsUp, fillIcon: PiThumbsUpFill, path: '/testPage' },
-        { name: 'Settings', icon: PiGear, fillIcon: PiGearFill, path: '/testPage' },
+        { name: 'Notifications', icon: PiBell, fillIcon: PiBellDuotone, path: '/testPage' },
+        { name: 'Network', icon: PiUsers, fillIcon: PiUsersDuotone, path: '/testPage' },
+        { name: 'Interactions', icon: PiThumbsUp, fillIcon: PiThumbsUpDuotone, path: '/testPage' },
+        { name: 'Settings', icon: PiGear, fillIcon: PiGearDuotone, path: '/settings' },
     ]
-    
+
 
     return (
         <div className="menu">
             <div className="menu__cont">
                 <div className="menu__header">
                     <div className="header__cont">
-                            <SiteIcon width='4.6rem' className="site-icon" />
+                        <SiteIcon width='4.6rem' className="site-icon" />
                         <h1 className="header-text">
-                            Alumni 
+                            Alumni
                             <br />
                             Hub
                         </h1>
@@ -45,7 +45,9 @@ export default function HomepageMenu() {
                         return (
                             <div className={"nav--item " + item.name} key={index}>
                                 <Link onClick={() => { setSelectedMenu(item.name) }} to={item.path} className={`nav--link ${selectedMenu === item.name && 'highlight'}`}>
-                                    <IconComponent className='nav--icons' />
+                                    <span className="icon-cont">
+                                        <IconComponent className='nav--icons' />
+                                    </span>
                                     <p>
                                         {item.name}
                                     </p>
@@ -57,7 +59,13 @@ export default function HomepageMenu() {
                 <div className="menu__footer">
                     <div className="nav--item">
                         <Link to={'/settings'} onClick={() => { setSelectedMenu('Settings') }} className={`nav--link ${selectedMenu === 'Settings' && 'highlight'}`}>
-                            <PiGear className="nav--icons" />
+                            <span className="icon-cont">
+                                {selectedMenu === 'Settings' ?
+                                <PiGearDuotone className="nav--icons" />
+                                :
+                                <PiGear className="nav--icons" />
+                                }
+                            </span>
                             <p>
                                 Settings
                             </p>
@@ -65,7 +73,9 @@ export default function HomepageMenu() {
                     </div>
                     <div className="nav--item Profile">
                         <Link to={'/profile'} onClick={() => { setSelectedMenu('Profile') }} className={`link-profile ${selectedMenu === 'Profile' && 'highlight'}`}>
-                            <ProfileImage />
+                            <div className="menu-profile-cont">
+                                <ProfileImage />
+                            </div>
                             <p>
                                 Profile
                             </p>

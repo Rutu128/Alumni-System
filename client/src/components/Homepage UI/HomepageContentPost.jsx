@@ -84,18 +84,18 @@ export default function HomepageContentPost({ }) {
                 <div className="bottom">
                     <button onClick={() => showPostModal('image')}>
                         {/* <FaRegImages className='button-icon' /> */}
-                        <img src="/picture-dynamic-color.svg" alt="image icon" />
+                        <img src="/Icons/image-2.svg" alt="image icon" />
                         {/* <ImageIcon /> */}
                         <p>Image</p>
                     </button>
                     <button onClick={() => showPostModal('video')}>
                         {/* <MdOutlineVideoLibrary className='button-icon' /> */}
-                        <img src="/video-camera-dynamic-color.svg" alt="image icon" />
+                        <img src="/Icons/video-2.svg" alt="video icon" />
                         <p>Video</p>
                     </button>
                     <button onClick={() => showPostModal('document')}>
                         {/* <IoDocumentsOutline className='button-icon' /> */}
-                        <img src="/copy-dynamic-color.svg" alt="image icon" />
+                        <img src="/Icons/document-2.svg" alt="Document icon" />
                         <p>Document</p>
                     </button>
                 </div>

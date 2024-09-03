@@ -1,5 +1,9 @@
 export default function SettingSecurity(){
     return (
-        <h1>Security Settings</h1>
+        <>
+            <div className="u-section-header">
+                <h3>Security Settings</h3>
+            </div>
+        </>
     )
 }

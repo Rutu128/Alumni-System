@@ -3,11 +3,59 @@
     margin: .5rem 0;
     border-radius: 1rem;
     border: 2px solid rgba($color-theme-dark, .1);
+    width: 100%;
     // overflow: hidden;
 
+    &__regular{
+        width: 100%;
+    }
+
     &-modalView {
+        width: 100%;
         display: flex;
-        justify-content: flex-start;
+        justify-content: baseline;
+        align-items: flex-start;
+        min-height: 65vh;
+        // max-height: 70vh;
+        height: auto;
+        padding: 0 .5rem;
+        border: none;
+        overflow: visible;
+        margin:  0 0;
+
+        @include no-scrollbar;
+
+        .post__container {
+            flex: 1;
+            // width: 100%;
+        }
+
+        .post__comments{
+            flex: 1;
+            border-top: none;
+            width: 100%;
+            @include no-scrollbar;
+        }
+
+        @media (max-width: 1080px){
+            flex-direction: column;
+            // width: 100vw;
+            max-height: 90vh;
+            height: auto;
+            min-height: 72vh;
+            margin: 0 0;
+            border-radius: 0;
+
+            .post__container{
+                width: 100%;
+                flex: none;
+            }
+
+            .post__comments{
+                flex: none;
+                overflow: hidden;
+            }
+        }
     }
 
     @media (max-width: 768px){
@@ -80,6 +128,10 @@
             &:hover{
                 background-color: rgba($color-theme-back-light, .8);
             }
+
+            &:not(:last-child){
+                border-bottom: 1px solid $color-grey-light-3;
+            }
         }
 
         .item-red {
@@ -93,21 +145,14 @@
     }
 
     &__description{
-        padding: .5rem 1rem;
-        // font-weight: 450;
-        font-size: .85rem;
-        white-space: pre-wrap;
-        
-        .emoji-text {
-            font-family: 'Mona-sans', sans-serif;
-        }
-        
-        .emoji-text:lang(zh-Hans), 
-        .emoji-text:lang(zh-Hant), 
-        .emoji-text:lang(ja), 
-        .emoji-text:lang(ko), 
-        .emoji-text:lang(emoji) {
-            font-family: 'Noto Color Emoji', sans-serif;
+        padding: 1rem 1rem;
+
+        .description--text{
+            font-weight: 500;
+            font-stretch: 110%;
+            font-size: .85rem;
+            white-space: pre-wrap;
+            line-height: 1.2;
         }
     }
 
@@ -134,9 +179,11 @@
                 display: flex;
                 justify-content: center;
                 scroll-snap-align: start;
+                // max-height: 70vh;
 
                 img, video{
                     max-width: 100%;
+                    max-height: 60vh;
                 }
             }
         }
@@ -170,12 +217,24 @@
     }
     
     .comment-animate{
-        animation: slideDown .3s ease;
+        animation: slideDown .5s ease forwards;
     }
     &__comments {
         // background-color: $color-grey-light-3;
         border-top: 1px solid $color-grey-light-3;
-        transition: height .3s;
+        transition: max-height .3s;
+        position: relative;
+        // overflow: hidden;
+        max-height: 0;
+
+        
+        .comment--cont{
+            overflow-y: auto;
+            max-height: 25rem;
+            
+            @include no-scrollbar;
+        }
+        
 
         
         .new_comment{
@@ -183,19 +242,27 @@
             justify-content: center;
             align-items: center;
             padding: .5rem 1rem;
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            background-color: $color-white;
             
             .comment-input{
                 flex: 1;
                 display: inline-block;
-                padding: 0 1rem;
+                // padding: 0 1rem;
+                background-color: inherit;
                 
-                input {
+                &-field {
+                    position: relative;
                     width: 100%;
-                    padding: .7rem;
+                    padding: .7rem .9rem;
                     outline: none;
                     border: 2px solid $color-theme-dark;
                     border-radius: 2rem;
                     font-weight: 450;
+                    z-index: 10;
                 }
             }
             
@@ -263,11 +330,12 @@
         padding: .5rem 1rem;
         font-size: .8rem;
         font-weight: 450;
+        max-width: 90%;
     }
 
-    // &_profile{
-
-    // }
+    &_profile{
+        width: 2rem;
+    }
 
     &_main{
         min-width: 30%;

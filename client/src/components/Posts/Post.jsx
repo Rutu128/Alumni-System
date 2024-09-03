@@ -1,24 +1,23 @@
 /* The above code is a React functional component called `Post` that represents a post in a social
 media application. Here is a summary of what the code is doing: */
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserProfile from "./UserProfileImage";
 import { formatDate } from "../../utils/formatDate";
 
-import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill, PiDotsThreeVerticalBold, PiTrash, PiArrowsOut, PiLinkSimple } from "react-icons/pi";
+import { PiThumbsUpDuotone, PiChatTeardropText, PiShare, PiChatTeardropTextFill, PiThumbsUpFill, PiDotsThreeVerticalBold, PiTrash, PiArrowsOut, PiLinkSimple, PiX } from "react-icons/pi";
 import ProfileImage from '../Homepage UI/ProfileImage';
 import { isImage, isVideo, isPdf, getProcessedPdfUrl } from '../../utils/Uploads/urlProcessor';
 import SendButton from '../UI components/SendButton';
 import CommentBlock from './CommentBlock';
-import { log } from '../../log';
-import Loading from 'react-loading';
 import parse from 'html-react-parser';
 import Dropdown from '../UI components/Dropdown';
 import { UserContext } from '../../context/UserContext';
 import { PostContext } from '../../context/PostContext';
 import { useEmojiFont } from '../../Hooks/useEmojiFont';
-
-
+import InputEmoji from 'react-input-emoji';
+import { } from 'react-input-emoji';
+import VideoPost from '../UI components/Video';
 
 export default function Post({ postData, modalView = false, notOwner, handleFetchPosts }) {
     // log('<Post /> rendered', 4);
@@ -35,10 +34,15 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
         showMenu: false,
     });
 
+    const [comment, setComment] = useState('');
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
     const { getOwnerDetails, createNotification } = useContext(UserContext);
     const { likePost, likeComment, getComments, newComment: postNewComment, deletePost } = useContext(PostContext);
 
 
+    const location = useLocation();
+    const navigate = useNavigate();
     const commentRef = useRef();
     const textRef = useRef(null);
     useEmojiFont(textRef);
@@ -46,7 +50,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
     const username = postData.user.firstName + '_' + postData.user.lastName;
 
     useEffect(() => {
-        if (postState.comment && postState.fetchedComments.length === 0) {
+        if ((postState.comment || modalView) && postState.fetchedComments.length === 0) {
             fetchComments();
         }
     }, [postState.comment]);
@@ -96,9 +100,9 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
     }
 
     async function handleDeletePost() {
-        if(notOwner) return;
+        if (notOwner) return;
         const res = await deletePost(postData._id);
-        if(res.status === 200){
+        if (res.status === 200) {
             console.log('Post deleted');
             createNotification('Post deleted', 'success');
             handleFetchPosts();
@@ -112,10 +116,10 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                 newCommentLoading: true,
             }
         })
-        const res = await postNewComment(postData._id, commentRef.current.value);
+        const res = await postNewComment(postData._id, comment);
         if (res.status === 200) {
             fetchComments();
-            commentRef.current.value = "";
+            setComment('');
             setPostState(prevState => {
                 return {
                     ...prevState,
@@ -125,11 +129,12 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
         }
     }
 
+    const closeDropdown = () => {
+
+    }
+
     return (
         <div className={`post ${modalView ? 'post-modalView' : null}`}>
-            {modalView &&
-                <button className='post-head-close' onClick={handleCloseModal}><PiX className='post-head-icon' /></button>
-            }
             <div className="post__container">
                 <div className="post__head">
                     <div className="post__profile">
@@ -145,36 +150,57 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                             {formatDate(postData.createdAt)}
                         </div>
                     </div>
-                        <Dropdown label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
-                            <div className="post__menu">
-                                <button
-                                    className='u-button menu--item'
-                                >
+                    <Dropdown isOpen={dropdownOpen} setIsOpen={setDropdownOpen} label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
+                        <div className="post__menu">
+                            <button
+                                className='u-button menu--item'
+                                onClick={(e) => {
+                                    if (modalView) {
+                                        navigate(-1);
+                                    } else {
+                                        navigate(`/post/${postData._id}`, { state: { background: location } })
+                                    }
+                                    setDropdownOpen(false);
+                                }
+                                }
+                            >
+                                {modalView ?
+                                    <PiX className='u-icon-font u-icon-margin-r' />
+                                    :
                                     <PiArrowsOut className='u-icon-font u-icon-margin-r' />
-                                    Open in expanded view
-                                </button>
+                                }
+                                {modalView ? 'Close' : 'Open in expanded view'}
+                            </button>
+                            <button
+                                className='u-button menu--item'
+                            >
+                                <PiShare className='u-icon-font u-icon-margin-r' />
+                                Share
+                            </button>
+                            <button
+                                className='u-button menu--item'
+                                onClick={(e) => {
+                                    navigator.clipboard.writeText(`${window.location.origin}/post/${postData._id}`)
+                                    createNotification('Link copied to clipboard', 'success');
+                                    setDropdownOpen(false);
+                                }}
+                            >
+                                <PiLinkSimple className='u-icon-font u-icon-margin-r' />
+                                Copy link
+                            </button>
+                            {!notOwner &&
                                 <button
-                                    className='u-button menu--item'
-                                >
-                                    <PiShare className='u-icon-font u-icon-margin-r' />
-                                    Share
-                                </button>
-                                <button
-                                    className='u-button menu--item'
-                                >
-                                    <PiLinkSimple className='u-icon-font u-icon-margin-r' />
-                                    Copy link
-                                </button>
-                                {!notOwner &&
-                                    <button 
                                     className='u-button menu--item item-red'
-                                    onClick={handleDeletePost}
+                                    onClick={(e) => {
+                                        handleDeletePost();
+                                        setDropdownOpen(false);
+                                    }}
                                 >
                                     <PiTrash className='u-icon-font u-icon-margin-r' />
                                     Delete
                                 </button>}
-                            </div>
-                        </Dropdown>
+                        </div>
+                    </Dropdown>
                 </div>
                 <div className="post__description">
                     <div ref={textRef} className="description--text parsed-editor-text emoji-text">
@@ -188,10 +214,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                                 <div className="media-container" key={index}>
                                     {isImage(content.url) && <img src={content.url} alt="Post media" />}
                                     {isVideo(content.url) && (
-                                        <video controls>
-                                            <source src={content.url} type="video/mp4" />
-                                            Your browser does not support the video tag.
-                                        </video>
+                                        <VideoPost src={content.url} />
                                     )}
                                     {isPdf(content.url) && (
                                         <img
@@ -227,19 +250,21 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                         }
                         Like
                     </button>
-                    <button className="post-interactions" onClick={() => handleSelection('comment')}>
-                        {postState.comment
-                            ?
-                            <PiChatTeardropTextFill
-                                className='interaction-icons align'
-                            />
-                            :
-                            <PiChatTeardropText
-                                className='interaction-icons align'
-                            />
-                        }
-                        Comment
-                    </button>
+                    {!modalView &&
+                        <button className="post-interactions" onClick={() => handleSelection('comment')}>
+                            {postState.comment
+                                ?
+                                <PiChatTeardropTextFill
+                                    className='interaction-icons align'
+                                />
+                                :
+                                <PiChatTeardropText
+                                    className='interaction-icons align'
+                                />
+                            }
+                            Comment
+                        </button>
+                    }
                     <button className="post-interactions" onClick={() => handleSelection('share')}>
                         <PiShare
                             className={`interaction-icons`}
@@ -248,20 +273,31 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                     </button>
                 </div>
             </div>
-            {postState.comment &&
+            {(postState.comment || modalView) &&
                 <div className={`post__comments ${postState.animateComment && 'comment-animate'}`}>
                     <div className="new_comment">
                         <div className="profile_comm_user">
                             <ProfileImage />
                         </div>
                         <div className="comment-input">
-                            <input
+                            {/* <input
                                 type="text"
                                 ref={commentRef}
                                 placeholder='Add a comment...'
                                 onKeyUp={(e) => {
                                     e.key === "Enter" && newComment()
                                 }}
+                                autoFocus
+                            /> */}
+                            <InputEmoji
+                                placeholder='Add a comment...'
+                                inputClass='comment-input-field'
+                                value={comment}
+                                onChange={setComment}
+                                fontFamily='Mona-sans, sans-serif'
+                                autoFocus
+                                theme='light'
+                                keepOpened
                             />
                         </div>
                         <div className="comment-submit" onClick={newComment}>
@@ -273,11 +309,13 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                             <Loading type='spin' color='$color-theme-light' width={'2rem'} height={'2rem'} />
                         </div> 
                         : */}
-                    {(postState.fetchedComments.length > 0) &&
-                        postState.fetchedComments.map((comment, index) => (
-                            <CommentBlock data={comment} handleCommentLike={handleLikeComment} key={index} />
-                        ))}
-
+                    <div className="comment--cont">
+                        {(postState.fetchedComments.length > 0) &&
+                            postState.fetchedComments.map((comment, index) => (
+                                <CommentBlock data={comment} handleCommentLike={handleLikeComment} key={index} />
+                            ))
+                        }
+                    </div>
                 </div>
             }
         </div>

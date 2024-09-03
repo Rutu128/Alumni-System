@@ -26,7 +26,7 @@ export const PostContext = createContext({
     }],
     submitNewPost: () => { },
     getPosts: () => { },
-    getSpecificPosts: () => { },
+    getPostData: () => { },
     likePost: () => { },
     likeComment: () => { },
     getComments: () => { },
@@ -86,6 +86,14 @@ export default function PostContextProvider({ children }){
         }
     }
 
+    async function handleGetPostData(id){
+        const response = await getApi('/post/findPost/' + id);
+        const apiStatus = handleResponse(response);
+        if(apiStatus.status === 200){
+            return response.data.data;
+        }
+    }
+
     async function handleLikePost(id){
         const response = await putApi(`/post/like/${id}`);
         console.log(response);
@@ -140,6 +148,7 @@ export default function PostContextProvider({ children }){
         posts: posts,
         submitNewPost: handleNewPost,
         getPosts: handleGetPosts,
+        getPostData: handleGetPostData,
         likePost: handleLikePost,
         likeComment: handleLikeComment,
         getComments: handleGetComments,

@@ -1,11 +1,11 @@
 import { PiArrowLeft } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 
-export default function NavigateBack(){
+export default function NavigateBack({ to = -1 }){
     const navigate = useNavigate();
 
     function handleNavigateBack(){
-        navigate(-1);
+        navigate(to);
     }
 
     return (
