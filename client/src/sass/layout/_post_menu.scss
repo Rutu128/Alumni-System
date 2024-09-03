@@ -23,7 +23,7 @@
         left: 0;
         z-index: 3;
         background-color: $color-white;
-        padding: 1rem;
+        padding: .5rem 1rem;
 
         h1 {
             font-size: clamp(1rem, 1.8rem, 2rem);
@@ -179,7 +179,7 @@
             overflow-y: auto;
             max-height: 60vh;
 
-            @include horizontal-scrollbar;
+            @include no-scrollbar;
 
             .right-body {
                 flex: 1;

@@ -18,6 +18,7 @@ import { useEmojiFont } from '../../Hooks/useEmojiFont';
 import InputEmoji from 'react-input-emoji';
 import { } from 'react-input-emoji';
 import VideoPost from '../UI components/Video';
+import FollowButton from '../UI components/FollowButton';
 
 export default function Post({ postData, modalView = false, notOwner, handleFetchPosts }) {
     // log('<Post /> rendered', 4);
@@ -138,7 +139,9 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
             <div className="post__container">
                 <div className="post__head">
                     <div className="post__profile">
-                        <UserProfile initials={postData.user.initials} profileSrc={postData.user.avatar} className="user-profile" />
+                        <Link to={`/users/${username}`} state={{ userId: postData.user._id }} className='u-user-link'>
+                            <UserProfile initials={postData.user.initials} profileSrc={postData.user.avatar} className="user-profile" />
+                        </Link>
                     </div>
                     <div className="post__userInfo">
                         <div className="user_name">
@@ -149,6 +152,9 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                         <div className="post_date">
                             {formatDate(postData.createdAt)}
                         </div>
+                    </div>
+                    <div className="post_actions u-margin-right-small">
+                        <FollowButton isFollowing={false} isSmall={true} />
                     </div>
                     <Dropdown isOpen={dropdownOpen} setIsOpen={setDropdownOpen} label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
                         <div className="post__menu">

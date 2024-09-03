@@ -245,3 +245,70 @@
         display: none;
     }
 }
+
+@mixin follow-button{
+    .follow-button, .follow-button-small{
+        color: $color-font-light;
+        padding: .8rem 0;
+        margin-top: 1rem;
+        font-size: responsive-font-size(1);
+        font-weight: 700;
+        font-stretch: 110%;
+        border-radius: 1rem;
+        cursor: pointer;
+        transition: all .3s;
+        width: 100%;
+        background-color: rgba($color-theme-dark, .9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .u-phosphor-icons {
+            margin: 0 .5rem 0 0;
+        }
+
+        &:hover{
+            box-shadow: 0 0 2rem rgba($color-theme-dark, .4);
+        }
+
+        &-small{
+            margin-top: 0;
+            // min-width: 7rem;
+            padding: .4rem .8rem;
+            border-radius: 2rem;
+            background-color: rgba($color-theme-dark, .1);
+            color: rgba($color-theme-dark, 1);
+            font-size: responsive-font-size(.85);
+
+            .u-phosphor-icons{
+                font-size: responsive-font-size(1.2);
+            }
+
+            &:hover{
+                background-color: rgba($color-theme-dark, .3);
+                box-shadow: none;
+            }
+        }
+    }
+
+    .following-small{
+        background-color: transparent;
+    }
+
+    .following {
+        background-color: rgba($color-theme-light, .7);
+        color: $color-theme-dark;
+
+        &:hover{
+            background-color: rgba($color-theme-dark, .3);
+            box-shadow: none;
+        }
+    }
+
+    @media (max-width: 768px){
+        .follow-button{
+            padding: .4rem 0;
+            border-radius: .5rem;
+        }
+    }
+}

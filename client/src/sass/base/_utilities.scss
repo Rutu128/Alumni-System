@@ -168,6 +168,10 @@
 
 .u-icon-font {
     font-size: 1.2rem;
+
+    &-large {
+        font-size: responsive-font-size(1.5);
+    }
 }
 
 .u-icon-margin-r {

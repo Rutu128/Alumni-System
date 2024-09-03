@@ -2,8 +2,9 @@
     color: $color-font-dark;
     margin: .5rem 0;
     border-radius: 1rem;
-    border: 2px solid rgba($color-theme-dark, .1);
+    border: 2px solid rgba($color-theme-dark, .15);
     width: 100%;
+    max-width: 50rem;
     // overflow: hidden;
 
     &__regular{
@@ -66,6 +67,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        // max-width: 30rem;
     }
 
     &__head {
@@ -82,7 +84,7 @@
         
         .user_name{
             font-weight: 700;
-            font-size:.9rem;
+            font-size: responsive-font-size(.9);
             display: inline;
 
             a, a:visited, a:link{
@@ -101,6 +103,10 @@
         // }
     }
 
+    &_actions{
+        @include follow-button;
+    }
+
     &__menu {
         min-width: 10rem;
         width: 16rem;
@@ -116,7 +122,7 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            font-size: .8rem;
+            font-size: responsive-font-size(.8);
             font-weight: 600;
             color: $color-font-dark;
             background: transparent;
@@ -150,7 +156,7 @@
         .description--text{
             font-weight: 500;
             font-stretch: 110%;
-            font-size: .85rem;
+            font-size: responsive-font-size(.85);
             white-space: pre-wrap;
             line-height: 1.2;
         }
@@ -191,7 +197,7 @@
 
     &__statistics{
         padding: .4rem 1rem;
-        font-size: .8rem;
+        font-size: responsive-font-size(0.8);
         // border-bottom: 1px solid $color-grey-light-3;
 
         div{
@@ -207,6 +213,10 @@
         display: flex;
         justify-content: baseline;
         align-items: center;
+
+        .post-interactions{
+            font-size: responsive-font-size(.8);
+        }
 
         .animate-like{
             // width: 100%;
@@ -301,7 +311,7 @@
     }
 
     .interaction-icons {
-        font-size: 1.4rem;
+        font-size: responsive-icon-size(1.4);
         margin: -.2rem .2rem -.3rem 0;
         // fill: $color-theme-dark;
         color: $color-theme-dark;

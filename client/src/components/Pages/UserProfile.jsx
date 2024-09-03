@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import '../../sass/pages/_profile.scss';
 import ProfileImage from '../Homepage UI/ProfileImage';
 // import UserProfile from '../Posts/UserProfileImage';
@@ -8,9 +8,12 @@ import ProfileInfo from '../UI components/ProfileInfo';
 import ModalContainer from '../Modal UI/ModalContainer';
 import ProfileEditModal from '../Modal UI/ProfileEditModal';
 import { GlobalContext } from '../../context/GlobalContext';
+import LoadingScreen from '../Homepage UI/LoadingScreen';
 
 
 export default function UserProfile() {
+    const [isLoading, setIsLoading] = useState(true);
+
     const { userDetail, getOwnerDetails } = useContext(UserContext);
     const profileEdit = useRef();
     const { setSelectedMenu } = useContext(GlobalContext);
@@ -27,7 +30,13 @@ export default function UserProfile() {
     useEffect(() => {
         setSelectedMenu('Profile');
         getOwnerDetails();
+        setIsLoading(false);
     }, []); 
+
+    if(isLoading){
+        return <LoadingScreen />
+    }
+    
 
     return (
         <>

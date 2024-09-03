@@ -14,7 +14,14 @@
 }
 
 @function responsive-font-size($font-size) {
-    $smallest: calc($font-size / 1.4);
+    $smallest: calc($font-size / 1.3);
+    $largest: calc($font-size * 1.5);
+    $viewport-width: 100vw;
+
+    @return unquote("clamp(#{$smallest}rem, #{calc($font-size / 2)}vw + #{calc($font-size / 2)}rem, #{$largest}rem)");
+}
+@function responsive-icon-size($font-size) {
+    $smallest: calc($font-size / 1.2);
     $largest: calc($font-size * 1.5);
     $viewport-width: 100vw;
 
