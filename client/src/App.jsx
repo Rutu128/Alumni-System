@@ -16,22 +16,15 @@ import GlobalContextProvider from './context/GlobalContext';
 import Search from './components/Pages/Search';
 import Settings from './components/Pages/Settings';
 import ExpandedPostModal from './components/Modal UI/ExpandedPostModal';
-import ExpandedPostModal from './components/Modal UI/ExpandedPostModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
   log('<App /> rendered');
   const location = useLocation();
   const background = location.state && location.state.background;
-  const location = useLocation();
-  const background = location.state && location.state.background;
   const queryClient = new QueryClient();
 
   return (
-    <GlobalContextProvider>
-      <UserContextProvider>
-        <PostContextProvider>
-            <Routes location={background || location}>
     <QueryClientProvider client={queryClient}>
       <GlobalContextProvider>
         <UserContextProvider>
@@ -50,14 +43,6 @@ function App() {
                 <Route path='/post/:id' element={<ExpandedPostModal isModal={false} />} />
               </Route>
             </Routes>
-            {background && (
-              <Routes>
-                <Route path="/post/:id" element={<ExpandedPostModal isModal={true} />} />
-              </Routes>
-            )}
-        </PostContextProvider>
-      </UserContextProvider>
-    </GlobalContextProvider>
             {background && (
               <Routes>
                 <Route path="/post/:id" element={<ExpandedPostModal isModal={true} />} />
