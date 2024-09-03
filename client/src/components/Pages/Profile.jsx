@@ -7,6 +7,8 @@ import { useLocation } from 'react-router-dom';
 import UserProfileImage from '../Posts/UserProfileImage';
 import { GlobalContext } from '../../context/GlobalContext';
 import NavigateBack from '../UI components/NavigateBack';
+import LoadingScreen from '../Homepage UI/LoadingScreen';
+import FollowButton from '../UI components/FollowButton';
 
 
 export default function Profile() {
@@ -19,6 +21,8 @@ export default function Profile() {
         avatar: '',
         initials: '',
     });
+
+    const [isLoading, setIsLoading] = useState(true);
 
     const location = useLocation();
     const { userId } = location.state || {};
@@ -33,9 +37,14 @@ export default function Profile() {
             console.log(details);
 
             setUserDetail(details);
+            setIsLoading(false);
         }
         fetchUserDetails();
     }, []);
+
+    if(isLoading){
+        return <LoadingScreen />
+    }
 
     return (
         <>
@@ -64,6 +73,9 @@ export default function Profile() {
                                             {userDetail.designation}
                                         </div>
                                     </div>
+                                </div>
+                                <div className="user-actions">
+                                    <FollowButton isFollowing={false} />
                                 </div>
                             </div>
                         </div>

@@ -199,7 +199,7 @@ export default function SignUp() {
                         errorText={userErrors.dobError}
                     />
                     <Input
-                        labelText='Passing Year'
+                        labelText='Batch'
                         className={`u-margin-bottom-small ${userDetails.passingYear === '' ? 'invalid' : 'valid'} ${userErrors.passingYearError ? 'error' : ''}`}
                         type="dropdown"
                         values={[1990, 2024]}
