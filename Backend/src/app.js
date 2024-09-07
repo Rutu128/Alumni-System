@@ -46,9 +46,11 @@ app.use(morgan(`:method :date :url :host :user `, { stream: accessLogStream }));
 import authRouter from "./routes/auth.routes.js";
 import postRouter from "./routes/post.routes.js";
 import userRouter from "./routes/user.routes.js";
+import follwerRouter from "./routes/follower.routes.js";
 // // routes Declaration
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
 app.use("/user", userRouter);
+app.use("/follow", follwerRouter);
 
 export { app };
