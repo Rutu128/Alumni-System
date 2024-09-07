@@ -19,22 +19,17 @@ const followRequest = asyncHandler(async (req, res) => {
             senderId: senderId,
         });
         if (existRequest) {
-            const deleteRequest = await Request.findOneAndDelete({
-                userId: userId,
-                senderId: senderId,
-            });
-            if (!deleteRequest) {
-                throw new ApiError(404, "Request not found");
-            }
-            return res
-                .status(200)
-                .json(
-                    new ApiResponse(
-                        200,
-                        deleteRequest,
-                        "Request deleted successfully"
-                    )
-                );
+            throw new ApiError(400, "Request already sent");
+        }
+
+        const alreadyFollow = await Follow.find({
+            userId: req.user._id,
+            followings: {
+                $in: [senderId],
+            },
+        });
+        if (alreadyFollow.length > 0) {
+            throw new ApiError(400, "You are already following this user");
         }
 
         const newRequest = await Request.create({ userId, senderId });
@@ -47,7 +42,6 @@ const followRequest = asyncHandler(async (req, res) => {
             });
         }
         follow.followings.push(senderId);
-        follow = await follow.save();
         let senderFollow = await Follow.findOne({ userId: senderId });
         if (!senderFollow) {
             senderFollow = await Follow.create({
@@ -57,6 +51,7 @@ const followRequest = asyncHandler(async (req, res) => {
             });
         }
         senderFollow.followers.push(userId);
+        follow = await follow.save();
         senderFollow = await senderFollow.save();
 
         return res
@@ -66,6 +61,35 @@ const followRequest = asyncHandler(async (req, res) => {
                     200,
                     { newRequest, follow, senderFollow },
                     "Request sent successfully"
+                )
+            );
+    } catch (error) {
+        console.log(error);
+        throw new ApiError(500, error, "Server Error");
+    }
+});
+
+const deleteRequest = asyncHandler(async (req, res) => {
+    const { requestId } = req.params;
+    try {
+        const request = await Request.findById(requestId);
+        if (!request) {
+            throw new ApiError(404, "Request not found");
+        }
+        if (request.status !== "pending") {
+            throw new ApiError(400, "Request cannot be deleted in this status");
+        }
+        const deleteRequest = await Request.findByIdAndUpdate(requestId);
+        if (!deleteRequest) {
+            throw new ApiError(404, "Request not found");
+        }
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    deleteRequest,
+                    "Request deleted successfully"
                 )
             );
     } catch (error) {
@@ -104,6 +128,15 @@ const acceptRequest = asyncHandler(async (req, res) => {
         if (!request.senderId.equals(req.user._id)) {
             throw new ApiError(401, "Unauthorized to accept this request");
         }
+        const alreadyFollow = await Follow.find({
+            userId: req.user._id,
+            followings: {
+                $in: [request.userId],
+            },
+        });
+        if (alreadyFollow.length > 0) {
+            throw new ApiError(400, "You are already following this user");
+        }
         request.status = "accepted";
         let follow = await Follow.findOne({ userId: req.user._id });
         if (!follow) {
@@ -114,12 +147,12 @@ const acceptRequest = asyncHandler(async (req, res) => {
             });
         }
         follow.followings.push(request.userId);
-        follow = await follow.save();
         let senderFollow = await Follow.findOne({ userId: request.userId });
         if (!senderFollow) {
             throw new ApiError(404, "User not found");
         }
         senderFollow.followers.push(req.user._id);
+        follow = await follow.save();
         senderFollow = await senderFollow.save();
         request = await request.save();
         return res
@@ -163,4 +196,10 @@ const rejectRequest = asyncHandler(async (req, res) => {
     }
 });
 
-export { followRequest, showRequest, acceptRequest, rejectRequest };
+export {
+    followRequest,
+    showRequest,
+    acceptRequest,
+    rejectRequest,
+    deleteRequest,
+};
