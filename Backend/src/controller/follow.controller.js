@@ -40,7 +40,7 @@ const followRequest = asyncHandler(async (req, res) => {
         const newRequest = await Request.create({ userId, senderId });
         let follow = await Follow.findOne({ userId });
         if (!follow) {
-            follow = await Follow.create({
+            follow = new Follow({
                 userId,
                 followings: [],
                 followers: [],
@@ -107,7 +107,7 @@ const acceptRequest = asyncHandler(async (req, res) => {
         request.status = "accepted";
         let follow = await Follow.findOne({ userId: req.user._id });
         if (!follow) {
-            follow = await Follow.create({
+            follow = new Follow({
                 userId: req.user._id,
                 followings: [],
                 followers: [],
