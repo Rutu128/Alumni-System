@@ -25,14 +25,14 @@ const followRequest = asyncHandler(async (req, res) => {
         const alreadyFollow = await Follow.find({
             userId: req.user._id,
             followings: {
-                $in: [senderId],
+                $in: [{ userId: senderId }],
             },
         });
         if (alreadyFollow.length > 0) {
             throw new ApiError(400, "You are already following this user");
         }
 
-        const newRequest = await Request.create({ userId, senderId });
+        const newRequest = new Request({ userId, senderId });
         let follow = await Follow.findOne({ userId });
         if (!follow) {
             follow = new Follow({
@@ -41,7 +41,7 @@ const followRequest = asyncHandler(async (req, res) => {
                 followers: [],
             });
         }
-        follow.followings.push(senderId);
+        follow.followings.push({ userId: senderId });
         let senderFollow = await Follow.findOne({ userId: senderId });
         if (!senderFollow) {
             senderFollow = await Follow.create({
@@ -50,7 +50,8 @@ const followRequest = asyncHandler(async (req, res) => {
                 followers: [],
             });
         }
-        senderFollow.followers.push(userId);
+        const request = await newRequest.save();
+        senderFollow.followers.push({ userId: userId });
         follow = await follow.save();
         senderFollow = await senderFollow.save();
 
@@ -59,7 +60,7 @@ const followRequest = asyncHandler(async (req, res) => {
             .json(
                 new ApiResponse(
                     200,
-                    { newRequest, follow, senderFollow },
+                    { request, follow, senderFollow },
                     "Request sent successfully"
                 )
             );
@@ -131,7 +132,7 @@ const acceptRequest = asyncHandler(async (req, res) => {
         const alreadyFollow = await Follow.find({
             userId: req.user._id,
             followings: {
-                $in: [request.userId],
+                $in: [{ userId: request.userId }],
             },
         });
         if (alreadyFollow.length > 0) {
@@ -146,12 +147,12 @@ const acceptRequest = asyncHandler(async (req, res) => {
                 followers: [],
             });
         }
-        follow.followings.push(request.userId);
+        follow.followings.push({ userId: request.userId });
         let senderFollow = await Follow.findOne({ userId: request.userId });
         if (!senderFollow) {
             throw new ApiError(404, "User not found");
         }
-        senderFollow.followers.push(req.user._id);
+        senderFollow.followers.push({ userId: req.user._id });
         follow = await follow.save();
         senderFollow = await senderFollow.save();
         request = await request.save();
