@@ -66,13 +66,13 @@
 
 @mixin input {
     .input-field {
-        width: 48%; /* Adjusted width to fit two fields side by side */
+        width: 60%; /* Adjusted width to fit two fields side by side */
     }
-
+    
     .input-field-login {
         width: 100%;
     }
-
+    
     .input-field,
     .input-field-login {
         display: inline-block;
@@ -85,9 +85,11 @@
             display: block;
             margin-left: 1.4rem;
             position: absolute;
-            top: 0.95rem;
+            top: 0.9rem;
             left: 0;
             color: $color-font-dark;
+            font-weight: 500;
+            font-stretch: 115%;
             padding: 0 0.2rem;
             transition: all 0.4s ease;
             cursor: text;
@@ -97,7 +99,7 @@
         input[value=""]:not(:focus) {
             color: transparent;
         }
-
+        
         input,
         select {
             position: relative;
@@ -117,11 +119,18 @@
                 border: 2px solid #42768c;
             }
         }
-
+        
         select {
             // height: 3.1rem;
+            cursor: pointer;
             appearance: none;
             padding: 0.87rem 1.2rem;
+        }
+
+        .select-arrow{
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
         }
 
         .error {
@@ -152,10 +161,11 @@
         .showPassword:active + label {
             background-color: #fff;
             position: absolute;
-            top: -0.6rem;
+            top: -0.7rem;
             left: 0;
             z-index: 2;
             color: #42768c;
+            font-size: responsive-font-size(1);
         }
     }
 }

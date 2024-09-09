@@ -4,7 +4,7 @@
     justify-content: left;
     align-items: center;
     color: $color-font-dark;
-    font-family: "Regular", sans-serif;
+    font-family: "Mona-sans", sans-serif;
     overflow-x: hidden;
     overflow-y: auto;
 
@@ -21,8 +21,12 @@
             width: 100%;
             text-align: center;
 
-            h1 {
-                font-size: 3.5rem;
+            // h1 {
+            //     font-size: responsive-font-size(3);
+            // }
+
+            &-form {
+                padding: 2rem 0;
             }
 
             .input-field-container {
@@ -112,6 +116,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: #fff;
 
     &-text {
         position: absolute;
@@ -126,6 +131,10 @@
         height: 1px;
         width: 80%;
         background-color: $color-font-dark;
+    }
+
+    .line-small{
+        width: 50%;
     }
 }
 

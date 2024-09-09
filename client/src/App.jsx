@@ -18,6 +18,7 @@ import Settings from './components/Pages/Settings';
 import ExpandedPostModal from './components/Modal UI/ExpandedPostModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import MultiStepSignUp from './components/Auth/MultiStepSignUp';
+import SignUpContextProvider from './context/SignUpContext';
 
 function App() {
   log('<App /> rendered');
@@ -27,32 +28,34 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <GlobalContextProvider>
-        <UserContextProvider>
-          <PostContextProvider>
-            <Routes location={background || location}>
-              <Route path="/login" element={<Login />} />
-              <Route path='/signup' element={<SignUp />} />
-              <Route path='/signupBeta' element={<MultiStepSignUp />} />
-              <Route path='/yearbook' element={<Yearbook />} />
-              <Route path="/" element={<Homepage />}>
-                <Route path='/' index element={<HomepageContent />} />
-                <Route path='/testPage' element={<TestPage />} />
-                <Route path='/users/:username' element={<Profile />} />
-                <Route path='/search' element={<Search />} />
-                <Route path='/settings' element={<Settings />} />
-                <Route path='/profile' element={<UserProfile />} />
-                <Route path='/post/:id' element={<ExpandedPostModal isModal={false} />} />
-              </Route>
-            </Routes>
-            {background && (
-              <Routes>
-                <Route path="/post/:id" element={<ExpandedPostModal isModal={true} />} />
+      <SignUpContextProvider>
+        <GlobalContextProvider>
+          <UserContextProvider>
+            <PostContextProvider>
+              <Routes location={background || location}>
+                <Route path="/login" element={<Login />} />
+                <Route path='/signup' element={<SignUp />} />
+                <Route path='/signupBeta' element={<MultiStepSignUp />} />
+                <Route path='/yearbook' element={<Yearbook />} />
+                <Route path="/" element={<Homepage />}>
+                  <Route path='/' index element={<HomepageContent />} />
+                  <Route path='/testPage' element={<TestPage />} />
+                  <Route path='/users/:username' element={<Profile />} />
+                  <Route path='/search' element={<Search />} />
+                  <Route path='/settings' element={<Settings />} />
+                  <Route path='/profile' element={<UserProfile />} />
+                  <Route path='/post/:id' element={<ExpandedPostModal isModal={false} />} />
+                </Route>
               </Routes>
-            )}
-          </PostContextProvider>
-        </UserContextProvider>
-      </GlobalContextProvider>
+              {background && (
+                <Routes>
+                  <Route path="/post/:id" element={<ExpandedPostModal isModal={true} />} />
+                </Routes>
+              )}
+            </PostContextProvider>
+          </UserContextProvider>
+        </GlobalContextProvider>
+      </SignUpContextProvider>
     </QueryClientProvider>
   )
 }

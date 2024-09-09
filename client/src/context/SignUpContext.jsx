@@ -14,11 +14,33 @@ export const SignUpContext = createContext({
         company: String,
         location: String,
     },
+    setUserDesignation: () => {},
     submitUserData: () => {},
 })
 
 export default function SignUpContextProvider({children}){
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState({
+        firstName: '',
+        lastName:'',
+        email: '',
+        batch: '',
+        dob: '',
+        designation: '', 
+        college: '',
+        department: '',
+        status: '',
+        company: '',
+        location: '',
+    });
+
+    function handleSetUserDesignation(designation){
+        setUserData(prevData => {
+            return {
+                ...prevData,
+                designation: designation
+            }
+        })
+    }
 
     function handleUserDataSubmit(userData){
         setUserData(userData);
@@ -27,6 +49,13 @@ export default function SignUpContextProvider({children}){
     
     const ctxValue = {
         userData: userData,
+        setUserDesignation: handleSetUserDesignation,
         submitUserData: handleUserDataSubmit,
     }
+
+    return (
+        <SignUpContext.Provider value={ctxValue} >
+            {children}
+        </SignUpContext.Provider>
+    )
 }

@@ -207,6 +207,7 @@ export default function SignUp() {
                         onChange={handleChange}
                         value={userDetails.passingYear}
                         errorText={userErrors.passingYearError}
+                        generateYears={true}
                     />
                     <Input
                         labelText='Password'
