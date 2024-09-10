@@ -216,6 +216,9 @@ export default function SignUp() {
             <section className="login-cont">
                 <form className="login-cont-main">
                     <div className="login-cont-main-head">
+                        <div className="head-icon">
+                            <img src="/site-icon.svg" alt="" />
+                        </div>
                         <h1 className="heading-primary-dark u-margin-bottom-s_small">Start your journey with <span className="u-dynamic-text">Alumni Hub</span></h1>
                     </div>
                     <div className="login-cont-main-form">

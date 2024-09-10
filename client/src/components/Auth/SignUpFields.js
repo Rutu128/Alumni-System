@@ -17,5 +17,10 @@ export const SignUpFields = [
         { name: 'company', label: 'Company', type: 'text', placeholder: 'Enter your company', error: '' },
         { name: 'location', label: 'Location', type: 'text', placeholder: 'Enter your location', error: '' }
     ]
+]
 
+export const designations = [
+    "Student",
+    "Alumni",
+    "Faculty"
 ]

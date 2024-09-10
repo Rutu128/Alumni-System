@@ -66,7 +66,7 @@
 
 @mixin input {
     .input-field {
-        width: 60%; /* Adjusted width to fit two fields side by side */
+        width: 100%; /* Adjusted width to fit two fields side by side */
     }
     
     .input-field-login {
@@ -83,9 +83,9 @@
         label,
         .invalid + label {
             display: block;
-            margin-left: 1.4rem;
+            margin-left: 1.6rem;
             position: absolute;
-            top: 0.9rem;
+            top: 19%;
             left: 0;
             color: $color-font-dark;
             font-weight: 500;
@@ -94,6 +94,10 @@
             transition: all 0.4s ease;
             cursor: text;
             z-index: 0;
+
+            @media (max-width: 768px){
+                top: 18%;
+            }
         }
 
         input[value=""]:not(:focus) {
@@ -106,17 +110,19 @@
             display: inline-block;
             width: 100%; /* Full width within the container */
             padding: 0.8rem 1.2rem;
-            font-size: 1rem;
-            border: 2px solid #8dc5dc;
+            font-size: responsive-font-size(1);
+            font-weight: 500;
+            font-stretch: 115%;
+            border: 2px solid $color-theme-light;
             outline: none;
             border-radius: 2rem;
             background-color: transparent !important;
-            font-family: "Regular", sans-serif;
+            font-family: "Mona-sans", sans-serif;
             z-index: 1;
             transition: all 0.3s;
 
             &:focus {
-                border: 2px solid #42768c;
+                border: 2px solid $color-theme-dark;
             }
         }
         
@@ -127,10 +133,16 @@
             padding: 0.87rem 1.2rem;
         }
 
-        .select-arrow{
+        .select-arrow {
             position: absolute;
             right: 1rem;
-            top: 1rem;
+            top: 20%;
+            transform: rotate(0deg);
+            transition: transform .3s;
+        }
+
+        select:focus ~ .select-arrow{
+            transform: rotate(180deg);
         }
 
         .error {
@@ -161,11 +173,11 @@
         .showPassword:active + label {
             background-color: #fff;
             position: absolute;
-            top: -0.7rem;
+            top: -0.5rem;
             left: 0;
             z-index: 2;
-            color: #42768c;
-            font-size: responsive-font-size(1);
+            color: $color-font-dark;
+            font-size: responsive-font-size(.9);
         }
     }
 }

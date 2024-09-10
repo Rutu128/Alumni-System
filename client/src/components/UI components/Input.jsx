@@ -50,14 +50,13 @@ function Input({ labelText, type, errorText, inputFor, values, showError, genera
             <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
                 {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
                 <select id={labelText + '-input'} {...props}>
-                    <option htmlFor={labelText + '-input'} value="" hidden={true} disabled selected></option>
+                    <option htmlFor={labelText + '-input'} value="" hidden={true} disabled defaultChecked>{props.placeholder}</option>
                     {options.map(value => (
                         <option key={value} value={value}>{value}</option>
                     ))}
-
                 </select>
                 <label htmlFor={labelText + '-input'}>{labelText}</label>
-                <PiCaretDown className="react-icons select-arrow" />
+                <PiCaretDown className={`react-icons select-arrow ${props.value !== '' && 'option-selected'}`} />
             </div>
         )
     }

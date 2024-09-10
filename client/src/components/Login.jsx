@@ -114,7 +114,10 @@ export default function Login() {
         <main className="login">
             <section className="login-cont narrow">
                 <form className="login-cont-main">
+                <div className="login-cont-main-head">
+                    <img src="/site-icon.svg" alt="" />
                     <h1 className="heading-primary-dark u-margin-bottom-small">Login to <br /><span className="u-dynamic-text">Alumni Hub</span></h1>
+                </div>
                     <Input
                         labelText='Email'
                         className={`u-margin-bottom-small ${userDetails.email === "" ? 'invalid' : 'valid'} ${userErrors.emailError ? 'error' : ''}`}
@@ -139,7 +142,7 @@ export default function Login() {
                         }}
                     />
                     <Button
-                        className="login-button u-margin-bottom-small"
+                        className="u-button-primary u-margin-bottom-small"
                         type='submit'
                         onClick={handleSubmit}
                     >

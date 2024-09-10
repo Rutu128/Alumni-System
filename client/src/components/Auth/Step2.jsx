@@ -1,12 +1,17 @@
+import { useContext } from "react";
+import Input from "../UI components/Input";
 import NewInput from "./NewInput";
 import { SignUpFields } from "./SignUpFields";
+import { SignUpContext } from "../../context/SignUpContext";
 
-export default function Step2({userData, handleChangeData}){
+export default function Step2({handleChangeData}){
+    const {userData} = useContext(SignUpContext);
+
     return (
         <>
-            {SignUpFields[1].map((field, index) => {
+            {SignUpFields[0].map((field, index) => {
                 return (
-                    <NewInput  
+                    <Input
                         key={index}
                         type={field.type}
                         value={userData[field.name]}

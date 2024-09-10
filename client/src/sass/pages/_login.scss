@@ -7,6 +7,9 @@
     font-family: "Mona-sans", sans-serif;
     overflow-x: hidden;
     overflow-y: auto;
+    padding: 0 4vw;
+    font-weight: 500;
+    font-stretch: 110%;
 
     &-cont {
         width: 55%; /* Increased width */
@@ -26,7 +29,8 @@
             // }
 
             &-form {
-                padding: 2rem 0;
+                padding: 2rem 4vw;
+                // width: 60%;
             }
 
             .input-field-container {
@@ -68,14 +72,15 @@
             .sign-up {
                 display: block;
                 text-align: center;
-                font-size: 1.2rem;
+                font-size: 1.1rem;
 
                 .link {
                     display: inline-block;
                     margin-left: 0.5rem;
                     background-clip: text;
                     cursor: pointer;
-                    font-family: "Bold2", sans-serif;
+                    font-weight: 800;
+                    font-stretch: 115%;
 
                     .link-element {
                         &:link,
@@ -186,7 +191,7 @@
         align-items: center;
 
         img {
-            width: 70%;
+            width: 80%;
         }
     }
 }

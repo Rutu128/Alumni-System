@@ -75,7 +75,7 @@ export default function Profile() {
                                     </div>
                                 </div>
                                 <div className="user-actions">
-                                    <FollowButton isFollowing={false} />
+                                    <FollowButton isFollowing={userDetail.isFollowing} id={userDetail._id} />
                                 </div>
                             </div>
                         </div>

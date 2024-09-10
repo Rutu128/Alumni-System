@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import Input from "../UI components/Input";
 import NewInput from "./NewInput";
-import { SignUpFields } from "./SignUpFields";
+import { designations, SignUpFields } from "./SignUpFields";
 import { SignUpContext } from "../../context/SignUpContext";
 
 export default function Step1({ incrementStep }){
@@ -21,7 +21,7 @@ export default function Step1({ incrementStep }){
             <Input 
                 className={`u-margin-bottom-small ${userData.designation === '' || undefined ? 'invalid' : 'valid'}`}
                 type="dropdown"
-                values={["Student", "Alumni", "Faculty"]}
+                values={designations}
                 generateYears={false}
                 labelText={"Select your designation"}
                 errorText={error}
@@ -35,6 +35,7 @@ export default function Step1({ incrementStep }){
             />
             <button
                 type="button"
+                className="u-button-primary"
                 onClick={handleSubmit}
             >
                 Submit

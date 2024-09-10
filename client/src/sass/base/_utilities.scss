@@ -224,13 +224,38 @@
     align-items: center;
 }
 
-.u-button {
+.u-button, .u-button-primary, .u-button-secondary {
     border: none;
     outline: none;
     display: inline-block;
     color: $color-font-dark;
     font-stretch: 110%;
+    width: 100%;
+    padding: .8rem 0;
+    border-radius: 2rem;
+    transition: all 0.2s;
     // font-weight: 300;
+}
+
+.u-button-primary{
+    background-color: rgba($color-theme-dark, .7);
+    color: #fff;
+    font-size: responsive-font-size(1.1);
+    font-weight: 600;
+    font-stretch: 110%;
+
+    &:hover, &:focus{
+        background-color: rgba($color-theme-dark, .9);
+        box-shadow: none;
+    }
+}
+
+.u-button-secondary {
+    background-color: $color-theme-light;
+    color: rgba($color-theme-dark, .9);
+    font-size: responsive-font-size(1.1);
+    font-weight: 600;
+    font-stretch: 110%;
 }
 
 .u-button-tertiary {

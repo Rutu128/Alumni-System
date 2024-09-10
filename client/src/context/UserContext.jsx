@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import handleResponse from "../utils/responseHandler";
 
 import 'react-toastify/dist/ReactToastify.css';
+import putApi from "../utils/API/putApi";
 
 export const UserContext = createContext({
     userDetail: {
@@ -31,6 +32,11 @@ export const UserContext = createContext({
     updateProfile: () => { },
     getUserDetails: () => { },
     searchUser: () => { },
+    sendFollowRequest: () => { },
+    getFollowRequests: () => { },
+    acceptFollowRequest: () => { },
+    rejectFollowRequest: () => { },
+    deleteFollowRequest: () => { },
 })
 
 
@@ -207,7 +213,7 @@ export default function UserContextProvider({ children }) {
         const res = handleResponse(response);
         if(res.status === 200 | 202){
             console.log(response.data.data);
-            const newData = response.data.data;
+            const newData = response.data.data[0];
             return newData;
         }
     }
@@ -220,6 +226,14 @@ export default function UserContextProvider({ children }) {
             return response.data.data;
         } else {
             console.log(response.data);
+        }
+    }
+
+    async function handleSendFollowRequest(userId){
+        const response = await putApi(`/follow/${userId}`);
+        const res = handleResponse(response);
+        if(res.status === 200){
+            return res;
         }
     }
 
@@ -236,6 +250,7 @@ export default function UserContextProvider({ children }) {
         getOwnerDetails: handleGetOwnerDetails,
         getUserDetails: handleGetUserDetails,
         searchUser: handleSearchUser,
+        sendFollowRequest: handleSendFollowRequest,
     }
 
     return <UserContext.Provider value={ctxValue}>

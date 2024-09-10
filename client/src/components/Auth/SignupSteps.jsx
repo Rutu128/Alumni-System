@@ -1,4 +1,5 @@
 import Step1 from "./Step1";
+import Step2 from "./Step2";
 
 export default function SignupSteps({ step, setStep }) {
     let stepNo = step;
@@ -14,6 +15,7 @@ export default function SignupSteps({ step, setStep }) {
     return (
         <>
             {stepNo === 1 && <Step1 incrementStep={incrementStep} />}
+            {stepNo === 2 && <Step2 decrementStep={decrementStep} />}
         </>
     )
 }
