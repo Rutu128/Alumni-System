@@ -134,7 +134,10 @@ const showPosts = asyncHandler(async (req, res) => {
                     isLiked: {
                         $cond: {
                             if: {
-                                $in: [id, "$likes.userId"], // Check if loggedInUserId exists in likes.userId array
+                                $in: [
+                                    id,
+                                    "$likes.userId",
+                                ],
                             },
                             then: true,
                             else: false,
@@ -159,6 +162,48 @@ const showPosts = asyncHandler(async (req, res) => {
                     "user.avatar": 1,
                     "user._id": 1,
                     isLiked: 1,
+                },
+            },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "user._id",
+                    foreignField: "userId",
+                    as: "follower",
+                },
+            },
+            {
+                $addFields: {
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followers", 0],
+                            },
+                            [],
+                        ],
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    isFollowing: {
+                        $cond: {
+                            if: {
+                                $in: [
+                                    id,
+                                    "$followers.userId",
+                                ],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    follower: 0,
+                    followers: 0,
                 },
             },
 
