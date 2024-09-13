@@ -40,7 +40,8 @@ export default function Step2({ error, setError }) {
                 return (
                     <Input
                         key={index}
-                        className={`u-margin-bottom-ss_small sign-up-input ${userData[field.name] === "" ? 'invalid' : 'valid'}  ${error.field === field.name ? 'error' : ''}`}
+                        wrapperClass="u-margin-bottom-ss_small"
+                        className={`sign-up-input ${userData[field.name] === "" ? 'invalid' : 'valid'}  ${error.field === field.name ? 'error' : ''}`}
                         type={field.type}
                         value={userData[field.name]}
                         name={field.name}

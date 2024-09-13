@@ -12,8 +12,9 @@ export default function Step1({ error, setError }){
     return (
         <>
             <Input 
-                className={`u-margin-bottom-small ${userData.designation === '' || undefined ? 'invalid' : 'valid'}`}
+                className={`${userData.designation === '' || undefined ? 'invalid' : 'valid'}`}
                 type="dropdown"
+                wrapperClass="u-margin-bottom-small"
                 values={designations}
                 generateYears={false}
                 labelText={"Select your designation"}

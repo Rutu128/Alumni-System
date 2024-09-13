@@ -27,6 +27,39 @@ export default function SignupSteps({ step, setStep }) {
         setStep(prevStep => prevStep - 1);
     }
 
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    function isValidPassword(password) {
+        let pattern = new RegExp(
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
+        );
+        
+        if (userData.password.trim() === "" || userData.password.trim().length < 6){
+            setError({
+                field: 'password',
+                message: 'Password must be at least 6 characters long!'
+            })
+            return false;
+        } 
+        else if (!pattern.test(userData.password.trim())){
+            setError({
+                field: 'password',
+                message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character!'
+            })
+            return false;
+        } 
+        else if (userData.password.trim().normalize() !== userData.confirmPassword.trim().normalize()){
+            setError({
+                field: 'confirmPassword',
+                message: 'Passwords do not match!'
+            })
+            return false;
+        }
+    }
+
     function handleSubmit(e) {
         e.preventDefault();
         console.log("Form submitted!!");
@@ -53,6 +86,16 @@ export default function SignupSteps({ step, setStep }) {
                     return;
                 }
             }
+        }
+        if(step === 2 && !isValidEmail(userData.email)) {
+            setError({
+                field: 'email',
+                message: 'Invalid email!'
+            })
+            return;
+        }
+        if(step === 3 && !isValidPassword()) {
+            return;
         }
         incrementStep();
         console.log(userData);

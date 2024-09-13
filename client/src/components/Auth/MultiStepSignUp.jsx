@@ -231,7 +231,8 @@ export default function SignUp() {
                                 <h1 className="heading-primary-dark-small">Alumni Hub</h1>
                             </div>
                             <ProgressBar step={step} className={"u-margin-bottom-ss_small"} />
-                            <h2 className="heading-secondary-dark">Tell us more about you!</h2>
+                            {step === 2 && <h2 className="heading-secondary-dark">Tell us more about you!</h2>}
+                            {step === 3 && <h2 className="heading-secondary-dark">Finishing up!</h2>}
                         </div>
                     }
 

@@ -194,11 +194,19 @@
     width: 100%;
     position: absolute;
     top: 3.2rem;
-    left: 1rem;
-    color: #fa4f4f;
-    font-size: 0.8rem;
+    left: 0;
+    color: $color-red;
+    font-size: responsive-font-size(0.9);
     z-index: 10;
+    padding: .8rem 1.2rem;
+    background-color: $color-red-light;
+    border-radius: 2rem;
     font-family: "Bold", sans-serif;
+    box-shadow: 0 1rem 2rem rgba($color: $color-black, $alpha: 0.2);
+
+    @media screen and (max-width: 768px) {
+        top: 2.8rem;
+    }
 
     .error-icon {
         font-size: 1rem;

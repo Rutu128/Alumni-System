@@ -120,7 +120,8 @@ export default function Login() {
                 </div>
                     <Input
                         labelText='Email'
-                        className={`u-margin-bottom-small ${userDetails.email === "" ? 'invalid' : 'valid'} ${userErrors.emailError ? 'error' : ''}`}
+                        wrapperClass='u-margin-bottom-small'
+                        className={`${userDetails.email === "" ? 'invalid' : 'valid'} ${userErrors.emailError ? 'error' : ''}`}
                         type="text"
                         name="email"
                         onChange={handleChange}
@@ -130,7 +131,8 @@ export default function Login() {
                     />
                     <Input
                         labelText='Password'
-                        className={`u-margin-bottom-small ${userDetails.password === "" ? 'invalid' : 'valid'} ${userErrors.passwordError ? 'error' : ''}`}
+                        wrapperClass='u-margin-bottom-small'
+                        className={`${userDetails.password === "" ? 'invalid' : 'valid'} ${userErrors.passwordError ? 'error' : ''}`}
                         type="password"
                         name="password"
                         onChange={handleChange}
