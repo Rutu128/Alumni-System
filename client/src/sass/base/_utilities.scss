@@ -12,6 +12,9 @@
 .u-margin-bottom-s_small {
     margin-bottom: 1rem;
 }
+.u-margin-bottom-ss_small {
+    margin-bottom: 1.6rem;
+}
 .u-margin-bottom-small {
     margin-bottom: 2rem;
 }
@@ -190,8 +193,8 @@
 .u-error-text {
     width: 100%;
     position: absolute;
-    bottom: 0.7rem;
-    left: 1.5rem;
+    top: 3.2rem;
+    left: 1rem;
     color: #fa4f4f;
     font-size: 0.8rem;
     z-index: 10;
@@ -232,8 +235,9 @@
     font-stretch: 110%;
     width: 100%;
     padding: .8rem 0;
-    border-radius: 2rem;
     transition: all 0.2s;
+    display: flex;
+    justify-content: center;
     // font-weight: 300;
 }
 
@@ -243,7 +247,12 @@
     font-size: responsive-font-size(1.1);
     font-weight: 600;
     font-stretch: 110%;
-
+    border-radius: 2rem;
+    
+    &-1{
+        border-radius: 1rem;
+    }
+    
     &:hover, &:focus{
         background-color: rgba($color-theme-dark, .9);
         box-shadow: none;
@@ -251,11 +260,16 @@
 }
 
 .u-button-secondary {
-    background-color: $color-theme-light;
+    background-color: $color-theme-back-light;
     color: rgba($color-theme-dark, .9);
     font-size: responsive-font-size(1.1);
     font-weight: 600;
     font-stretch: 110%;
+    border-radius: 2rem;
+
+    &-1{
+        border-radius: 1rem;
+    }
 }
 
 .u-button-tertiary {

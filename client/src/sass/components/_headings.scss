@@ -1,8 +1,32 @@
 .heading-primary-dark {
-    font-size: responsive-font-size(2.8);
+    font-size: responsive-font-size(2.6);
     color: $color-font-dark;
     font-family: "Mona-sans", sans-serif;
     font-weight: 800;
+    font-stretch: 120%;
+}
+
+.heading-primary-dark-small {
+    font-size: responsive-font-size(2.2);
+    color: $color-font-dark;
+    font-family: "Mona-sans", sans-serif;
+    font-weight: 800;
+    font-stretch: 120%;
+}
+
+.heading-secondary-dark {
+    font-size: responsive-font-size(1.8);
+    color: $color-font-dark;
+    font-family: "Mona-sans", sans-serif;
+    font-weight: 600;
+    font-stretch: 120%;
+}
+
+.heading-tertiary-dark {
+    font-size: responsive-font-size(1.2);
+    color: $color-font-dark;
+    font-family: "Mona-sans", sans-serif;
+    font-weight: 500;
     font-stretch: 120%;
 }
 

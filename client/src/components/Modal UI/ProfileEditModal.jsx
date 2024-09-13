@@ -79,7 +79,7 @@ export default function ProfileEditModal({ closeModal }) {
                             style={{ display: 'none' }}
                         />
                     </div>
-                    <button className="select-button u-no-margin" onClick={() => inputRef.current.click()}>Select Image</button>
+                    <button className="u-button-secondary u-button-secondary-1 u-no-margin" onClick={() => inputRef.current.click()}>Select Image</button>
                 </div>
                 <div className="part-right">
                     <div className="right-body">
@@ -115,7 +115,7 @@ export default function ProfileEditModal({ closeModal }) {
                                 className='u-input-primary'
                             />
                     </div>
-                    <button className="u-button-primary u-flex-justify-center" onClick={handleFileSubmit}>
+                    <button className="u-button-primary u-button-primary-1 u-flex-justify-center" onClick={handleFileSubmit}>
                         {isLoading ?
                             <ReactLoading type={'spin'} width={'1.6rem'} height={'1.6rem'} className={"loader"} />
                             :

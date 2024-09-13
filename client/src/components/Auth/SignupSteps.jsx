@@ -1,21 +1,85 @@
+import { useContext, useState } from "react";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
+import Step3 from "./Step3";
+import { PiCaretLeftBold, PiCaretRightBold } from "react-icons/pi";
+import { SignUpContext } from "../../context/SignUpContext";
+import { SignUpFields } from "./SignUpFields";
+
 
 export default function SignupSteps({ step, setStep }) {
+    const [error, setError] = useState({
+        field: '',
+        message: ''
+    });
+    
+    const {userData} = useContext(SignUpContext);
+
     let stepNo = step;
 
-    function incrementStep(){
+    function incrementStep() {
+        console.log("Incrementing step");
+        
         setStep(prevStep => prevStep + 1);
     }
 
-    function decrementStep(){
+    function decrementStep() {
         setStep(prevStep => prevStep - 1);
     }
 
+    function handleSubmit(e) {
+        e.preventDefault();
+        console.log("Form submitted!!");
+        
+        if (stepNo === 1) {
+            if (userData.designation !== '' | undefined) {
+                incrementStep();
+            } else {
+                setError({
+                    field: 'designation',
+                    message: 'Designation is required!'
+                });
+            }
+            return;
+        } else {
+            for (let field of SignUpFields[(stepNo-2)]) {
+                console.log(field);
+                
+                if (userData[field.name] === "") {
+                    setError({
+                        field: field.name,
+                        message: field.label + ' is required!'
+                    })
+                    return;
+                }
+            }
+        }
+        incrementStep();
+        console.log(userData);
+    }
+
+
     return (
         <>
-            {stepNo === 1 && <Step1 incrementStep={incrementStep} />}
-            {stepNo === 2 && <Step2 decrementStep={decrementStep} />}
+            <form>
+                {stepNo === 1 && <Step1 incrementStep={incrementStep} error={error} setError={setError} />}
+                {stepNo === 2 && <Step2 incrementStep={incrementStep} decrementStep={decrementStep} error={error} setError={setError} />}
+                {stepNo === 3 && <Step3 incrementStep={incrementStep} decrementStep={decrementStep} error={error} setError={setError} />}
+
+                <div className="auth-actions">
+                    <div className="multi-step-buttons">
+                        {stepNo !== 1 && <button type="button" onClick={decrementStep} className="u-button-secondary">
+                            <PiCaretLeftBold className="u-phosphor-icons icon-l u-icon-font" />
+                            Back
+                        </button>}
+                        {stepNo !== 5 && <button type="button" onClick={handleSubmit} className="u-button-primary">
+                            Continue
+                            <PiCaretRightBold className="u-phosphor-icons icon-r u-icon-font" />
+                        </button>}
+                    </div>
+                </div>
+
+            </form>
         </>
     )
 }

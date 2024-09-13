@@ -4,17 +4,10 @@ import NewInput from "./NewInput";
 import { designations, SignUpFields } from "./SignUpFields";
 import { SignUpContext } from "../../context/SignUpContext";
 
-export default function Step1({ incrementStep }){
+export default function Step1({ error, setError }){
     const {userData, setUserDesignation} = useContext(SignUpContext);
-    const [error, setError] = useState('');
+    // const [error, setError] = useState('');
 
-    function handleSubmit(){
-        if(userData.designation !== '' | undefined){
-            incrementStep();
-        } else {
-            setError('Please select a designation!');
-        }
-    }
 
     return (
         <>
@@ -24,22 +17,25 @@ export default function Step1({ incrementStep }){
                 values={designations}
                 generateYears={false}
                 labelText={"Select your designation"}
-                errorText={error}
+                errorText={error.field === 'designation' ? error.message : ''}
                 value={userData.designation}
                 onChange={(e) =>{
                     console.log(e.target.value);
                     setUserDesignation(e.target.value);
-                    setError('');
+                    setError({
+                        field: '',
+                        message: ''
+                    });
                 }}
                 name="designation"
             />
-            <button
+            {/* <button
                 type="button"
                 className="u-button-primary"
                 onClick={handleSubmit}
             >
                 Submit
-            </button>
+            </button> */}
         </>
     )
 }

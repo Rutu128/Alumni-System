@@ -13,7 +13,10 @@ export const SignUpContext = createContext({
         status: String,
         company: String,
         location: String,
+        password: String,
+        confirmPassword: String,
     },
+    setUserData: () => {},
     setUserDesignation: () => {},
     submitUserData: () => {},
 })
@@ -31,6 +34,8 @@ export default function SignUpContextProvider({children}){
         status: '',
         company: '',
         location: '',
+        password: '',
+        confirmPassword: '',
     });
 
     function handleSetUserDesignation(designation){
@@ -49,6 +54,7 @@ export default function SignUpContextProvider({children}){
     
     const ctxValue = {
         userData: userData,
+        setUserData: setUserData,
         setUserDesignation: handleSetUserDesignation,
         submitUserData: handleUserDataSubmit,
     }

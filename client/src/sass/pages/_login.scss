@@ -28,6 +28,54 @@
             //     font-size: responsive-font-size(3);
             // }
 
+            &-head-left{
+                text-align: left;
+                padding: 0 4vw;
+            }
+
+            .progress-bar{
+                width: 100%;
+                padding: .5rem 0;
+                display: flex;
+                align-items: center;
+                gap: .8rem;
+
+                &-step{
+                    flex: 1;
+                    height: .4rem;
+                    border-radius: 1rem;
+                    background-color: $color-grey-light-3;
+                    transition: all .3s;
+                }
+
+                .current {
+                    background-color: $color-theme-dark;
+                }
+                
+                .completed {
+                    background-color: $color-theme-light;
+                }
+            }
+
+            .icon-with-text{
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                // margin-bottom: 1rem;
+
+                img{
+                    width: 5rem;
+                }
+
+                .icon-text{
+
+                    h2{
+                        font-size: 1.8rem;
+                        font-weight: 700;
+                    }
+                }
+            }
+
             &-form {
                 padding: 2rem 4vw;
                 // width: 60%;
@@ -42,6 +90,46 @@
             }
 
             @include input;
+
+            .auth-actions{
+                .multi-step-buttons{
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 1rem;
+
+                    button {
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        .icon-l, .icon-r {
+                            margin: 0 0 0 0;
+                            transition: transform 0.2s ease;
+                        }
+
+                        .icon-l {
+                            margin-right: 0.5rem;
+                            margin-left: -.8rem;
+                        }
+                        
+                        .icon-r {
+                            margin-left: 0.5rem;
+                            margin-right: -.8rem;
+                        }
+
+                        &:hover{
+                            .icon-l {
+                                transform: scale(1.2) translateX(-0.2rem);
+                            }
+
+                            .icon-r {
+                                transform: scale(1.2) translateX(0.2rem);
+                            }
+                        }
+                    }
+                }
+            }
 
             .login-button {
                 min-width: 16rem;
@@ -81,6 +169,7 @@
                     cursor: pointer;
                     font-weight: 800;
                     font-stretch: 115%;
+                    font-size: 1.2rem;
 
                     .link-element {
                         &:link,

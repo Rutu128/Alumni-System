@@ -3,7 +3,7 @@ import { PiUserPlus, PiUserCheck } from "react-icons/pi";
 import { UserContext } from "../../context/UserContext";
 
 
-export default function FollowButton({ isFollowing, onClick, id, isSmall = false }) {
+export default function FollowButton({ isFollowing, id, isSmall = false }) {
     const [following, setFollowing] = useState(isFollowing);
 
     const { sendFollowRequest } = useContext(UserContext);

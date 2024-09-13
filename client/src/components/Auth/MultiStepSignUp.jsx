@@ -68,6 +68,7 @@ import { UserContext } from "../../context/UserContext";
 import React from "react";
 import ReactLoading from 'react-loading'
 import SignupSteps from "./SignupSteps";
+import ProgressBar from "./ProgressBar";
 
 export default function SignUp() {
     log('<SignUp/> rendered', 1);
@@ -214,20 +215,32 @@ export default function SignUp() {
     return (
         <main className="login">
             <section className="login-cont">
-                <form className="login-cont-main">
-                    <div className="login-cont-main-head">
-                        <div className="head-icon">
-                            <img src="/site-icon.svg" alt="" />
+                <div className="login-cont-main">
+                    {step === 1 ?
+                        <div className="login-cont-main-head">
+                            <div className="head-icon">
+                                <img src="/site-icon.svg" alt="" />
+                            </div>
+                            <h1 className="heading-primary-dark u-margin-bottom-s_small">Start your journey with <span className="u-dynamic-text">Alumni Hub</span></h1>
+                            <ProgressBar step={step} className={"u-margin-bottom-ss_small"} />
                         </div>
-                        <h1 className="heading-primary-dark u-margin-bottom-s_small">Start your journey with <span className="u-dynamic-text">Alumni Hub</span></h1>
-                    </div>
-                    <div className="login-cont-main-form">
+                        :
+                        <div className="login-cont-main-head-left">
+                            <div className="head-icon icon-with-text u-margin-bottom-ss_small">
+                                <img src="/site-icon.svg" alt="" />
+                                <h1 className="heading-primary-dark-small">Alumni Hub</h1>
+                            </div>
+                            <ProgressBar step={step} className={"u-margin-bottom-ss_small"} />
+                            <h2 className="heading-secondary-dark">Tell us more about you!</h2>
+                        </div>
+                    }
+
+                    <div className="login-cont-main-form u-margin-bottom-ss_small">
                         <SignupSteps step={step} setStep={setStep} />
                     </div>
-                    <div className="separator u-margin-bottom-small">
+                    {/* <div className="separator u-margin-bottom-small">
                         <div className="line line-small"></div>
-                        {/* <div className="separator-text">OR</div> */}
-                    </div>
+                    </div> */}
                     <div className="sign-up u-margin-bottom-s_small">Already have an account?
                         <div className="link u-dynamic-text-link">
                             <Link to="/login" className="link-element">Login</Link>
@@ -244,9 +257,9 @@ export default function SignUp() {
                             </div>
                         </Button>
                     </div> */}
-                </form>
+                </div>
             </section>
-            <div className="img-cont">
+            <div className="img-cont wider">
                 <img src="/sign-up-bg.svg" alt="sign up illustration" />
             </div>
         </main>
