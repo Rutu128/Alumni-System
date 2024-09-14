@@ -346,81 +346,154 @@ const getUserDetails = asyncHandler(async (req, res) => {
         const userDetails = await User.aggregate([
             {
                 $match: {
-                  _id: id,
+                    _id: id,
                 },
-              },
-            {
-              $lookup: {
-                from: "follows",
-                localField: "_id",
-                foreignField: "userId",
-                as: "follow",
-              },
             },
             {
-              $addFields: {
-                followings: {
-                  $ifNull: [
-                    {
-                      $arrayElemAt: [
-                        "$follow.followings",
-                        0,
-                      ],
+                $lookup: {
+                    from: "follows",
+                    localField: "_id",
+                    foreignField: "userId",
+                    as: "follow",
+                },
+            },
+            {
+                $addFields: {
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follow.followings", 0],
+                            },
+                            [],
+                        ],
                     },
-                    [],
-                  ],
-                },
-              
-               followers: {
-                  $ifNull: [
-                    {
-                      $arrayElemAt: [
-                        "$follow.followers",
-                        0,
-                      ],
+
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follow.followers", 0],
+                            },
+                            [],
+                        ],
                     },
-                    [],
-                  ],
                 },
-              },
             },
             {
-              $addFields: {
-                isFollowing: {
-                  $cond: {
-                    if: {
-                      $in: [
-                        userId,
-                        "$followers.userId",
-                      ],
+                $addFields: {
+                    isRequested: {
+                        $cond: {
+                            if: {
+                                $in: [userId, "$followers.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
                     },
-                    then: true,
-                    else: false,
-                  },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [userId, "$followings.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
                 },
-              },
             },
             {
-              $project: {
-                _id: 1,
-                firstName: 1,
-                lastName: 1,
-                email: 1,
-                avatar: 1,
-                headline: 1,
-                designation: 1,
-                passingYear: 1,
-                description: 1,
-                isFollowing:1,
-                followings:{
-                  $size:"$followings"
+                $project: {
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    email: 1,
+                    avatar: 1,
+                    headline: 1,
+                    designation: 1,
+                    passingYear: 1,
+                    description: 1,
+                    isRequested: 1,
+                    isAccepted: 1,
+                    followings: {
+                        $size: "$followings",
+                    },
+                    followers: {
+                        $size: "$followers",
+                    },
                 },
-                followers:{
-                  $size:"$followers"
-                }
-              },
             },
-          ]);
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "_id",
+                    foreignField: "userId",
+                    as: "follower",
+                },
+            },
+            {
+                $addFields: {
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followers", 0],
+                            },
+                            [],
+                        ],
+                    },
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followings", 0],
+                            },
+                            [],
+                        ],
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    isRequested: {
+                        $cond: {
+                            if: {
+                                $in: [userId, "$followers.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [userId, "$followings.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    follower: {
+                        $size: "$followers",
+                    },
+                    following: {
+                        $size: "$followings",
+                    },
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    avatar: 1,
+                    headline: 1,
+                    designation: 1,
+                    passingYear: 1,
+                    description: 1,
+                    isRequested: 1,
+                    isAccepted: 1,
+
+
+                },
+            },
+        ]);
 
         return res
             .status(200)
