@@ -1,9 +1,14 @@
-export default function ProgressBar({ step, className }) {
+export default function ProgressBar({ step, className, totalSteps }) {
+    const steps = Array.from({ length: totalSteps }, (_, index) => index + 1);
+
     return (
         <div className={"progress-bar " + className}>
-            <div className={`progress-bar-step ${step === 1 && 'current'} ${step > 1 && 'completed'}`}></div>
-            <div className={`progress-bar-step ${step === 2 && 'current'} ${step > 2 && 'completed'}`}></div>
-            <div className={`progress-bar-step ${step === 3 && 'current'} ${step > 3 && 'completed'}`}></div>
+            {steps.map((s) => (
+                <div
+                    key={s}
+                    className={`progress-bar-step ${step === s ? 'current' : ''} ${step > s ? 'completed' : ''}`}
+                ></div>
+            ))}
         </div>
-    )
+    );
 }

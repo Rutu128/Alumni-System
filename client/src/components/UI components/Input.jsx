@@ -6,7 +6,7 @@ import { PiCaretDown } from "react-icons/pi";
 
 import React from "react";
 
-function Input({ labelText, type, errorText, inputFor, values, showError, generateYears, ...props }) {
+function Input({ labelText, type, errorText, inputFor, values, showError, generateYears = false, ...props }) {
 
     if (type === 'password') {
         const [showPassword, setShowPassword] = useState(false);
@@ -17,7 +17,7 @@ function Input({ labelText, type, errorText, inputFor, values, showError, genera
         }
 
         return (
-            <div className={"field-wrapper " + props.wrapperClass}>
+            <div className={"field-wrapper " + props.wrapper_class}>
                 <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
                     {errorText === '' ? null : <div className="u-error-text"><MdError className="error-icon" />{errorText}</div>}
                     <input {...props} type={showPassword ? 'text' : 'password'} id={labelText + '-input'} autoComplete="true" />
@@ -49,7 +49,7 @@ function Input({ labelText, type, errorText, inputFor, values, showError, genera
         }
 
         return (
-            <div className={"field-wrapper " + props.wrapperClass}>
+            <div className={"field-wrapper " + props.wrapper_class}>
                 <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
                     {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
                     <select id={labelText + '-input'} {...props}>
@@ -67,7 +67,7 @@ function Input({ labelText, type, errorText, inputFor, values, showError, genera
 
     else {
         return (
-            <div className={"field-wrapper " + props.wrapperClass}>
+            <div className={"field-wrapper " + props.wrapper_class}>
                 <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
                     {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
                     <input {...props} type={type} id={labelText + '-input'} />

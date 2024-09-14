@@ -1,10 +1,9 @@
 import { useContext, useState } from "react";
 import Input from "../UI components/Input";
-import NewInput from "./NewInput";
 import { SignUpFields } from "./SignUpFields";
 import { SignUpContext } from "../../context/SignUpContext";
 
-export default function Step2({ error, setError }) {
+export default function Step3({ error, setError }) {
     const { userData, setUserData } = useContext(SignUpContext);
 
     function handleChangeData(e, name) {
@@ -36,7 +35,7 @@ export default function Step2({ error, setError }) {
                 return (
                     <Input
                         key={index}
-                        wrapperClass="u-margin-bottom-ss_small"
+                        wrapper_class="u-margin-bottom-ss_small"
                         className={`sign-up-input ${userData[field.name] === "" ? 'invalid' : 'valid'}  ${error.field === field.name ? 'error' : ''}`}
                         type={field.type}
                         value={userData[field.name]}

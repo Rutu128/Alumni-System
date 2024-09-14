@@ -196,7 +196,34 @@
             top: 0;
             left: 0;
             z-index: 2;
-            color: $color-font-dark;
+            // color: rgba($color-theme-dark, .6);
+            font-size: responsive-font-size(0.9);
+        }
+
+        .input-secondary {
+            border-radius: 0;
+            border: none;
+            border-bottom: 2px solid $color-theme-light;
+            padding: .8rem .8rem;
+
+            &:focus {
+                border: none;
+                border-bottom: 3px solid $color-theme-dark;
+                background: rgba($color-theme-light, 0.7);
+            } 
+            
+            & ~ label {
+                margin-left: .6rem;
+            }
+        }
+
+        .input-secondary:focus + label {
+            background-color: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            // color: rgba($color-theme-dark, .6);
             font-size: responsive-font-size(0.9);
         }
     }

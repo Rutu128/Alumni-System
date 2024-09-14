@@ -1,7 +1,7 @@
-import Homepage from './components/Homepage';
+import Homepage from './pages/Homepage';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { log } from './log';
-import Login from './components/Login';
+import Login from './pages/Login';
 import SignUp from './components/SignUp';
 import Yearbook from './components/Yearbook';
 import './sass/main.scss';
@@ -17,8 +17,9 @@ import Search from './components/Pages/Search';
 import Settings from './components/Pages/Settings';
 import ExpandedPostModal from './components/Modal UI/ExpandedPostModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import MultiStepSignUp from './components/Auth/MultiStepSignUp';
+import MultiStepSignUp from './pages/MultiStepSignUp';
 import SignUpContextProvider from './context/SignUpContext';
+import EditProfile from './components/UI components/EditProfile';
 
 function App() {
   log('<App /> rendered');
@@ -43,7 +44,10 @@ function App() {
                   <Route path='/users/:username' element={<Profile />} />
                   <Route path='/search' element={<Search />} />
                   <Route path='/settings' element={<Settings />} />
-                  <Route path='/profile' element={<UserProfile />} />
+                  <Route path='/profile'>
+                    <Route path='/profile' element={<UserProfile />} />
+                    <Route path='/profile/edit' element={<EditProfile />} />
+                  </Route>
                   <Route path='/post/:id' element={<ExpandedPostModal isModal={false} />} />
                 </Route>
               </Routes>

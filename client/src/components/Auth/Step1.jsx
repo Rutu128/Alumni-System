@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import Input from "../UI components/Input";
-import NewInput from "./NewInput";
-import { designations, SignUpFields } from "./SignUpFields";
+import { designations } from "./SignUpFields";
 import { SignUpContext } from "../../context/SignUpContext";
 
 export default function Step1({ error, setError }){
@@ -14,7 +13,7 @@ export default function Step1({ error, setError }){
             <Input 
                 className={`${userData.designation === '' || undefined ? 'invalid' : 'valid'}`}
                 type="dropdown"
-                wrapperClass="u-margin-bottom-small"
+                wrapper_class="u-margin-bottom-small"
                 values={designations}
                 generateYears={false}
                 labelText={"Select your designation"}

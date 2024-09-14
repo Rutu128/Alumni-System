@@ -25,11 +25,12 @@
             text-align: center;
             transform: height 1s;
 
+            // &-head-left, &-head{
+            // }
             &-head-left{
-                text-align: left;
                 padding: 0 4vw;
+                text-align: left;
             }
-
             .progress-bar{
                 width: 100%;
                 padding: .5rem 0;
@@ -125,6 +126,11 @@
                             }
                         }
                     }
+                }
+
+                .button-large{
+                    flex-direction: column-reverse;
+                    gap: 1rem;
                 }
             }
 

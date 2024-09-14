@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { log } from "../log";
-import Input from "./UI components/Input";
-import Button from "./UI components/Button";
+import Input from "../components/UI components/Input";
+import Button from "../components/UI components/Button";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
@@ -120,7 +120,7 @@ export default function Login() {
                 </div>
                     <Input
                         labelText='Email'
-                        wrapperClass='u-margin-bottom-small'
+                        wrapper_class='u-margin-bottom-small'
                         className={`${userDetails.email === "" ? 'invalid' : 'valid'} ${userErrors.emailError ? 'error' : ''}`}
                         type="text"
                         name="email"
@@ -131,7 +131,7 @@ export default function Login() {
                     />
                     <Input
                         labelText='Password'
-                        wrapperClass='u-margin-bottom-small'
+                        wrapper_class='u-margin-bottom-small'
                         className={`${userDetails.password === "" ? 'invalid' : 'valid'} ${userErrors.passwordError ? 'error' : ''}`}
                         type="password"
                         name="password"

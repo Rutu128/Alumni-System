@@ -5,6 +5,7 @@ import Step3 from "./Step3";
 import { PiCaretLeftBold, PiCaretRightBold } from "react-icons/pi";
 import { SignUpContext } from "../../context/SignUpContext";
 import { SignUpFields } from "./SignUpFields";
+import Step4 from "./Step4";
 
 
 export default function SignupSteps({ step, setStep }) {
@@ -12,14 +13,14 @@ export default function SignupSteps({ step, setStep }) {
         field: '',
         message: ''
     });
-    
-    const {userData} = useContext(SignUpContext);
+
+    const { userData } = useContext(SignUpContext);
 
     let stepNo = step;
 
     function incrementStep() {
         console.log("Incrementing step");
-        
+
         setStep(prevStep => prevStep + 1);
     }
 
@@ -36,69 +37,81 @@ export default function SignupSteps({ step, setStep }) {
         let pattern = new RegExp(
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
         );
-        
-        if (userData.password.trim() === "" || userData.password.trim().length < 6){
+
+        if (userData.password.trim() === "" || userData.password.trim().length < 6) {
             setError({
                 field: 'password',
                 message: 'Password must be at least 6 characters long!'
             })
             return false;
-        } 
-        else if (!pattern.test(userData.password.trim())){
+        }
+        else if (!pattern.test(userData.password.trim())) {
             setError({
                 field: 'password',
                 message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character!'
             })
             return false;
-        } 
-        else if (userData.password.trim().normalize() !== userData.confirmPassword.trim().normalize()){
+        }
+        else if (userData.password.trim().normalize() !== userData.confirmPassword.trim().normalize()) {
             setError({
                 field: 'confirmPassword',
                 message: 'Passwords do not match!'
             })
             return false;
         }
+        return true;
+    }
+
+    function checkEmptyFields() {
+        for (let field of SignUpFields[(stepNo - 2)]) {
+            console.log(field);
+
+            if (userData[field.name] === "") {
+                setError({
+                    field: field.name,
+                    message: field.label + ' is required!'
+                })
+                return false;
+            }
+        }
+        return true;
     }
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log("Form submitted!!");
-        
-        if (stepNo === 1) {
-            if (userData.designation !== '' | undefined) {
-                incrementStep();
-            } else {
-                setError({
-                    field: 'designation',
-                    message: 'Designation is required!'
-                });
-            }
-            return;
+        step === 1 && handleSubmitStep1();
+        step === 2 && handleSubmitStep2();
+        step === 3 && handleSubmitStep3();
+        // step === 4 && handleSubmitStep4();
+    }
+
+    function handleSubmitStep1() {
+        if (userData.designation !== '' | undefined) {
+            incrementStep();
         } else {
-            for (let field of SignUpFields[(stepNo-2)]) {
-                console.log(field);
-                
-                if (userData[field.name] === "") {
-                    setError({
-                        field: field.name,
-                        message: field.label + ' is required!'
-                    })
-                    return;
-                }
-            }
+            setError({
+                field: 'designation',
+                message: 'Designation is required!'
+            });
         }
-        if(step === 2 && !isValidEmail(userData.email)) {
+    }
+
+    function handleSubmitStep2() {
+        if (userData.email !== '' && !isValidEmail(userData.email)) {
             setError({
                 field: 'email',
                 message: 'Invalid email!'
             })
             return;
         }
-        if(step === 3 && !isValidPassword()) {
+        checkEmptyFields() && incrementStep();
+    }
+
+    function handleSubmitStep3() {
+        if (!isValidPassword()) {
             return;
         }
-        incrementStep();
-        console.log(userData);
+        checkEmptyFields() && incrementStep();
     }
 
 
@@ -108,17 +121,24 @@ export default function SignupSteps({ step, setStep }) {
                 {stepNo === 1 && <Step1 incrementStep={incrementStep} error={error} setError={setError} />}
                 {stepNo === 2 && <Step2 incrementStep={incrementStep} decrementStep={decrementStep} error={error} setError={setError} />}
                 {stepNo === 3 && <Step3 incrementStep={incrementStep} decrementStep={decrementStep} error={error} setError={setError} />}
+                {stepNo === 4 && <Step4 incrementStep={incrementStep} decrementStep={decrementStep} error={error} setError={setError} />}
 
                 <div className="auth-actions">
-                    <div className="multi-step-buttons">
+                    <div className={`multi-step-buttons ${step === 4 ? "button-large" : null}`}>
                         {stepNo !== 1 && <button type="button" onClick={decrementStep} className="u-button-secondary">
                             <PiCaretLeftBold className="u-phosphor-icons icon-l u-icon-font" />
                             Back
                         </button>}
-                        {stepNo !== 5 && <button type="button" onClick={handleSubmit} className="u-button-primary">
-                            Continue
-                            <PiCaretRightBold className="u-phosphor-icons icon-r u-icon-font" />
-                        </button>}
+                        <button type="button" onClick={handleSubmit} className="u-button-primary">
+                            {step === 4 ?
+                                'Submit'
+                                :
+                                <>
+                                    Continue
+                                    <PiCaretRightBold className="u-phosphor-icons icon-r u-icon-font" />
+                                </>
+                            }
+                        </button>
                     </div>
                 </div>
 

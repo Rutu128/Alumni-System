@@ -7,6 +7,8 @@ export const SignUpFields = [
         { name: 'dob', label: 'Date of birth', type: 'date', placeholder: 'date of birth', error: '' },
         { name: 'password', label: 'Password', type: 'password', placeholder: 'password', error: '' },
         { name: 'confirmPassword', label: 'Confirm password', type: 'password', placeholder: 'Confirm your password', error: '' },
+    ], [
+        { name: 'otp', label: 'Enter OTP', type: 'text', placeholder: 'Enter OTP', error: '' },
     ]
 ]
 

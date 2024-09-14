@@ -2,18 +2,18 @@ import { useContext, useEffect, useState } from 'react';
 import { log } from '../log';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import HomepageHeader from './Homepage UI/HomepageHeader';
+import HomepageHeader from '../components/Homepage UI/HomepageHeader';
 import { UserContext } from '../context/UserContext';
-import HomepageContent from './Homepage UI/HomepageContent';
-import HomepageMenu from './Homepage UI/HomepageMenu';
-import LoadingScreen from './Homepage UI/LoadingScreen';
+import HomepageContent from '../components/Homepage UI/HomepageContent';
+import HomepageMenu from '../components/Homepage UI/HomepageMenu';
+import LoadingScreen from '../components/Homepage UI/LoadingScreen';
 
 import '../sass/pages/_homepage.scss';
 import { PostContext } from '../context/PostContext';
 import { GlobalContext } from '../context/GlobalContext';
 
 import { useLocation } from "react-router-dom";
-import ExpandedPostModal from "./Modal UI/ExpandedPostModal";
+import ExpandedPostModal from "../components/Modal UI/ExpandedPostModal";
 
 export default function Homepage() {
     log('<Homepage /> rendered', 1);

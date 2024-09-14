@@ -59,16 +59,17 @@
 // }
 
 import { useContext, useState } from "react";
-import { log } from "../../log";
-import Input from "../UI components/Input";
-import Button from "../UI components/Button";
+import { log } from "../log";
+import Input from "../components/UI components/Input";
+import Button from "../components/UI components/Button";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import React from "react";
 import ReactLoading from 'react-loading'
-import SignupSteps from "./SignupSteps";
-import ProgressBar from "./ProgressBar";
+import SignupSteps from "../components/Auth/SignupSteps";
+import ProgressBar from "../components/Auth/ProgressBar";
+import { SignUpContext } from "../context/SignUpContext";
 
 export default function SignUp() {
     log('<SignUp/> rendered', 1);
@@ -211,6 +212,7 @@ export default function SignUp() {
     // }
 
     const [step, setStep] = useState(1);
+    const { userData } = useContext(SignUpContext);
 
     return (
         <main className="login">
@@ -222,7 +224,7 @@ export default function SignUp() {
                                 <img src="/site-icon.svg" alt="" />
                             </div>
                             <h1 className="heading-primary-dark u-margin-bottom-s_small">Start your journey with <span className="u-dynamic-text">Alumni Hub</span></h1>
-                            <ProgressBar step={step} className={"u-margin-bottom-ss_small"} />
+                            {/* <ProgressBar step={step} totalSteps='4' className={"u-margin-bottom-ss_small"} /> */}
                         </div>
                         :
                         <div className="login-cont-main-head-left">
@@ -230,9 +232,20 @@ export default function SignUp() {
                                 <img src="/site-icon.svg" alt="" />
                                 <h1 className="heading-primary-dark-small">Alumni Hub</h1>
                             </div>
-                            <ProgressBar step={step} className={"u-margin-bottom-ss_small"} />
+                            <ProgressBar step={step} totalSteps={'4'} className={"u-margin-bottom-s_small"} />
                             {step === 2 && <h2 className="heading-secondary-dark">Tell us more about you!</h2>}
-                            {step === 3 && <h2 className="heading-secondary-dark">Finishing up!</h2>}
+                            {step === 3 &&
+                                <>
+                                    <h2 className="heading-secondary-dark u-margin-bottom-s_small">Almost there!</h2>
+                                    <p className="u-font-p u-font-grey" >Create a strong password. You would need to login using your email and password.</p>
+                                </>
+                            }
+                            {step === 4 &&
+                                <>
+                                    <h2 className="heading-secondary-dark u-margin-bottom-s_small">Verify your email</h2>
+                                    <p className="u-font-p u-font-grey" >We have sent a 6-digit OTP to {userData.email}. Enter OTP to verify your e-mail.</p>
+                                </>
+                            }
                         </div>
                     }
 
