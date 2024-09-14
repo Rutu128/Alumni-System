@@ -134,10 +134,7 @@ const showPosts = asyncHandler(async (req, res) => {
                     isLiked: {
                         $cond: {
                             if: {
-                                $in: [
-                                    id,
-                                    "$likes.userId",
-                                ],
+                                $in: [id, "$likes.userId"],
                             },
                             then: true,
                             else: false,
@@ -182,17 +179,31 @@ const showPosts = asyncHandler(async (req, res) => {
                             [],
                         ],
                     },
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followings", 0],
+                            },
+                            [],
+                        ],
+                    },
                 },
             },
             {
                 $addFields: {
-                    isFollowing: {
+                    isRequested: {
                         $cond: {
                             if: {
-                                $in: [
-                                    id,
-                                    "$followers.userId",
-                                ],
+                                $in: [id, "$followers.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [id, "$followings.userId"],
                             },
                             then: true,
                             else: false,
@@ -204,6 +215,7 @@ const showPosts = asyncHandler(async (req, res) => {
                 $project: {
                     follower: 0,
                     followers: 0,
+                    followings: 0,
                 },
             },
 
@@ -621,6 +633,70 @@ const getUserPosts = asyncHandler(async (req, res) => {
                     isLiked: 1,
                 },
             },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "user._id",
+                    foreignField: "userId",
+                    as: "follower",
+                },
+            },
+            {
+                $addFields: {
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followers", 0],
+                            },
+                            [],
+                        ],
+                    },
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followings", 0],
+                            },
+                            [],
+                        ],
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    isRequested: {
+                        $cond: {
+                            if: {
+                                $in: [
+                                    id,
+                                    "$followers.userId",
+                                ],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [
+                                    id,
+                                    "$followings.userId",
+                                ],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    follower: 0,
+                    followers: 0,
+                    followings: 0,
+                },
+            },
+
         ]);
         return res
             .status(200)
@@ -698,6 +774,63 @@ const getPost = asyncHandler(async (req, res) => {
                     "user.avatar": 1,
                     "user._id": 1,
                     isLiked: 1,
+                },
+            },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "user._id",
+                    foreignField: "userId",
+                    as: "follower",
+                },
+            },
+            {
+                $addFields: {
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followers", 0],
+                            },
+                            [],
+                        ],
+                    },
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followings", 0],
+                            },
+                            [],
+                        ],
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    isRequested: {
+                        $cond: {
+                            if: {
+                                $in: [user_id, "$followers.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [user_id, "$followings.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    follower: 0,
+                    followers: 0,
+                    followings: 0,
                 },
             },
         ]);
