@@ -5,7 +5,7 @@ import { PiUsers, PiUsersFill, PiThumbsUp, PiThumbsUpFill, PiBell, PiBellFill, P
 
 import ProfileImage from "./ProfileImage";
 import SiteIcon from "../UI components/SiteIcon";
-import { useContext } from "react";
+// import { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 
 import { useContext, useState } from "react";

@@ -5,6 +5,7 @@ import { PostContext } from '../../context/PostContext';
 import ReactLoading from 'react-loading';
 import { UserContext } from '../../context/UserContext';
 import TextEditor from '../UI components/TextEditor';
+import React from 'react';
 
 
 export default function PostModal({ fileType, closeModal }) {

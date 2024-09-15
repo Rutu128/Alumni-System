@@ -3,6 +3,7 @@ import ProfileImage from "../Homepage UI/ProfileImage";
 import { PostContext } from "../../context/PostContext";
 import Post from "./Post";
 import { log } from "../../log";
+import React from "react";
 
 export default function PostContainer(props) {
     log('<PostContainer /> rendered', 3);

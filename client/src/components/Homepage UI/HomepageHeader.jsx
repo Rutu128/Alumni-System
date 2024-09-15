@@ -4,14 +4,11 @@ import SiteIcon from "../UI components/SiteIcon";
 import { PiBell, PiBellFill } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { log } from "../../log";
+import React from "react";
 
 export default function HomepageHeader({ handleSelectMenu, selectedMenu }) {
     log('<HomepageHeader /> rendered', 2);
-
-import React from "react";
-export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
-    const navigate = useNavigate();
-
+    
     return (
         <header className="header">
             <div className="header__cont">
@@ -35,3 +32,4 @@ export default function HomepageHeader({ userLoggedIn, profileImg, initials }) {
         </header>
     );
 }
+

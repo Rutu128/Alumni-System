@@ -6,7 +6,7 @@ import { PiMagnifyingGlass } from "react-icons/pi";
 import UserProfileImage from "../Posts/UserProfileImage";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalContext";
-
+import React from "react";
 export default function Search() {
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState([]);
