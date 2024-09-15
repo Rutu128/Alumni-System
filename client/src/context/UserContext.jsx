@@ -52,6 +52,7 @@ export default function UserContextProvider({ children }) {
         description: '',
         isAuthenticated: false
     })
+    const [ editedInfo, setEditedInfo ] = useState(userInfo);
 
     async function handleLoginUser(credentials) {
         let responseData;

@@ -156,7 +156,7 @@ export default function Post({ postData, modalView = false, notOwner, handleFetc
                     {
                         !profileView &&
                         <div className="post_actions u-margin-right-small">
-                            <FollowButton isFollowing={postData.isFollowing} isSmall={true} id={postData.user._id}  />
+                            <FollowButton isFollowing={postData.isFollowing} isRequested={postData.isRequested} isAccepted={postData.isAccepted} isSmall={true} id={postData.user._id}  />
                         </div>
                     }
                     <Dropdown isOpen={dropdownOpen} setIsOpen={setDropdownOpen} label={null} icon={<PiDotsThreeVerticalBold className='post-head-icon u-phosphor-icons' />} buttonClassName={'action-button u-button u-button-tertiary u-icon-button-tertiary'} >
