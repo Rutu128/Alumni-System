@@ -1,18 +1,23 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PiUserPlus, PiUserCheck } from "react-icons/pi";
 import { UserContext } from "../../context/UserContext";
+import { PostContext } from "../../context/PostContext";
 
 
-export default function FollowButton({ isRequested, isAccepted, id, isSmall = false }) {
+export default function FollowButton({ postIndex, isRequested, isAccepted, id, isSmall = false }) {
     // const [following, setFollowing] = useState(isRequested && isAccepted);
 
     const { sendFollowRequest } = useContext(UserContext);
+    const { updatePostState } = useContext(PostContext);
 
     async function handleClick() {
         console.log('Follow clicked');
         // setFollowing(prevValue => !prevValue);
-        const res = await sendFollowRequest(id);
-        console.log(res);
+        if (!isRequested){
+            // const res = await sendFollowRequest(id);
+            // console.log(res);
+            updatePostState("isRequested", true, postIndex);
+        }
     }
 
     if (isRequested && isAccepted) {

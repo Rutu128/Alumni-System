@@ -8,13 +8,17 @@ import deleteApi from "../utils/API/deleteApi";
 
 export const PostContext = createContext({
     posts: [{
-        post_id: String,
+        _id: String,
         content: [{
             "url": String,
         }],
         description: String,
         createdAt: Date,
-        comments: [],
+        comments: Number,
+        likes: Number,
+        isAccepted: Boolean,
+        isRequested: Boolean,
+        isLiked: Boolean,
         user: {
             firstName: String,
             lastName: String,
@@ -22,8 +26,8 @@ export const PostContext = createContext({
             avatar: String,
             _id: String,
         },
-        likes: String,
     }],
+    updatePostState: () => { },
     submitNewPost: () => { },
     getPosts: () => { },
     getPostData: () => { },
@@ -36,6 +40,18 @@ export const PostContext = createContext({
 
 export default function PostContextProvider({ children }){
     const [posts, setPosts] = useState([])
+
+    function handleUpdatePostState(field, value, index){
+        setPosts((prevData) => {
+            let updatedPost = prevData[index];
+            updatedPost[field] = value;
+            console.log(updatedPost);
+            prevData[index] = updatedPost;
+            return [
+                ...prevData,
+            ]
+        })
+    }
 
     async function handleNewPost(files, type, description){
         let cloudUrls = [];
@@ -146,6 +162,7 @@ export default function PostContextProvider({ children }){
 
     const ctxValue = {
         posts: posts,
+        updatePostState: handleUpdatePostState,
         submitNewPost: handleNewPost,
         getPosts: handleGetPosts,
         getPostData: handleGetPostData,
