@@ -3,6 +3,7 @@ import SettingItem from "./SettingItem";
 import { UserContext } from "../../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { PiSignOut } from "react-icons/pi";
+import React from "react";
 
 export default function SettingAccount() {
     const { logoutUser } = useContext(UserContext);

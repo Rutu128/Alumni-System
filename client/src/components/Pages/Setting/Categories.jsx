@@ -2,6 +2,7 @@ import { PiGearSix, PiKey, PiUserCircleGear } from "react-icons/pi";
 import SettingGeneral from "./SettingGeneral";
 import SettingSecurity from "./SettingSecurity";
 import SettingAccount from "./SettingAccount";
+import React from "react";
 
 export const Categories = [
     {

@@ -5,6 +5,7 @@ import PostContainer from "../Posts/PostContainer";
 import { log } from "../../log";
 import { useContext, useEffect } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
+import React from 'react';
 
 export default function HomepageContent({ profileImg, initials, ...props }) {
     log('<HomepageContent /> rendered', 2);

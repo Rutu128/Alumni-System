@@ -12,6 +12,7 @@ import { PostContext } from '../../context/PostContext';
 import ReactLoading from 'react-loading';
 import { log } from '../../log';
 import { ImageIcon } from '../Icon/HomepageIcons';
+import React from 'react';
 
 
 export default function HomepageContentPost({ }) {
@@ -62,6 +63,7 @@ export default function HomepageContentPost({ }) {
                         </div>
                         <div className="post-input">
                             <input
+                                id='post-input'
                                 ref={inputRef}
                                 type="text"
                                 placeholder='Type something...'
