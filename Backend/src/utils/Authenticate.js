@@ -23,3 +23,11 @@ export const isFaculty = async (req, res, next) => {
     }
     throw new ApiError(401, "Unauthorized request");
 }
+
+export const isVerified = async(req,res,next)=>{
+    const user = req.user;
+    if(user && user.isVerified){
+        next();
+    }
+    throw new ApiError(401,"User not verified");
+}

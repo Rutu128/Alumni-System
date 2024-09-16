@@ -67,11 +67,14 @@ const registerUser = asyncHandler(async (req, res) => {
         role: role.toUpperCase(),
     });
     const createdUser = await user.save();
+    const otpCode = Math.floor(100000 + Math.random() * 900000);
     let otp = new Otp({
         userId: createdUser._id,
         email: createdUser.email,
+        otp: otpCode,
     });
     otp = await otp.save();
+    await mailer.sendVerificationOtp(email, otpCode);
 
     return res
         .status(200)
@@ -232,7 +235,7 @@ const sendOtp = asyncHandler(async (req, res) => {
         const otp = Math.floor(100000 + Math.random() * 900000);
         let createOtp = await Otp.findOneAndUpdate(
             { userId: userId },
-            { otp:otp }
+            { otp: otp }
         );
         if (!createOtp) {
             throw new ApiError(404, "Otp not found");
@@ -245,9 +248,7 @@ const sendOtp = asyncHandler(async (req, res) => {
         console.log(error);
         throw new ApiError(500, error, "Server Error");
     }
-}); 
-
-
+});
 
 const verifyOtp = asyncHandler(async (req, res) => {
     const { userId, otp } = req.body;
