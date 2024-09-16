@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";    
+import mongoose, { Schema } from "mongoose";
 
 const alumniInfoSchema = new Schema(
     {
@@ -17,9 +17,21 @@ const alumniInfoSchema = new Schema(
             type: Number,
             required: true,
         },
+        degreeName: {
+            type: String,
+            required: true,
+        },
+        collage: {
+            typeof: String,
+            required: true,
+        },
+        branch: {
+            type: String,
+            required: true,
+        },
         degree: [
             {
-                degreeName: {
+                degree: {
                     type: String,
                     required: true,
                 },
