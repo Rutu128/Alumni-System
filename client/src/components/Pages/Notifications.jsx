@@ -1,3 +1,5 @@
+import FollowRequests from "./Notifications/FollowRequests";
+
 export default function Notifications() {
     return (
         <main className="notification">
@@ -8,7 +10,7 @@ export default function Notifications() {
                 <section className="notification__body">
                     <div className="notification__body--cont">
                         <section className="notification__body--follow-requests">
-                            
+                            <FollowRequests /> 
                         </section>
                         <section className="notification__body--user-requests">
 

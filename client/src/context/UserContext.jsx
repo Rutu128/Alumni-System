@@ -238,6 +238,15 @@ export default function UserContextProvider({ children }) {
         }
     }
 
+    async function handleGetFollowRequests(){
+        const response = await getApi('/follow');
+        const res = handleResponse(response);
+        if(res.status === 200){
+            console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+
     const ctxValue = {
         userDetail: userInfo,
         loginUser: handleLoginUser,
@@ -252,6 +261,7 @@ export default function UserContextProvider({ children }) {
         getUserDetails: handleGetUserDetails,
         searchUser: handleSearchUser,
         sendFollowRequest: handleSendFollowRequest,
+        getFollowRequests: handleGetFollowRequests,
     }
 
     return <UserContext.Provider value={ctxValue}>

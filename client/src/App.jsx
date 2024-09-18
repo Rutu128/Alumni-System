@@ -20,6 +20,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import MultiStepSignUp from './pages/MultiStepSignUp';
 import SignUpContextProvider from './context/SignUpContext';
 import EditProfile from './components/UI components/EditProfile';
+import Notifications from './components/Pages/Notifications';
 
 function App() {
   log('<App /> rendered');
@@ -35,14 +36,14 @@ function App() {
             <PostContextProvider>
               <Routes location={background || location}>
                 <Route path="/login" element={<Login />} />
-                <Route path='/signup' element={<SignUp />} />
-                <Route path='/signupBeta' element={<MultiStepSignUp />} />
+                <Route path='/signup' element={<MultiStepSignUp />} />
                 <Route path='/yearbook' element={<Yearbook />} />
                 <Route path="/" element={<Homepage />}>
                   <Route path='/' index element={<HomepageContent />} />
                   <Route path='/testPage' element={<TestPage />} />
                   <Route path='/users/:username' element={<Profile />} />
                   <Route path='/search' element={<Search />} />
+                  <Route path='/notifications' element={<Notifications />} />
                   <Route path='/settings' element={<Settings />} />
                   <Route path='/profile'>
                     <Route path='/profile' element={<UserProfile />} />

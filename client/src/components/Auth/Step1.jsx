@@ -11,14 +11,14 @@ export default function Step1({ error, setError }){
     return (
         <>
             <Input 
-                className={`${userData.designation === '' || undefined ? 'invalid' : 'valid'}`}
+                className={`${userData.role === '' || undefined ? 'invalid' : 'valid'}`}
                 type="dropdown"
                 wrapper_class="u-margin-bottom-small"
                 values={designations}
                 generateYears={false}
                 labelText={"Select your designation"}
                 errorText={error.field === 'designation' ? error.message : ''}
-                value={userData.designation}
+                value={userData.role}
                 onChange={(e) =>{
                     console.log(e.target.value);
                     setUserDesignation(e.target.value);
@@ -27,7 +27,7 @@ export default function Step1({ error, setError }){
                         message: ''
                     });
                 }}
-                name="designation"
+                name="role"
             />
             {/* <button
                 type="button"

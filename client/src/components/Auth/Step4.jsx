@@ -35,7 +35,7 @@ export default function Step4({ error, setError }){
                 return (
                     <Input  
                         key={index}
-                        wrapper_class={'u-margin-bottom-small'}
+                        wrapper_class={`u-margin-bottom-small  ${userData[field.name] === "" ? 'invalid' : 'valid'}  ${error.field === field.name ? 'error' : ''}`}
                         type={field.type}
                         value={userData[field.name]}
                         name={field.name}

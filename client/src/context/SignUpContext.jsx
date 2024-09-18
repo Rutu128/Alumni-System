@@ -1,24 +1,22 @@
 import { createContext, useState } from "react";
+import postApi from "../utils/API/postApi";
+import handleResponse from "../utils/responseHandler";
 
 export const SignUpContext = createContext({
     userData: {
         firstName: String,
         lastName:String,
         email: String,
-        batch: String,
         dob: String,
-        designation: String, 
-        college: String,
-        department: String,
-        status: String,
-        company: String,
-        location: String,
+        role: String, 
         password: String,
         confirmPassword: String,
+        otp: String,
     },
     setUserData: () => {},
     setUserDesignation: () => {},
     submitUserData: () => {},
+    submitUserOtp: () => {},
 })
 
 export default function SignUpContextProvider({children}){
@@ -26,30 +24,56 @@ export default function SignUpContextProvider({children}){
         firstName: '',
         lastName:'',
         email: '',
-        batch: '',
         dob: '',
-        designation: '', 
-        college: '',
-        department: '',
-        status: '',
-        company: '',
-        location: '',
+        role: '', 
         password: '',
         confirmPassword: '',
+        otp: '',
     });
 
     function handleSetUserDesignation(designation){
         setUserData(prevData => {
             return {
                 ...prevData,
-                designation: designation
+                role: designation
             }
         })
     }
 
-    function handleUserDataSubmit(userData){
+    async function handleUserDataSubmit(){
         setUserData(userData);
         console.log(userData);
+        const response = await postApi('/auth/signup', userData);
+        console.log(response);
+        const res = handleResponse(response);
+        if (res.status === 200){
+            console.log(res);
+            setUserData(prevData => {
+                return {
+                    ...prevData,
+                    _id: response.data.data._id,
+                }
+            })
+            return {
+                status: 200,
+                message: 'User registered successfully!',
+                _id: response.data.data._id,
+            };
+        }
+    }
+
+    async function handleSubmitUserOtp(){
+        console.log(userData);
+        
+        const response = await postApi('/auth/verify-otp', {
+            userId: userData._id,
+            otp: +userData.otp
+        });
+        const res = handleResponse(response);
+        if (res.status === 200){
+            console.log(res);
+            return res;
+        }
     }
     
     const ctxValue = {
@@ -57,6 +81,7 @@ export default function SignUpContextProvider({children}){
         setUserData: setUserData,
         setUserDesignation: handleSetUserDesignation,
         submitUserData: handleUserDataSubmit,
+        submitUserOtp: handleSubmitUserOtp,
     }
 
     return (

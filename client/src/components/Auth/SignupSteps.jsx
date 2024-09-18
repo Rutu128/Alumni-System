@@ -6,6 +6,7 @@ import { PiCaretLeftBold, PiCaretRightBold } from "react-icons/pi";
 import { SignUpContext } from "../../context/SignUpContext";
 import { SignUpFields } from "./SignUpFields";
 import Step4 from "./Step4";
+import { useNavigate } from "react-router-dom";
 
 
 export default function SignupSteps({ step, setStep }) {
@@ -14,7 +15,8 @@ export default function SignupSteps({ step, setStep }) {
         message: ''
     });
 
-    const { userData } = useContext(SignUpContext);
+    const { userData, submitUserData, submitUserOtp } = useContext(SignUpContext);
+    const navigate = useNavigate();
 
     let stepNo = step;
 
@@ -82,15 +84,15 @@ export default function SignupSteps({ step, setStep }) {
         step === 1 && handleSubmitStep1();
         step === 2 && handleSubmitStep2();
         step === 3 && handleSubmitStep3();
-        // step === 4 && handleSubmitStep4();
+        step === 4 && handleSubmitStep4();
     }
 
     function handleSubmitStep1() {
-        if (userData.designation !== '' | undefined) {
+        if (userData.role !== '' | undefined) {
             incrementStep();
         } else {
             setError({
-                field: 'designation',
+                field: 'role',
                 message: 'Designation is required!'
             });
         }
@@ -107,11 +109,24 @@ export default function SignupSteps({ step, setStep }) {
         checkEmptyFields() && incrementStep();
     }
 
-    function handleSubmitStep3() {
+    async function handleSubmitStep3() {
         if (!isValidPassword()) {
             return;
         }
-        checkEmptyFields() && incrementStep();
+        checkEmptyFields();
+        const res = await submitUserData();
+        if(res.status === 200){
+            incrementStep();
+        }
+    }
+
+    async function handleSubmitStep4() {
+        checkEmptyFields();
+        console.log("Submitting data");
+        const res = await submitUserOtp();
+        if(res.status === 200){
+            navigate('/login');
+        }
     }
 
 
