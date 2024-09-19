@@ -13,6 +13,13 @@ import {
     myLikes,
     myPosts,
 } from "../controller/post.controller.js";
+import { isFaculty, isStudent } from "../utils/Authenticate.js";
+import {
+    alumniInfo,
+    facultyInfo,
+    studentInfo,
+    verrifyStudent,
+} from "../controller/auth.controller.js";
 
 const router = Router();
 
@@ -26,4 +33,16 @@ router.route("/addInfo").post(verifyJWT, addInfo);
 router.route("/getUser/:id").get(verifyJWT, getUserDetails);
 router.route("/update-profile").post(verifyJWT, updateProfile);
 router.route("/update-avatar").post(verifyJWT, updateAvatar);
+
+// Student
+router.route("/student/addInfo").post(verifyJWT, isStudent, studentInfo);
+router.route("/student/verify").post(verifyJWT, isStudent, verrifyStudent);
+
+//Alumni
+router.route("/alumni/addInfo").post(verifyJWT, isStudent, alumniInfo);
+
+//Faculty
+
+router.route("/faculty/addInfo").post(verifyJWT, isFaculty, facultyInfo);
+
 export default router;
