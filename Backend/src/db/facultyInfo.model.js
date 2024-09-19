@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const facultyInfoSchema = new Schema(
     {
-        userId:{
+        userId: {
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
@@ -29,12 +29,29 @@ const facultyInfoSchema = new Schema(
             type: String,
             required: true,
         },
-
+        degree: [
+            {
+                degreeName: {
+                    type: String,
+                    required: true,
+                },
+                year: {
+                    type: Number,
+                    required: true,
+                },
+                collage: {
+                    type: String,
+                    required: true,
+                },
+                major: {
+                    type: String,
+                },
+            },
+        ],
     },
     {
         timestamps: true,
     }
 );
 
-
-export const FacultyInfo = mongoose.model('FacultyInfo', facultyInfoSchema);
+export const FacultyInfo = mongoose.model("FacultyInfo", facultyInfoSchema);

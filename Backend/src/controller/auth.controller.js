@@ -9,6 +9,7 @@ import { randomBytes } from "crypto";
 import { StudentInfo } from "../db/studentInfo.model.js";
 import { FacultyInfo } from "../db/facultyInfo.model.js";
 import { Otp } from "../db/otp.model.js";
+import { userDetails } from "../utils/Authenticate.js";
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
         const user = await User.findById(userId);
@@ -84,12 +85,12 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const studentInfo = asyncHandler(async (req, res) => {
-    const { userId } = req.body;
+    const userId = req.user._id;
     try {
         const { c_id, c_email, batch, collage, branch } = req.body;
         if (
             [c_id, c_email, batch, collage, branch].some(
-                (field) => field?.trim() === ""
+                (field) => field.trim() === ""
             )
         ) {
             throw new ApiError(400, "Please fill all the fields");
@@ -129,7 +130,7 @@ const studentInfo = asyncHandler(async (req, res) => {
 });
 
 const facultyInfo = asyncHandler(async (req, res) => {
-    const { userId } = req.body;
+    const userId = req.user._id;
     try {
         const { f_id, f_email, position, collage, branch } = req.body;
         if (
@@ -156,6 +157,7 @@ const facultyInfo = asyncHandler(async (req, res) => {
             position,
             collage,
             branch,
+            degree: [],
         });
         await facultyInfo.save();
         return res
@@ -174,7 +176,7 @@ const facultyInfo = asyncHandler(async (req, res) => {
 });
 
 const alumniInfo = asyncHandler(async (req, res) => {
-    const { userId } = req.body;
+    const userId = req.user._id;
     try {
         const {
             status,
@@ -401,6 +403,46 @@ const logoutUser = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "User logged Out"));
 });
 
+const verrifyStudent = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    try {
+        const { collage, degree, c_id } = req.body;
+        if (
+            [firstName, lastName, collage, degree, c_id].some(
+                (field) => field?.trim() === ""
+            )
+        ) {
+            throw new ApiError(400, "Please fill all the fields");
+        }
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+        const details = await userDetails(c_id);
+        console.log(details);
+        if (!details) {
+            throw new ApiError(404, "Student details not found");
+        }
+        res.status(200).json(new ApiResponse(200, details, "success"));
+    } catch (error) {}
+});
+
+const isEmailExists = asyncHandler(async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (user) {
+            return res
+                .status(200)
+                .json(new ApiResponse(200, {}, "Email exists"));
+        }
+        return res.status(200).json(new ApiResponse(200, {}, "Success"));
+    } catch (error) {
+        console.log(error);
+        throw new ApiError(500, error, "server error");
+    }
+});
+
 export {
     registerUser,
     loginUser,
@@ -411,4 +453,6 @@ export {
     studentInfo,
     facultyInfo,
     alumniInfo,
+    verrifyStudent,
+    isEmailExists
 };

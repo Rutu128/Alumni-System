@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     changePassword,
+    isEmailExists,
     loginUser,
     logoutUser,
     registerUser,
@@ -19,5 +20,6 @@ router.route("/change-password").post(verifyJWT, changePassword);
 router.route("/ping").get(verifyJWT, ping);
 router.route("/send-otp").post(sendOtp);
 router.route("/verify-otp").post(verifyOtp);
+router.route("/verify-email").post(isEmailExists);
 
 export default router;

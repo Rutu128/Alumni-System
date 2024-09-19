@@ -8,7 +8,7 @@ const studentInfoSchema = new Schema(
             required: true,
         },
         c_id: {
-            type: Number,
+            type: String,
             required: true,
         },
         c_email: {
@@ -18,7 +18,7 @@ const studentInfoSchema = new Schema(
             lowercase: true,
         },
         batch: {
-            type: Number,
+            type: String,
             required: true,
         },
         collage: {

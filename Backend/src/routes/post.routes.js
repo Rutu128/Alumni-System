@@ -12,10 +12,11 @@ import {
     showPosts,
     uploadPost,
 } from "../controller/post.controller.js";
+import { isPermited } from "../utils/Authenticate.js";
 
 const router = Router();
 
-router.route("/uploadPost").post(verifyJWT, uploadPost);
+router.route("/uploadPost").post(verifyJWT, isPermited, uploadPost);
 router.route("/like/:id").put(verifyJWT, likePost);
 router.route("/delete/:id").delete(verifyJWT, deletePost);
 router.route("/getPost/:page").get(verifyJWT, showPosts);
@@ -27,3 +28,5 @@ router.route("/deleteComment/:id").delete(verifyJWT, deleteComment);
 router.route("/getComments/:id").get(verifyJWT, getComments);
 
 export default router;
+
+
