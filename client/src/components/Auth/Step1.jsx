@@ -17,7 +17,7 @@ export default function Step1({ error, setError }){
                 values={designations}
                 generateYears={false}
                 labelText={"Select your designation"}
-                errorText={error.field === 'designation' ? error.message : ''}
+                errorText={error.field === 'role' ? error.message : ''}
                 value={userData.role}
                 onChange={(e) =>{
                     console.log(e.target.value);

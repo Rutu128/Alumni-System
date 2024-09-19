@@ -7,6 +7,7 @@ import { SignUpContext } from "../../context/SignUpContext";
 import { SignUpFields } from "./SignUpFields";
 import Step4 from "./Step4";
 import { useNavigate } from "react-router-dom";
+import Loading from "react-loading";
 
 
 export default function SignupSteps({ step, setStep }) {
@@ -14,19 +15,21 @@ export default function SignupSteps({ step, setStep }) {
         field: '',
         message: ''
     });
-
-    const { userData, submitUserData, submitUserOtp } = useContext(SignUpContext);
+    const [loading, setLoading] = useState(false);
+    
+    const { userData, verifyEmail, submitUserData, submitUserOtp } = useContext(SignUpContext);
     const navigate = useNavigate();
 
     let stepNo = step;
-
+    
     function incrementStep() {
         console.log("Incrementing step");
-
+        setLoading(false);
         setStep(prevStep => prevStep + 1);
     }
 
     function decrementStep() {
+        setLoading(false);
         setStep(prevStep => prevStep - 1);
     }
 
@@ -81,6 +84,7 @@ export default function SignupSteps({ step, setStep }) {
 
     function handleSubmit(e) {
         e.preventDefault();
+        if(loading) return;
         step === 1 && handleSubmitStep1();
         step === 2 && handleSubmitStep2();
         step === 3 && handleSubmitStep3();
@@ -98,7 +102,7 @@ export default function SignupSteps({ step, setStep }) {
         }
     }
 
-    function handleSubmitStep2() {
+    async function handleSubmitStep2() {
         if (userData.email !== '' && !isValidEmail(userData.email)) {
             setError({
                 field: 'email',
@@ -106,7 +110,20 @@ export default function SignupSteps({ step, setStep }) {
             })
             return;
         }
-        checkEmptyFields() && incrementStep();
+        checkEmptyFields();
+        setLoading(true);
+        const res = await verifyEmail();
+        console.log(res);
+        if (res.status === 200) {
+            incrementStep();
+        } else if (res.status === 202) {
+            console.log("Creating Error!");
+            setError({
+                field: 'email',
+                message: 'User with given email already exists!'
+            })
+        }
+        setLoading(false);
     }
 
     async function handleSubmitStep3() {
@@ -114,17 +131,21 @@ export default function SignupSteps({ step, setStep }) {
             return;
         }
         checkEmptyFields();
+        setLoading(true);
         const res = await submitUserData();
-        if(res.status === 200){
+        if (res.status === 200) {
             incrementStep();
         }
+        setLoading(false);
     }
-
+    
     async function handleSubmitStep4() {
         checkEmptyFields();
         console.log("Submitting data");
+        setLoading(true);
         const res = await submitUserOtp();
-        if(res.status === 200){
+        if (res.status === 200) {
+            setLoading(false);
             navigate('/login');
         }
     }
@@ -145,13 +166,17 @@ export default function SignupSteps({ step, setStep }) {
                             Back
                         </button>}
                         <button type="button" onClick={handleSubmit} className="u-button-primary">
-                            {step === 4 ?
-                                'Submit'
-                                :
-                                <>
-                                    Continue
-                                    <PiCaretRightBold className="u-phosphor-icons icon-r u-icon-font" />
-                                </>
+                            {
+                                loading ?
+                                    <Loading type="spin" width={'2rem'} height={'2rem'} />
+                                    :
+                                    step === 4 ?
+                                        'Submit'
+                                        :
+                                        <>
+                                            Continue
+                                            <PiCaretRightBold className="u-phosphor-icons icon-r u-icon-font" />
+                                        </>
                             }
                         </button>
                     </div>

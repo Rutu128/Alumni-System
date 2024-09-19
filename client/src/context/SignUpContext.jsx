@@ -15,6 +15,7 @@ export const SignUpContext = createContext({
     },
     setUserData: () => {},
     setUserDesignation: () => {},
+    verifyEmail: () => {},
     submitUserData: () => {},
     submitUserOtp: () => {},
 })
@@ -38,6 +39,19 @@ export default function SignUpContextProvider({children}){
                 role: designation
             }
         })
+    }
+
+    async function handleVerifyEmail(){
+        const response = await postApi('/auth/verify-email', {
+            email: userData.email,
+        })
+        console.log(response);
+        const res = handleResponse(response);
+        if(res.status === 200){
+            return {
+                status: response.status,
+            };
+        }
     }
 
     async function handleUserDataSubmit(){
@@ -80,6 +94,7 @@ export default function SignUpContextProvider({children}){
         userData: userData,
         setUserData: setUserData,
         setUserDesignation: handleSetUserDesignation,
+        verifyEmail: handleVerifyEmail,
         submitUserData: handleUserDataSubmit,
         submitUserOtp: handleSubmitUserOtp,
     }
