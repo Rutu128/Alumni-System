@@ -433,7 +433,7 @@ const isEmailExists = asyncHandler(async (req, res) => {
         const user = await User.findOne({ email });
         if (user) {
             return res
-                .status(200)
+                .status(202)
                 .json(new ApiResponse(202, {}, "Email exists"));
         }
         return res.status(200).json(new ApiResponse(200, {}, "Success"));
