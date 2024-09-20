@@ -118,7 +118,7 @@ const showRequest = asyncHandler(async (req, res) => {
             {
                 $lookup: {
                     from: "users",
-                    localField: "senderId",
+                    localField: "userId",
                     foreignField: "_id",
                     as: "user",
                 },
@@ -133,6 +133,9 @@ const showRequest = asyncHandler(async (req, res) => {
                     },
                     avatar: {
                         $arrayElemAt: ["$user.avatar", 0],
+                    },
+                    id: {
+                        $arrayElemAt: ["$user._id", 0],
                     },
                 },
             },
@@ -264,6 +267,9 @@ const showSendRequests = asyncHandler(async (req, res) => {
                     },
                     avatar: {
                         $arrayElemAt: ["$user.avatar", 0],
+                    },
+                    id: {
+                        $arrayElemAt: ["$user._id", 0],
                     },
                 },
             },
