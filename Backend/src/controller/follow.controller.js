@@ -19,7 +19,13 @@ const followRequest = asyncHandler(async (req, res) => {
             senderId: senderId,
         });
         if (existRequest) {
-            throw new ApiError(400, "Request already sent");
+            const deleteRequest = await Request.deleteOne({
+                userId: userId,
+                senderId: senderId,
+            });
+            return res
+                .status(200)
+                .json(200, deleteRequest, "Request deleted Succesfully");
         }
 
         const alreadyFollow = await Follow.find({
@@ -100,11 +106,45 @@ const deleteRequest = asyncHandler(async (req, res) => {
 });
 
 const showRequest = asyncHandler(async (req, res) => {
-    const userId = req.user._id;
+    const userId = new mongoose.Types.ObjectId(req.user._id);
+
     try {
-        const requests = await Request.find({ senderId: userId }).select(
-            "-status"
-        );
+        const requests = await Request.aggregate([
+            {
+                $match: {
+                    senderId: userId,
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "senderId",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $addFields: {
+                    firstName: {
+                        $arrayElemAt: ["$user.firstName", 0],
+                    },
+                    lastName: {
+                        $arrayElemAt: ["$user.lastName", 0],
+                    },
+                    avatar: {
+                        $arrayElemAt: ["$user.avatar", 0],
+                    },
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    avatar: 1,
+                },
+            },
+        ]);
         return res
             .status(200)
             .json(
@@ -197,10 +237,62 @@ const rejectRequest = asyncHandler(async (req, res) => {
     }
 });
 
+const showSendRequests = asyncHandler(async (req, res) => {
+    try {
+        const userId = new mongoose.Types.ObjectId(req.user._id);
+        const requests = await Request.aggregate([
+            {
+                $match: {
+                    userId: userId,
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "senderId",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $addFields: {
+                    firstName: {
+                        $arrayElemAt: ["$user.firstName", 0],
+                    },
+                    lastName: {
+                        $arrayElemAt: ["$user.lastName", 0],
+                    },
+                    avatar: {
+                        $arrayElemAt: ["$user.avatar", 0],
+                    },
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    avatar: 1,
+                },
+            },
+        ]);
+
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(200, requests, "Successfully fetched requests")
+            );
+    } catch (error) {
+        console.log(error);
+        throw new ApiError(500, error, "Server Error");
+    }
+});
+
 export {
     followRequest,
     showRequest,
     acceptRequest,
     rejectRequest,
     deleteRequest,
+    showSendRequests,
 };
