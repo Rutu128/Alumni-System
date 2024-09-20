@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
     cors({
-        origin: [process.env.CLIENT_URL],
+        origin: ["http://37.27.81.8:9001"],
         credentials: true,
         methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS", "UPDATE", "PUT"],
     })
