@@ -1,0 +1,60 @@
+@import "../abstracts/variables";
+@import "../abstracts/functions";
+@import "../abstracts/mixins";
+
+@import "../base/animation";
+@import "../base/utilities";
+@import "../base/typography";
+
+@import "../layout/header";
+@import "../layout/post_menu";
+
+@import "../components/headings";
+@import "../components/dropdown";
+@import "../components/posts";
+@import "../components/buttons";
+
+.edit {
+    &-cont {
+        margin-bottom: 1rem;
+    }
+
+    &-section {
+        &-head {
+            h2 {
+                padding-bottom: 0.3rem;
+                border-bottom: 1px solid $color-grey-light-3;
+            }
+        }
+
+        &-inputs {
+            font-size: responsive-font-size(0.9);
+
+            .input-cell {
+                margin-bottom: .5rem;
+                
+                .edit-label{
+                    font-weight: 500;
+                    font-stretch: 110%;
+                    padding: .3rem 0 .3rem .1rem;
+                    color: $color-grey-dark-3;
+                }
+                
+                @include input;
+
+                .input-field .invalid {
+                    border-color: $color-grey-light-3;
+                }
+                
+                .input-field .valid{
+                    border-color: $color-theme-light;
+                }
+            }
+        }
+    }
+
+    &-profile {
+        &-actions {
+        }
+    }
+}

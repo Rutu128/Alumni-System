@@ -124,6 +124,21 @@
             }
         }
 
+        .edit-input {
+            // border-color: $color-theme-light;
+            border-radius: .8rem;
+            padding: .5rem .8rem;
+            font-size: responsive-font-size(.9);
+
+            // &[value=""]:not(:focus){
+            //     border-color: $color-grey-light-3;
+            // }
+
+            // .select-arrow{
+            //     top: 20%;
+            // }
+        }
+
         //Removing the autofill background color
         input:-webkit-autofill {
             -webkit-box-shadow:0 0 0 50px white inset; /* Change the color to your own background color */
@@ -142,7 +157,7 @@
             padding: 0.87rem 1.2rem;
         }
 
-        .select-arrow {
+        .select-arrow, .option-selected {
             position: absolute;
             right: 1rem;
             top: 32%;
@@ -152,6 +167,12 @@
             transition: transform 0.3s;
         }
 
+        .select-arrow-edit{
+            top: 30%;
+            right: .5rem;
+            font-size: 1rem;
+        }
+        
         select:focus ~ .select-arrow {
             transform: rotate(180deg);
         }
@@ -209,7 +230,7 @@
             &:focus {
                 border: none;
                 border-bottom: 3px solid $color-theme-dark;
-                background: rgba($color-theme-light, 0.7);
+                background: rgba($color-theme-light, 0.7)1;
             } 
             
             & ~ label {

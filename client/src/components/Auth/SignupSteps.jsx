@@ -84,7 +84,7 @@ export default function SignupSteps({ step, setStep }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if(loading) return;
+        if(loading) return; 
         step === 1 && handleSubmitStep1();
         step === 2 && handleSubmitStep2();
         step === 3 && handleSubmitStep3();

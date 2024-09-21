@@ -22,6 +22,19 @@
     font-stretch: 120%;
 }
 
+.heading-secondary-dark-small {
+    font-size: responsive-font-size(1.4);
+    color: $color-font-dark;
+    font-family: "Mona-sans", sans-serif;
+    font-weight: 600;
+    font-stretch: 120%;
+}
+
+.underline {
+    padding-bottom: .3rem;
+    border-bottom: 2px solid $color-grey-light-3;
+}
+
 .heading-tertiary-dark {
     font-size: responsive-font-size(1.2);
     color: $color-font-dark;

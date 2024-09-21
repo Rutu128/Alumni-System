@@ -19,7 +19,7 @@ import ExpandedPostModal from './components/Modal UI/ExpandedPostModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import MultiStepSignUp from './pages/MultiStepSignUp';
 import SignUpContextProvider from './context/SignUpContext';
-import EditProfile from './components/UI components/EditProfile';
+import EditProfile from './components/Edit/EditProfile';
 import Notifications from './components/Pages/Notifications';
 
 function App() {

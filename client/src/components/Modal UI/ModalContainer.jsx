@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { PiX } from "react-icons/pi";
 import React from "react";
 
-const ModalContainer = forwardRef(function ModalContainer({ children, hasCloseButton, onReset }, ref) {
+const ModalContainer = forwardRef(function ModalContainer({ children, onReset }, ref) {
     const dialog = useRef();
 
     useImperativeHandle(ref, () => {

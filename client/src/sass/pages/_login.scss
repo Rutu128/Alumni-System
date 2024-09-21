@@ -214,6 +214,7 @@
     align-items: center;
     position: relative;
     background-color: #fff;
+    margin-bottom: 2rem !important;
 
     &-text {
         position: absolute;
@@ -320,7 +321,7 @@
                 }
 
                 .separator {
-                    margin-bottom: 4rem;
+                    margin-bottom: 2rem;
                 }
             }
         }

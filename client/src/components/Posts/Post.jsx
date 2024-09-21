@@ -38,7 +38,7 @@ export default function Post({ postData, modalView = false, notOwner, postIndex,
     const [comment, setComment] = useState('');
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    const { getOwnerDetails, createNotification } = useContext(UserContext);
+    const { userDetail:owner, createNotification } = useContext(UserContext);
     const { likePost, likeComment, getComments, newComment: postNewComment, deletePost } = useContext(PostContext);
 
 
@@ -154,7 +154,7 @@ export default function Post({ postData, modalView = false, notOwner, postIndex,
                         </div>
                     </div>
                     {
-                        !profileView &&
+                        !profileView && (postData.user._id !== owner._id) &&
                         <div className="post_actions u-margin-right-small">
                             <FollowButton postIndex={postIndex} isFollowing={postData.isFollowing} isRequested={postData.isRequested} isAccepted={postData.isAccepted} isSmall={true} id={postData.user._id}  />
                         </div>

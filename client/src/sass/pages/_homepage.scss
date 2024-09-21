@@ -293,3 +293,35 @@
         }
     }
 }
+
+.request_modal__cont{
+    padding: 1.5rem;
+    width: 30vw;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+
+    .modal_head {
+        margin-bottom: 1rem;
+    }
+
+    .modal_body {
+        font-size: .85rem;
+
+        p {
+            padding: .4rem 0;
+            margin-bottom: 1rem;
+        }
+
+        .modal__btn {
+            display: flex;
+            gap: 1rem;
+
+            button {
+                flex: 1;
+                border-radius: 1rem;
+            }
+        }
+    }
+}

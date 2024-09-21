@@ -160,7 +160,7 @@ export default function Login() {
                             <div className="underline"></div>
                         </div>
                     </div>
-                    <div className="separator u-margin-bottom-small">
+                    <div className="separator">
                         <div className="line"></div>
                         <div className="separator-text">OR</div>
                     </div>
