@@ -16,7 +16,7 @@ import { isPermited } from "../utils/Authenticate.js";
 
 const router = Router();
 
-router.route("/uploadPost").post(verifyJWT, uploadPost);
+router.route("/uploadPost").post(verifyJWT, isPermited, uploadPost);
 router.route("/like/:id").put(verifyJWT, likePost);
 router.route("/delete/:id").delete(verifyJWT, deletePost);
 router.route("/getPost/:page").get(verifyJWT, showPosts);
