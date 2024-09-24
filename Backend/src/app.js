@@ -2,17 +2,18 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import dotenv from "dotenv";
 import morgan from "morgan";
 import { createStream } from "rotating-file-stream";
 import path from "path";
 import { existsSync, mkdirSync } from "fs";
 import { getname } from "./helper.js";
-
+dotenv.config();
 const app = express();
 
 app.use(
     cors({
-        origin: ["http://37.27.81.8:9001","http://localhost:5173"],
+        origin: ["http://37.27.81.8:9001", "http://localhost:5174"],
         credentials: true,
         methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS", "UPDATE", "PUT"],
     })

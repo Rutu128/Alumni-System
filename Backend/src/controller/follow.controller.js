@@ -134,7 +134,7 @@ const showRequest = asyncHandler(async (req, res) => {
                     avatar: {
                         $arrayElemAt: ["$user.avatar", 0],
                     },
-                    id: {
+                    userId: {
                         $arrayElemAt: ["$user._id", 0],
                     },
                 },
@@ -145,6 +145,8 @@ const showRequest = asyncHandler(async (req, res) => {
                     firstName: 1,
                     lastName: 1,
                     avatar: 1,
+                    userId: 1,
+                    updatedAt: 1,
                 },
             },
         ]);
@@ -268,7 +270,7 @@ const showSendRequests = asyncHandler(async (req, res) => {
                     avatar: {
                         $arrayElemAt: ["$user.avatar", 0],
                     },
-                    id: {
+                    userId: {
                         $arrayElemAt: ["$user._id", 0],
                     },
                 },
@@ -279,6 +281,8 @@ const showSendRequests = asyncHandler(async (req, res) => {
                     firstName: 1,
                     lastName: 1,
                     avatar: 1,
+                    userId: 1,
+                    updatedAt: 1,
                 },
             },
         ]);
