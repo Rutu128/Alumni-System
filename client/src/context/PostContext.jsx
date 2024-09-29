@@ -86,6 +86,7 @@ export default function PostContextProvider({ children }){
 
     async function handleGetPosts(page){
         const response = await getApi('/post/getpost/' + page);
+        console.log(response);
         
         const apiStatus = handleResponse(response);
         

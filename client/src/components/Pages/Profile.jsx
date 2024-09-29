@@ -12,6 +12,7 @@ import FollowButton from '../UI components/FollowButton';
 
 
 export default function Profile() {
+    const { userDetail: owner } = useContext(UserContext);
 
     const [userDetail, setUserDetail] = useState({
         firstName: '',
@@ -42,7 +43,7 @@ export default function Profile() {
         fetchUserDetails();
     }, []);
 
-    if(isLoading){
+    if (isLoading) {
         return <LoadingScreen />
     }
 
@@ -74,9 +75,11 @@ export default function Profile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="user-actions">
-                                    <FollowButton isFollowing={userDetail.isFollowing} id={userDetail._id} />
-                                </div>
+                                {owner._id !== userDetail._id &&
+                                    <div className="user-actions">
+                                        <FollowButton profileRequest={true} isRequested={userDetail.isRequested} setUserDetail={setUserDetail} isFollowing={userDetail.isFollowing} id={userDetail._id} />
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div className="profile__right">

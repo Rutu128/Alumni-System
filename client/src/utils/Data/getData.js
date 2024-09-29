@@ -1,3 +1,4 @@
+import AlumniDataStructure from "./AlumniDataStructure";
 import FacultyDataStructure from "./FacultyDataStructure";
 import StudentDataStructure from "./StudentDataStructure";
 
@@ -8,6 +9,7 @@ export default function getData(role){
     if(role === "FACULTY"){
         return FacultyDataStructure;
     }
-    if(role === ""){
+    if(role === "ALUMNI"){
+        return AlumniDataStructure;
     }
 }

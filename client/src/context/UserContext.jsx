@@ -8,6 +8,7 @@ import handleResponse from "../utils/responseHandler";
 
 import 'react-toastify/dist/ReactToastify.css';
 import putApi from "../utils/API/putApi";
+import getData from "../utils/Data/getData";
 
 export const UserContext = createContext({
     userDetail: {
@@ -21,6 +22,8 @@ export const UserContext = createContext({
         description: String,
         isAuthenticated: Boolean
     },
+    editedInfo: {},
+    setEditedInfo: () => { },
     loginUser: () => { },
     logoutUser: () => { },
     registerUser: () => { },
@@ -47,12 +50,12 @@ export default function UserContextProvider({ children }) {
         email: '',
         initials: '',
         avatar: '',
-        designation: '',
+        role: '',
         headline: '',
         description: '',
         isAuthenticated: false
     })
-    const [ editedInfo, setEditedInfo ] = useState(userInfo);
+    const [ editedInfo, setEditedInfo ] = useState({});
 
     async function handleLoginUser(credentials) {
         let responseData;
@@ -147,9 +150,9 @@ export default function UserContextProvider({ children }) {
         if (response.response) {
             if (response.response.status === 401) {
                 console.log('Unauthorized access');
-                return {
-                    status: response.response.status,
-                }
+            }
+            return {
+                status: response.response.status,
             }
         }
 
@@ -161,6 +164,7 @@ export default function UserContextProvider({ children }) {
                     ...response.data.data,
                 }
             })
+            setEditedInfo(getData(response.data.data.role));
             return {
                 status: response.data.statusCode,
             }
@@ -247,8 +251,32 @@ export default function UserContextProvider({ children }) {
         }
     }
 
+    async function handleAcceptFollowRequest(id){
+        const response = await putApi('/follow/accept/' + id, {
+            requestId: id,
+        })
+        const res = handleResponse(response);
+        if(res.status === 200){
+            console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+
+    async function handleRejectFollowRequest(){
+        const response = await putApi('/follow/reject/' + id, {
+            requestId: id,
+        })
+        const res = handleResponse(response);
+        if(res.status === 200){
+            console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+
     const ctxValue = {
         userDetail: userInfo,
+        editedInfo: editedInfo,
+        setEditedInfo: setEditedInfo,
         loginUser: handleLoginUser,
         logoutUser: handleLogoutUser,
         registerUser: handleRegisterUser,
@@ -262,6 +290,8 @@ export default function UserContextProvider({ children }) {
         searchUser: handleSearchUser,
         sendFollowRequest: handleSendFollowRequest,
         getFollowRequests: handleGetFollowRequests,
+        acceptFollowRequest: handleAcceptFollowRequest,
+        rejectFollowRequest: handleRejectFollowRequest,
     }
 
     return <UserContext.Provider value={ctxValue}>
