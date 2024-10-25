@@ -45,7 +45,7 @@ function Input({ labelText, type, errorText, inputFor, values, showError, genera
             options = generateOptions(values[1], values[0]);
         } else {
             options = values;
-            console.log(options);
+            // console.log(options);
         }
 
         return (
@@ -53,7 +53,7 @@ function Input({ labelText, type, errorText, inputFor, values, showError, genera
                 <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
                     {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
                     <select id={labelText + '-input'} {...props}>
-                        <option htmlFor={labelText + '-input'} value="" hidden disabled selected defaultValue>{props.placeholder}</option>
+                        <option htmlFor={labelText + '-input'} value="" hidden disabled defaultValue>{props.placeholder}</option>
                         {options.map(value => (
                             <option key={value} value={value}>{value}</option>
                         ))}

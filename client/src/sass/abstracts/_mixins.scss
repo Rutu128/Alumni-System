@@ -73,6 +73,16 @@
         width: 100%;
     }
 
+    .square-inputs {
+
+        .input-field{
+
+            label {
+                margin-left: .8rem !important;
+            }
+        }
+    }
+
     .input-field,
     .input-field-login {
         display: inline-block;
@@ -125,7 +135,7 @@
         }
 
         .edit-input {
-            // border-color: $color-theme-light;
+            border-color: $color-grey-light-3;
             border-radius: .8rem;
             padding: .5rem .8rem;
             font-size: responsive-font-size(.9);
@@ -137,6 +147,9 @@
             // .select-arrow{
             //     top: 20%;
             // }
+            label{
+                margin-left: .5rem;
+            }
         }
 
         //Removing the autofill background color
@@ -178,7 +191,7 @@
         }
 
         .error {
-            border: 2px solid #fa4f4f;
+            border: 2px solid #fa4f4f !important;
         }
 
         .showPassword,
@@ -261,6 +274,9 @@
     &::-webkit-scrollbar {
         height: 5px; // Adjust the height of the scrollbar
         width: 5px;
+        // position: fixed;
+        // left: 0;
+        // z-index: 10;
     }
 
     &::-webkit-scrollbar-track {
@@ -308,9 +324,9 @@
     padding-bottom: 3px;
     border-bottom: 2px solid $color-grey-light-3;
 
-    &:has(h2) {
-        border-bottom: none;
-    }
+    // &:has(h2) {
+    //     border-bottom: none;
+    // }
 
     h1 {
         // font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);

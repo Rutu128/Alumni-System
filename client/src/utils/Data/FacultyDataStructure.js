@@ -1,21 +1,18 @@
 const FacultyDataStructure = {
     email: "",
+    f_id: "",
     position: "",
     department: "",
     branch: "",
-    degrees: [{
-        degree: "",
-        major: "",
-        year: "",
-        college: "",
-    }],
+    degrees: [],
 };
 
 export const facultyInputs = [
+    {name: "f_id", label: "Faculty ID", type: "text"},
     {name: "email", label: "Email", type: "email"},
     {name: "position", label: "Position", type: "text"},
-    {name: "branch", label: "Branch", type: "text"},
-    {name: "college", label: "College", type: "text"},
+    {name: "branch", label: "Branch", type: "dropdown", values: ["CE", "IT", "CSE", "EC", "Civil", "Mechanical", "Electrical"], select_arrow_class: "select-arrow-edit"},
+    {name: "department", label: "Department", type: "dropdown", values: ["CSPIT", "DEPSTAR"], select_arrow_class: "select-arrow-edit"},
 ];
 
 export const facultyGroupInputs = {

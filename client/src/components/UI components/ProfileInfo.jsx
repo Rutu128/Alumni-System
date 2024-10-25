@@ -3,7 +3,7 @@ import { UserContext } from "../../context/UserContext";
 import UserPostContainer from "../Posts/UserPostContainer";
 import Loading from "react-loading";
 
-export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = () => {} }) {
+export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = () => { } }) {
     const [userPosts, setUserPosts] = useState([]);
     const [showFullText, setShowFullText] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +17,7 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
 
     async function handleFetchPosts() {
         let posts;
-        if(notOwner){
+        if (notOwner) {
             posts = await getUserPosts(userDetail._id);
         } else {
             posts = await getOwnerPosts();
@@ -33,14 +33,14 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
 
     const renderAboutText = () => {
         if (!userDetail.description) {
-            return notOwner ? 
-            'Nothing to show' 
-            :
-            (
-                <button className="u-button-secondary u-width-20rem" onClick={showProfileEdit}>
-                    Add your Description
-                </button>
-            )
+            return notOwner ?
+                'Nothing to show'
+                :
+                (
+                    <button className="u-button-secondary u-width-20rem" onClick={showProfileEdit}>
+                        Add your Description
+                    </button>
+                )
         }
         else if (showFullText) {
             return userDetail.description;
@@ -60,14 +60,18 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
                 </div>
                 <div className="details u-flex-justify-center">
                     <div className="about_college_info">
-                        <div className="info--cell">
-                            <div className="info--head">Student ID</div>
-                            <div className="info--value">{userDetail.c_id?.toUpperCase()}</div>
-                        </div>
-                        <div className="info--cell">
-                            <div className="info--head">Batch</div>
-                            <div className="info--value">{userDetail.passingYear}</div>
-                        </div>
+                        {userDetail.c_id &&
+                            <div className="info--cell">
+                                <div className="info--head">Student ID</div>
+                                <div className="info--value">{userDetail.c_id?.toUpperCase()}</div>
+                            </div>
+                        }
+                        {userDetail.batch &&
+                            <div className="info--cell">
+                                <div className="info--head">Batch</div>
+                                <div className="info--value">{userDetail.passingYear}</div>
+                            </div>
+                        }
                         <div className="info--cell">
                             <div className="info--head">Email</div>
                             <div className="info--value">{userDetail.email}</div>
@@ -96,9 +100,9 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
                             <img src="/illustrations/no-post.svg" alt=" " />
                         </div>
                         <div className="u-fallback-text">
-                            {isLoading ? 
-                                <Loading type="spin" color="#333" width={'2rem'} height={'2rem'} className={"loader"} /> 
-                                : 
+                            {isLoading ?
+                                <Loading type="spin" color="#333" width={'2rem'} height={'2rem'} className={"loader"} />
+                                :
                                 <h3>No posts to show</h3>
                             }
                         </div>

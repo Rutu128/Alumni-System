@@ -126,6 +126,13 @@
     font-size: clamp(2rem, 5vw + 1rem, 6rem);
 }
 
+.u-medium-length-image {
+    width: 80%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    // font-size: clamp(2rem, 5vw + 1rem, 6rem);
+}
+
 .u-margin-right-small {
     margin-right: 0.5rem;
 }
@@ -179,6 +186,11 @@
     &-large {
         font-size: responsive-font-size(1.5);
     }
+
+    &-red{
+        font-size: 1.2rem;
+        color: $color-red;
+    }
 }
 
 .u-icon-margin-r {
@@ -218,6 +230,13 @@
     }
 }
 
+.edit-input-wrapper {
+    .u-error-text {
+        top: 2.4rem;
+        border-radius: 1rem;
+    }
+}
+
 .u-font-p {
     font-size: 0.9rem;
     font-weight: 500;
@@ -239,7 +258,7 @@
     align-items: center;
 }
 
-.u-button, .u-button-primary, .u-button-secondary {
+.u-button, .u-button-primary, .u-button-secondary, .u-button-danger, .u-button-tertiary, .u-icon-button-tertiary {
     border: none;
     outline: none;
     display: inline-block;
@@ -251,6 +270,7 @@
     display: flex;
     text-align: center;
     justify-content: center;
+    cursor: pointer;
     // font-weight: 300;
 }
 
@@ -282,6 +302,24 @@
 
     &-1{
         border-radius: 1rem;
+    }
+}
+
+.u-button-danger{
+    background-color: $color-red-light;
+    color: $color-red;
+    font-size: responsive-font-size(1.1);
+    font-weight: 600;
+    font-stretch: 110%;
+    border-radius: 2rem;
+
+    &-1{
+        border-radius: 1rem;
+    }
+
+    &:hover, &:focus{
+        background-color: rgba($color-red, .3);
+        box-shadow: none;
     }
 }
 

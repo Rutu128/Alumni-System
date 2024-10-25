@@ -1,7 +1,7 @@
 import axios from "axios";
 import apiInfo from "./apiInfo";
 
-export default async function postApi(path, body){
+export default async function postApi(path, body) {
     axios.defaults.withCredentials = true;
     let response;
 
@@ -9,13 +9,13 @@ export default async function postApi(path, body){
         ...body,
         withCredentials: true,
     })
-    .then(Response => {
-        response = Response;
-    })
-    .catch(err => {
-        console.error(err);
-        response = err;
-    })
+        .then(Response => {
+            response = Response;
+        })
+        .catch(err => {
+            console.error(err);
+            response = err;
+        })
 
     return response;
 }

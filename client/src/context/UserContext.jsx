@@ -37,6 +37,7 @@ export const UserContext = createContext({
     searchUser: () => { },
     sendFollowRequest: () => { },
     getFollowRequests: () => { },
+    getMyRequests: () => { },
     acceptFollowRequest: () => { },
     rejectFollowRequest: () => { },
     deleteFollowRequest: () => { },
@@ -75,11 +76,12 @@ export default function UserContextProvider({ children }) {
             setUserInfo(prevInfo => {
                 return {
                     ...prevInfo,
-                    firstName: responseData.data.user.firstName,
-                    lastName: responseData.data.user.lastName,
-                    email: responseData.data.user.email,
-                    initials: responseData.data.user.firstName[0] + responseData.data.user.lastName[0],
-                    avatar: responseData.data.user.avatar,
+                    ...responseData.data,
+                    // firstName: responseData.data.user.firstName,
+                    // lastName: responseData.data.user.lastName,
+                    // email: responseData.data.user.email,
+                    // initials: responseData.data.user.firstName[0] + responseData.data.user.lastName[0],
+                    // avatar: responseData.data.user.avatar,
                     isAuthenticated: true
                 }
             })
@@ -251,6 +253,15 @@ export default function UserContextProvider({ children }) {
         }
     }
 
+    async function getMyRequests(){
+        const response = await getApi('/follow/myRequests');
+        const res = handleResponse(response);
+        if(res.status === 200){
+            console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+
     async function handleAcceptFollowRequest(id){
         const response = await putApi('/follow/accept/' + id, {
             requestId: id,
@@ -283,13 +294,14 @@ export default function UserContextProvider({ children }) {
         getUserPosts: handleGetUserPosts,
         getOwnerPosts: handleGetOwnerPosts,
         authenticateUser: handleAuthenticateUser,
-        createNotification: createNotification,
+        createNotification: createNotification, 
         updateProfile: handleUpdateProfile,
         getOwnerDetails: handleGetOwnerDetails,
         getUserDetails: handleGetUserDetails,
         searchUser: handleSearchUser,
         sendFollowRequest: handleSendFollowRequest,
         getFollowRequests: handleGetFollowRequests,
+        getMyRequests: getMyRequests,
         acceptFollowRequest: handleAcceptFollowRequest,
         rejectFollowRequest: handleRejectFollowRequest,
     }

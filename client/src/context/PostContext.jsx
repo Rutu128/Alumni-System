@@ -1,10 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import uploadFiles from "../utils/Uploads/UploadImage";
 import postApi from "../utils/API/postApi";
 import getApi from "../utils/API/getApi";
 import putApi from "../utils/API/putApi";
 import handleResponse from '../utils/responseHandler';
 import deleteApi from "../utils/API/deleteApi";
+import { UserContext } from "./UserContext";
 
 export const PostContext = createContext({
     posts: [{
@@ -39,7 +40,8 @@ export const PostContext = createContext({
 })
 
 export default function PostContextProvider({ children }){
-    const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState([]);
+    const { createNotification } = useContext(UserContext);
 
     function handleUpdatePostState(field, value, index){
         setPosts((prevData) => {
@@ -73,6 +75,11 @@ export default function PostContextProvider({ children }){
             });
         
             console.log(response);
+            if(response.status === 200){
+                handleGetPosts();
+            } else if(response.status === 401){
+                createNotification('Unauthorized', 'error');
+            }
             return handleResponse(response);
         
         } catch (error) {

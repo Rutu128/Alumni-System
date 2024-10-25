@@ -43,11 +43,16 @@
                 width: 30%;
                 padding: 2vw;
 
+                .image-cont {
+                    display: flex;
+                    justify-content: center;
+                }
+                
                 .full_length_image {
                     // width: 35%;
                 }
             }
-
+            
             .section-info {
                 display: flex;
                 justify-content: center;
@@ -56,10 +61,15 @@
                 padding: 0 1rem;
             }
         }
-
+        
         .profile-image {
             position: relative;
             padding: 1rem;
+
+            .image-cont {
+                display: flex;
+                justify-content: center;
+            }
         }
 
         .section-info {

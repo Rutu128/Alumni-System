@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import FollowRequests from "./Notifications/FollowRequests";
 import { GlobalContext } from "../../context/GlobalContext";
+import UserRequests from "./Notifications/UserRequests";
 
 import "../../sass/pages/_notifications.scss";
 
@@ -24,7 +25,7 @@ export default function Notifications() {
                             <FollowRequests /> 
                         </section>
                         <section className="notification__body--user-requests">
-                            {/* <UserRe */}
+                            <UserRequests />
                         </section>
                     </div>
                 </section>
