@@ -1,0 +1,105 @@
+@import "../abstracts/variables";
+@import "../abstracts/functions";
+@import "../abstracts/mixins";
+
+@import "../base/animation";
+@import "../base/utilities";
+@import "../base/typography";
+
+@import "../layout/header";
+@import "../layout/post_menu";
+
+@import "../components/headings";
+@import "../components/dropdown";
+@import "../components/posts";
+@import "../components/buttons";
+
+.notification{
+    width: 100%;
+
+    &__cont {
+
+    }
+
+    &__head {
+        @include page-headers;
+    }
+
+    &__body{
+
+        &--cont{
+            width: 80%;
+            display: flex;
+            // align-items: center;
+            flex-direction: column;
+
+            @media (max-width: 768px) {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.follow-requests{
+    padding: 1rem 0;
+
+    &-cont{
+        width: 100%;
+    }
+}
+
+.request{
+    width: 100%;
+    margin-bottom: 1rem;
+
+    &__cont {
+        display: flex;
+        gap: 1rem;
+
+        &-left {
+            flex: 1;
+            display: flex;
+            align-items: center ;
+
+            .request__info{
+                flex: 1;
+                padding: 0 1rem;
+
+                p{
+                    font-size: responsive-font-size(.85);
+                    font-weight: 450;
+                    font-stretch: 110%;
+                }
+
+                &--head{
+
+                    .username{
+                        font-size: responsive-font-size(1);
+                        font-weight: 700;
+                        font-stretch: 110%;
+                    }
+                }
+            }
+        }
+    }
+
+    &__date {
+        font-size: .7rem;
+        margin-left: .5rem;
+        color: $color-grey-dark-3;
+    }
+
+    &__btn{
+        display: flex;
+        gap: 1rem;
+
+        button{
+            width: 8rem;
+            flex: 1;
+
+            @media (max-width: 768px) {
+                width: 6rem;
+            }
+        }
+    }
+}

@@ -4,9 +4,12 @@
     justify-content: left;
     align-items: center;
     color: $color-font-dark;
-    font-family: "Regular", sans-serif;
+    font-family: "Mona-sans", sans-serif;
     overflow-x: hidden;
     overflow-y: auto;
+    padding: 0 4vw;
+    font-weight: 500;
+    font-stretch: 110%;
 
     &-cont {
         width: 55%; /* Increased width */
@@ -20,9 +23,60 @@
         &-main {
             width: 100%;
             text-align: center;
+            transform: height 1s;
 
-            h1 {
-                font-size: 3.5rem;
+            // &-head-left, &-head{
+            // }
+            &-head-left{
+                padding: 0 4vw;
+                text-align: left;
+            }
+            .progress-bar{
+                width: 100%;
+                padding: .5rem 0;
+                display: flex;
+                align-items: center;
+                gap: .8rem;
+
+                &-step{
+                    flex: 1;
+                    height: .4rem;
+                    border-radius: 1rem;
+                    background-color: $color-grey-light-3;
+                    transition: all .3s;
+                }
+
+                .current {
+                    background-color: $color-theme-dark;
+                }
+                
+                .completed {
+                    background-color: $color-theme-light;
+                }
+            }
+
+            .icon-with-text{
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                // margin-bottom: 1rem;
+
+                img{
+                    width: 5rem;
+                }
+
+                .icon-text{
+
+                    h2{
+                        font-size: 1.8rem;
+                        font-weight: 700;
+                    }
+                }
+            }
+
+            &-form {
+                padding: 2rem 4vw;
+                // width: 60%;
             }
 
             .input-field-container {
@@ -34,6 +88,51 @@
             }
 
             @include input;
+
+            .auth-actions{
+                .multi-step-buttons{
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 1rem;
+
+                    button {
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        .icon-l, .icon-r {
+                            margin: 0 0 0 0;
+                            transition: transform 0.2s ease;
+                        }
+
+                        .icon-l {
+                            margin-right: 0.5rem;
+                            margin-left: -.8rem;
+                        }
+                        
+                        .icon-r {
+                            margin-left: 0.5rem;
+                            margin-right: -.8rem;
+                        }
+
+                        &:hover{
+                            .icon-l {
+                                transform: scale(1.2) translateX(-0.2rem);
+                            }
+
+                            .icon-r {
+                                transform: scale(1.2) translateX(0.2rem);
+                            }
+                        }
+                    }
+                }
+
+                .button-large{
+                    flex-direction: column-reverse;
+                    gap: 1rem;
+                }
+            }
 
             .login-button {
                 min-width: 16rem;
@@ -64,14 +163,16 @@
             .sign-up {
                 display: block;
                 text-align: center;
-                font-size: 1.2rem;
+                font-size: 1.1rem;
 
                 .link {
                     display: inline-block;
                     margin-left: 0.5rem;
                     background-clip: text;
                     cursor: pointer;
-                    font-family: "Bold2", sans-serif;
+                    font-weight: 800;
+                    font-stretch: 115%;
+                    font-size: 1.2rem;
 
                     .link-element {
                         &:link,
@@ -112,6 +213,8 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: #fff;
+    margin-bottom: 2rem !important;
 
     &-text {
         position: absolute;
@@ -126,6 +229,10 @@
         height: 1px;
         width: 80%;
         background-color: $color-font-dark;
+    }
+
+    .line-small{
+        width: 50%;
     }
 }
 
@@ -177,7 +284,7 @@
         align-items: center;
 
         img {
-            width: 70%;
+            width: 80%;
         }
     }
 }
@@ -214,7 +321,7 @@
                 }
 
                 .separator {
-                    margin-bottom: 4rem;
+                    margin-bottom: 2rem;
                 }
             }
         }

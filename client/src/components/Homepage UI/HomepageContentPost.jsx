@@ -10,10 +10,15 @@ import ModalContainer from '../Modal UI/ModalContainer';
 import PostModal from '../Modal UI/PostModal';
 import { PostContext } from '../../context/PostContext';
 import ReactLoading from 'react-loading';
+import { log } from '../../log';
 import { ImageIcon } from '../Icon/HomepageIcons';
+import React from 'react';
 
 
 export default function HomepageContentPost({ }) {
+    log('<HomepageContentPost/> rendered', 3
+    );
+
     const [fileType, setFileType] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { submitNewPost } = useContext(PostContext);
@@ -57,7 +62,15 @@ export default function HomepageContentPost({ }) {
                             <ProfileImage />
                         </div>
                         <div className="post-input">
-                            <input ref={inputRef} type="text" placeholder='Type something...' />
+                            <input
+                                id='post-input'
+                                ref={inputRef}
+                                type="text"
+                                placeholder='Type something...'
+                                onKeyUp={(e) => {
+                                    e.key === "Enter" && handleSendClick()
+                                }}
+                            />
                         </div>
                         <div className="post-submit">
                             <button onClick={handleSendClick}>
@@ -73,18 +86,18 @@ export default function HomepageContentPost({ }) {
                 <div className="bottom">
                     <button onClick={() => showPostModal('image')}>
                         {/* <FaRegImages className='button-icon' /> */}
-                        <img src="/picture-dynamic-color.svg" alt="image icon" />
+                        <img src="/Icons/image-2.svg" alt="image icon" />
                         {/* <ImageIcon /> */}
                         <p>Image</p>
                     </button>
                     <button onClick={() => showPostModal('video')}>
                         {/* <MdOutlineVideoLibrary className='button-icon' /> */}
-                        <img src="/video-camera-dynamic-color.svg" alt="image icon" />
+                        <img src="/Icons/video-2.svg" alt="video icon" />
                         <p>Video</p>
                     </button>
                     <button onClick={() => showPostModal('document')}>
                         {/* <IoDocumentsOutline className='button-icon' /> */}
-                        <img src="/copy-dynamic-color.svg" alt="image icon" />
+                        <img src="/Icons/document-2.svg" alt="Document icon" />
                         <p>Document</p>
                     </button>
                 </div>

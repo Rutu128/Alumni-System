@@ -1,26 +1,51 @@
 @mixin profile-img {
-    .dummy-profile, .profile-img{
+    .dummy-profile {
         width: 2.6rem;
         // height: 2.6rem;
         aspect-ratio: 1 / 1;
+        background-size: contain;
         border-radius: 50%;
         display: inline;
     }
 
-    .dummy-profile{
+    .image-wrapper {
+        width: 2.6rem; /* Set the size of the circle */
+        max-width: 100%;
+        // height: 200px; /* Ensure it's a square */
+        aspect-ratio: 1 / 1;
+        border-radius: 50%; /* Makes the wrapper circular */
+        overflow: hidden; /* Ensures the image doesn't overflow out of the wrapper */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .full-length-image {
+        width: 100%;
+        // aspect-ratio:;
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures the image covers the circular area */
+        display: block;
+    }
+
+    .dummy-profile {
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        font-family: 'Mona-sans';
+        font-family: "Mona-sans";
         font-weight: 600;
         background-color: #7332fe;
         color: $color-font-light;
         font-size: 1rem;
         border: none;
         outline: none;
-        transition: all .3s;
+        transition: all 0.3s;
 
-        &:hover{
+        &:hover {
             background-color: $color-theme-dark;
         }
     }
@@ -39,16 +64,27 @@
     width: 100%;
 }
 
-@mixin input{
-    .input-field{
-        width: 48%; /* Adjusted width to fit two fields side by side */
+@mixin input {
+    .input-field {
+        width: 100%; /* Adjusted width to fit two fields side by side */
     }
 
-    .input-field-login{
+    .input-field-login {
         width: 100%;
     }
 
-    .input-field, .input-field-login {
+    .square-inputs {
+
+        .input-field{
+
+            label {
+                margin-left: .8rem !important;
+            }
+        }
+    }
+
+    .input-field,
+    .input-field-login {
         display: inline-block;
         position: relative;
         text-align: left;
@@ -59,63 +95,131 @@
             display: block;
             margin-left: 1.4rem;
             position: absolute;
-            top: .95rem;
+            top: 50%;
             left: 0;
+            transform: translateY(-50%);
             color: $color-font-dark;
+            font-weight: 500;
+            font-stretch: 115%;
             padding: 0 0.2rem;
             transition: all 0.4s ease;
             cursor: text;
             z-index: 0;
         }
 
-        input[value=""]:not(:focus) { color: transparent; }
 
-        input, select {
+        input[value=""]:not(:focus) {
+            color: transparent;
+        }
+
+        input,
+        select {
             position: relative;
             display: inline-block;
             width: 100%; /* Full width within the container */
             padding: 0.8rem 1.2rem;
-            font-size: 1rem;
-            border: 2px solid #8dc5dc;
+            font-size: responsive-font-size(1);
+            font-weight: 500;
+            font-stretch: 115%;
+            border: 2px solid $color-theme-light;
             outline: none;
             border-radius: 2rem;
             background-color: transparent !important;
-            font-family: 'Regular', sans-serif;
+            font-family: "Mona-sans", sans-serif;
             z-index: 1;
-            transition: all .3s;
+            transition: all 0.3s;
 
             &:focus {
-                border: 2px solid #42768c;
+                border: 2px solid $color-theme-dark;
             }
         }
 
-        select{
-            // height: 3.1rem;
-            appearance: none;
-            padding: .87rem 1.2rem;
+        .edit-input {
+            border-color: $color-grey-light-3;
+            border-radius: .8rem;
+            padding: .5rem .8rem;
+            font-size: responsive-font-size(.9);
+
+            // &[value=""]:not(:focus){
+            //     border-color: $color-grey-light-3;
+            // }
+
+            // .select-arrow{
+            //     top: 20%;
+            // }
+            label{
+                margin-left: .5rem;
+            }
         }
 
+        //Removing the autofill background color
+        input:-webkit-autofill {
+            -webkit-box-shadow:0 0 0 50px white inset; /* Change the color to your own background color */
+            -webkit-text-fill-color: #333;
+        }
+        
+        input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 50px white inset;
+            -webkit-text-fill-color: #333;
+        }
+
+        select {
+            // height: 3.1rem;
+            cursor: pointer;
+            appearance: none;
+            padding: 0.87rem 1.2rem;
+        }
+
+        .select-arrow, .option-selected {
+            position: absolute;
+            right: 1rem;
+            top: 32%;
+            font-size: 1.2rem;
+            transform: rotate(0deg);
+            transform-origin: 50% 50%;
+            transition: transform 0.3s;
+        }
+
+        .select-arrow-edit{
+            top: 30%;
+            right: .5rem;
+            font-size: 1rem;
+        }
+        
+        select:focus ~ .select-arrow {
+            transform: rotate(180deg);
+        }
 
         .error {
-            border: 2px solid #fa4f4f;
+            border: 2px solid #fa4f4f !important;
         }
 
-        .showPassword, .hidePassword {
+        .showPassword,
+        .hidePassword {
             border: none;
             outline: none;
             background-color: transparent;
             position: absolute;
-            top: 1.05rem;
-            right: .8rem;
-            font-size:1rem;
+            top: 50%;
+            right: 0.8rem;
+            padding: .2rem .3rem;
+            border-radius: 50%;
+            margin-right: .2vw;
+            transform: translateY(-50%);
+            font-size: 1rem;
             cursor: pointer;
             z-index: 5;
             color: $color-font-dark;
 
-            &:focus{
+            &:focus {
                 background-color: transparent;
             }
+
+            .react-icons {
+                margin: 0 0 -.15rem 0;
+            }
         }
+
 
         input:focus + label,
         select:focus + label,
@@ -123,10 +227,38 @@
         .showPassword:active + label {
             background-color: #fff;
             position: absolute;
-            top: -0.6rem;
+            top: 0;
             left: 0;
             z-index: 2;
-            color: #42768c;
+            // color: rgba($color-theme-dark, .6);
+            font-size: responsive-font-size(0.9);
+        }
+
+        .input-secondary {
+            border-radius: 0;
+            border: none;
+            border-bottom: 2px solid $color-theme-light;
+            padding: .8rem .8rem;
+
+            &:focus {
+                border: none;
+                border-bottom: 3px solid $color-theme-dark;
+                background: rgba($color-theme-light, 0.7)1;
+            } 
+            
+            & ~ label {
+                margin-left: .6rem;
+            }
+        }
+
+        .input-secondary:focus + label {
+            background-color: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            // color: rgba($color-theme-dark, .6);
+            font-size: responsive-font-size(0.9);
         }
     }
 }
@@ -138,10 +270,13 @@
     }
 }
 
-@mixin horizontal-scrollbar{
+@mixin horizontal-scrollbar {
     &::-webkit-scrollbar {
-        height: 3px; // Adjust the height of the scrollbar
-        width: 4px;
+        height: 5px; // Adjust the height of the scrollbar
+        width: 5px;
+        // position: fixed;
+        // left: 0;
+        // z-index: 10;
     }
 
     &::-webkit-scrollbar-track {
@@ -177,30 +312,110 @@
 }
 
 @mixin no-scrollbar {
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
+        opacity: 0;
         display: none;
     }
 }
 
-@mixin page-headers{
+@mixin page-headers {
     width: 100%;
-        display: block;
-        border-bottom: 1px solid $color-grey-light-3;
-        
-        h1 {
-            // font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);
-            font-size: responsive-font-size(2.5);
-            font-weight: 900;
-            font-stretch: 120%;
-        }
-        
-        h2 {
-            font-size: responsive-font-size(1.5);
-            font-weight: 900;
-            font-stretch: 120%;
+    display: block;
+    padding-bottom: 3px;
+    border-bottom: 2px solid $color-grey-light-3;
+
+    // &:has(h2) {
+    //     border-bottom: none;
+    // }
+
+    h1 {
+        // font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);
+        font-size: responsive-font-size(2.5);
+        font-weight: 600;
+        font-stretch: 120%;
+    }
+
+    h2 {
+        font-size: responsive-font-size(1.8);
+        font-weight: 600;
+        font-stretch: 120%;
+    }
+
+    h3 {
+        font-size: responsive-font-size(1.2);
+        font-weight: 700;
+        font-stretch: 120%;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+@mixin follow-button {
+    .follow-button,
+    .follow-button-small {
+        color: $color-font-light;
+        padding: 0.7rem 0;
+        margin-top: 1rem;
+        font-size: responsive-font-size(1);
+        font-weight: 700;
+        font-stretch: 110%;
+        border-radius: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        background-color: rgba($color-theme-dark, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .u-phosphor-icons {
+            margin: 0 0.5rem 0 0;
         }
 
-        hr{
-            color: $color-theme-dark;
+        &:hover {
+            box-shadow: 0 0 2rem rgba($color-theme-dark, 0.4);
         }
+
+        &-small {
+            margin-top: 0;
+            // min-width: 7rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 2rem;
+            background-color: rgba($color-theme-dark, 0.1);
+            color: rgba($color-theme-dark, 1);
+            font-size: responsive-font-size(0.85);
+
+            .u-phosphor-icons {
+                font-size: responsive-font-size(1.2);
+            }
+
+            &:hover {
+                background-color: rgba($color-theme-dark, 0.3);
+                box-shadow: none;
+            }
+        }
+    }
+
+    .following-small {
+        background-color: transparent;
+    }
+
+    .following {
+        background-color: rgba($color-theme-light, 0.7);
+        color: $color-theme-dark;
+
+        &:hover {
+            background-color: rgba($color-theme-dark, 0.3);
+            box-shadow: none;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .follow-button {
+            padding: 0.4rem 0;
+            border-radius: 0.5rem;
+        }
+    }
 }

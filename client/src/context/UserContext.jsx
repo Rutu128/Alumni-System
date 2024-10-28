@@ -1,12 +1,14 @@
 import { createContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import postApi from "../utils/postApi";
-import getApi from "../utils/getApi";
+import postApi from "../utils/API/postApi";
+import getApi from "../utils/API/getApi";
 import { ToastContainer, toast } from 'react-toastify';
 import handleResponse from "../utils/responseHandler";
 
 import 'react-toastify/dist/ReactToastify.css';
+import putApi from "../utils/API/putApi";
+import getData from "../utils/Data/getData";
 
 export const UserContext = createContext({
     userDetail: {
@@ -20,14 +22,25 @@ export const UserContext = createContext({
         description: String,
         isAuthenticated: Boolean
     },
+    editedInfo: {},
+    setEditedInfo: () => { },
     loginUser: () => { },
     logoutUser: () => { },
     registerUser: () => { },
     getUserPosts: () => { },
+    getOwnerPosts: () => { },
     authenticateUser: () => { },
     createNotification: () => { },
-    getUserDetails: () => { },
+    getOwnerDetails: () => { },
     updateProfile: () => { },
+    getUserDetails: () => { },
+    searchUser: () => { },
+    sendFollowRequest: () => { },
+    getFollowRequests: () => { },
+    getMyRequests: () => { },
+    acceptFollowRequest: () => { },
+    rejectFollowRequest: () => { },
+    deleteFollowRequest: () => { },
 })
 
 
@@ -38,11 +51,12 @@ export default function UserContextProvider({ children }) {
         email: '',
         initials: '',
         avatar: '',
-        designation: '',
+        role: '',
         headline: '',
         description: '',
         isAuthenticated: false
     })
+    const [ editedInfo, setEditedInfo ] = useState({});
 
     async function handleLoginUser(credentials) {
         let responseData;
@@ -62,11 +76,12 @@ export default function UserContextProvider({ children }) {
             setUserInfo(prevInfo => {
                 return {
                     ...prevInfo,
-                    firstName: responseData.data.user.firstName,
-                    lastName: responseData.data.user.lastName,
-                    email: responseData.data.user.email,
-                    initials: responseData.data.user.firstName[0] + responseData.data.user.lastName[0],
-                    avatar: responseData.data.user.avatar,
+                    ...responseData.data,
+                    // firstName: responseData.data.user.firstName,
+                    // lastName: responseData.data.user.lastName,
+                    // email: responseData.data.user.email,
+                    // initials: responseData.data.user.firstName[0] + responseData.data.user.lastName[0],
+                    // avatar: responseData.data.user.avatar,
                     isAuthenticated: true
                 }
             })
@@ -94,24 +109,37 @@ export default function UserContextProvider({ children }) {
         }
     }
 
-    function handleLogoutUser() {
-        setUserInfo({
-            firstName: '',
-            lastName: '',
-            email: '',
-            initials: '',
-            avatar: '',
-            isAuthenticated: false
-        })
-        return {
-            logoutStatus: 200
+    async function handleLogoutUser() {
+        const response = await postApi('/auth/logout');
+        
+        const res = handleResponse(response);
+        console.log(res);
+
+        if(res.status === 200){
+            setUserInfo({
+                firstName: '',
+                lastName: '',
+                email: '',
+                initials: '',
+                avatar: '',
+                isAuthenticated: false
+            })
+            return {
+                status: 200
+            }
         }
     }
 
-    async function handleGetUserPosts() {
-        const response = await getApi('/user/myPosts')
-        // console.log(response.data.data);
-
+    async function handleGetUserPosts(id) {
+        const response = await getApi('/user/posts/' + id);
+        const res = handleResponse(response);
+        if (res.status === 200 | 202) {
+            return response.data.data;
+        }
+    }
+    
+    async function handleGetOwnerPosts() {
+        const response = await getApi('/user/myPosts');
         const res = handleResponse(response);
         if (res.status === 200 | 202) {
             return response.data.data;
@@ -124,9 +152,9 @@ export default function UserContextProvider({ children }) {
         if (response.response) {
             if (response.response.status === 401) {
                 console.log('Unauthorized access');
-                return {
-                    status: response.response.status,
-                }
+            }
+            return {
+                status: response.response.status,
             }
         }
 
@@ -135,17 +163,10 @@ export default function UserContextProvider({ children }) {
             setUserInfo(prevInfo => {
                 return {
                     ...prevInfo,
-                    firstName: response.data.data.firstName,
-                    lastName: response.data.data.lastName,
-                    email: response.data.data.email,
-                    initials: response.data.data.firstName[0] + response.data.data.lastName[0],
-                    avatar: response.data.data.avatar,
-                    headline: response.data.data.headline,
-                    description: response.data.data.description,
-                    designation: response.data.data.designation,
-                    isAuthenticated: true
+                    ...response.data.data,
                 }
             })
+            setEditedInfo(getData(response.data.data.role));
             return {
                 status: response.data.statusCode,
             }
@@ -172,35 +193,117 @@ export default function UserContextProvider({ children }) {
         const res = handleResponse(response);
         if(res.status === 200) {
             console.log('User updated');
-            handleGetUserDetails();
+            handleGetOwnerDetails();
             return res;
         }
     }
 
-    async function handleGetUserDetails(){
+    async function handleGetOwnerDetails(){
         const response = await getApi('/user/me');
         const res = handleResponse(response);
         if(res.status === 200 | 202){
             const newData = response.data.data;
+            console.log(newData);
+            
             setUserInfo(prevInfo => {
                 return {
                     ...prevInfo,
-                    ...newData[0],
+                    ...newData,
                 }
             })
         }
     }
 
+    async function handleGetUserDetails(userId){
+        const response = await getApi(`/user/getUser/${userId}`);
+        
+        const res = handleResponse(response);
+        if(res.status === 200 | 202){
+            console.log(response.data.data);
+            const newData = response.data.data[0];
+            return newData;
+        }
+    }
+
+    async function handleSearchUser(searchText){
+        const response = await getApi(`/user/find/${searchText}`);
+                
+        const res = handleResponse(response);
+        if(res.status === 200 | 202){
+            return response.data.data;
+        } else {
+            console.log(response.data);
+        }
+    }
+
+    async function handleSendFollowRequest(userId){
+        const response = await putApi(`/follow/${userId}`);
+        const res = handleResponse(response);
+        if(res.status === 200){
+            return res;
+        }
+    }
+
+    async function handleGetFollowRequests(){
+        const response = await getApi('/follow');
+        const res = handleResponse(response);
+        if(res.status === 200){
+            console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+
+    async function getMyRequests(){
+        const response = await getApi('/follow/myRequests');
+        const res = handleResponse(response);
+        if(res.status === 200){
+            console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+
+    async function handleAcceptFollowRequest(id){
+        const response = await putApi('/follow/accept/' + id, {
+            requestId: id,
+        })
+        const res = handleResponse(response);
+        if(res.status === 200){
+            console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+
+    async function handleRejectFollowRequest(){
+        const response = await putApi('/follow/reject/' + id, {
+            requestId: id,
+        })
+        const res = handleResponse(response);
+        if(res.status === 200){
+            console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+
     const ctxValue = {
         userDetail: userInfo,
+        editedInfo: editedInfo,
+        setEditedInfo: setEditedInfo,
         loginUser: handleLoginUser,
         logoutUser: handleLogoutUser,
         registerUser: handleRegisterUser,
         getUserPosts: handleGetUserPosts,
+        getOwnerPosts: handleGetOwnerPosts,
         authenticateUser: handleAuthenticateUser,
-        createNotification: createNotification,
+        createNotification: createNotification, 
         updateProfile: handleUpdateProfile,
+        getOwnerDetails: handleGetOwnerDetails,
         getUserDetails: handleGetUserDetails,
+        searchUser: handleSearchUser,
+        sendFollowRequest: handleSendFollowRequest,
+        getFollowRequests: handleGetFollowRequests,
+        getMyRequests: getMyRequests,
+        acceptFollowRequest: handleAcceptFollowRequest,
+        rejectFollowRequest: handleRejectFollowRequest,
     }
 
     return <UserContext.Provider value={ctxValue}>

@@ -83,19 +83,13 @@ const deletePost = asyncHandler(async (req, res) => {
         postId: post_id,
         userId: user_id,
     });
-    if (!deleteLikes) {
-        throw new ApiError(402, "Some happend while deleting likes");
-    }
+
     const deleteComments = await Comment.deleteMany({ postId: post_id });
-    if (!deleteComments) {
-        throw new ApiError(402, "Some happend while deleting comments");
-    }
+
     const deleteCommentLikes = await CommentLike.deleteMany({
         postId: post_id,
     });
-    if (!deleteCommentLikes) {
-        throw new ApiError(402, "Some happend while deleting comment likes");
-    }
+
     return res
         .status(200)
         .json(new ApiResponse(200, {}, "Delete post successfully"));
@@ -140,7 +134,7 @@ const showPosts = asyncHandler(async (req, res) => {
                     isLiked: {
                         $cond: {
                             if: {
-                                $in: [id, "$likes.userId"], // Check if loggedInUserId exists in likes.userId array
+                                $in: [id, "$likes.userId"],
                             },
                             then: true,
                             else: false,
@@ -164,7 +158,65 @@ const showPosts = asyncHandler(async (req, res) => {
                     "user.initials": 1,
                     "user.avatar": 1,
                     "user._id": 1,
+                    "user.role":1,
                     isLiked: 1,
+                },
+            },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "user._id",
+                    foreignField: "userId",
+                    as: "follower",
+                },
+            },
+            {
+                $addFields: {
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followers", 0],
+                            },
+                            [],
+                        ],
+                    },
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followings", 0],
+                            },
+                            [],
+                        ],
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    isRequested: {
+                        $cond: {
+                            if: {
+                                $in: [id, "$followers.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [id, "$followings.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    follower: 0,
+                    followers: 0,
+                    followings: 0,
                 },
             },
 
@@ -319,10 +371,7 @@ const getComments = asyncHandler(async (req, res) => {
                 isLiked: {
                     $cond: {
                         if: {
-                            $in: [
-                                uid,
-                                "$likes.userId",
-                            ], // Check if loggedInUserId exists in likes.userId array
+                            $in: [uid, "$likes.userId"], // Check if loggedInUserId exists in likes.userId array
                         },
                         then: true,
                         else: false,
@@ -585,6 +634,70 @@ const getUserPosts = asyncHandler(async (req, res) => {
                     isLiked: 1,
                 },
             },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "user._id",
+                    foreignField: "userId",
+                    as: "follower",
+                },
+            },
+            {
+                $addFields: {
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followers", 0],
+                            },
+                            [],
+                        ],
+                    },
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followings", 0],
+                            },
+                            [],
+                        ],
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    isRequested: {
+                        $cond: {
+                            if: {
+                                $in: [
+                                    id,
+                                    "$followers.userId",
+                                ],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [
+                                    id,
+                                    "$followings.userId",
+                                ],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    follower: 0,
+                    followers: 0,
+                    followings: 0,
+                },
+            },
+
         ]);
         return res
             .status(200)
@@ -594,6 +707,145 @@ const getUserPosts = asyncHandler(async (req, res) => {
     }
 });
 
+const getPost = asyncHandler(async (req, res) => {
+    try {
+        const post_id = req.params.id;
+        const id = new mongoose.Types.ObjectId(post_id);
+        const user_id = new mongoose.Types.ObjectId(req.user._id);
+        const post_data = await Post.aggregate([
+            {
+                $match: {
+                    _id: id,
+                },
+            },
+            {
+                $lookup: {
+                    from: "postlikes",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "likes",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "_id",
+                    foreignField: "postId",
+                    as: "comments",
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $addFields: {
+                    user: {
+                        $arrayElemAt: ["$user", 0],
+                    },
+                    isLiked: {
+                        $cond: {
+                            if: {
+                                $in: [user_id, "$likes.userId"], // Check if loggedInUserId exists in likes.userId array
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    likes: {
+                        $size: "$likes",
+                    },
+                    comments: {
+                        $size: "$comments",
+                    },
+                    content: 1,
+                    description: 1,
+                    createdAt: 1,
+                    "user.firstName": 1,
+                    "user.lastName": 1,
+                    "user.initials": 1,
+                    "user.avatar": 1,
+                    "user._id": 1,
+                    "user.role":1,
+                    isLiked: 1,
+                },
+            },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "user._id",
+                    foreignField: "userId",
+                    as: "follower",
+                },
+            },
+            {
+                $addFields: {
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followers", 0],
+                            },
+                            [],
+                        ],
+                    },
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followings", 0],
+                            },
+                            [],
+                        ],
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    isRequested: {
+                        $cond: {
+                            if: {
+                                $in: [user_id, "$followers.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [user_id, "$followings.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    follower: 0,
+                    followers: 0,
+                    followings: 0,
+                },
+            },
+        ]);
+        if (!post_data || post_data.length === 0) {
+            throw new ApiError(404, {}, "Post Not Found");
+        }
+        return res
+            .status(200)
+            .json(new ApiResponse(200, post_data, "Post fetched successfully"));
+    } catch (error) {
+        throw new ApiError(400, error, "Error while fetching Post");
+    }
+});
 export {
     uploadPost,
     likePost,
@@ -606,4 +858,5 @@ export {
     myPosts,
     myLikes,
     getUserPosts,
+    getPost,
 };

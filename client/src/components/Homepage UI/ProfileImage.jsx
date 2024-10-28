@@ -1,8 +1,9 @@
 import { useContext } from "react"
 import { UserContext } from "../../context/UserContext"
 import { log } from "../../log";
+import React from "react";
 
-export default function ProfileImage({className}) {
+export default function ProfileImage({ className }) {
     const { userDetail } = useContext(UserContext);
     let profileImg = userDetail.avatar;
 
@@ -15,7 +16,9 @@ export default function ProfileImage({className}) {
     }
     else {
         return (
-            <img src={profileImg} className={"profile-img " + className} alt="User Profile" />
+            <div className={"image-wrapper " + className}>
+                <img src={profileImg} className={"profile-img"} alt="User Profile" />
+            </div>
         )
     }
 }

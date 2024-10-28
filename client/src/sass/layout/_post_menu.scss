@@ -1,9 +1,12 @@
 .post {
     &-container {
         padding: 1rem;
-        min-width: 44rem;
-        max-width: 50rem;
+        min-width: 50vw;
+        max-width: 80vw;
         overflow-x: hidden;
+        max-height: 80vh;
+        background-color: $color-white;
+        z-index: 1;
 
         h2 {
             margin-bottom: 0.4rem;
@@ -14,16 +17,18 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: .5rem;
-        
+        // margin-bottom: 0.5rem;
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        background-color: $color-white;
+        padding: .5rem 1rem;
+
         h1 {
-            font-size: clamp(
-                1rem,
-                1.8rem,
-                2rem
-            );
-            font-weight: 800;
-            font-stretch: 110%;
+            font-size: clamp(1rem, 1.8rem, 2rem);
+            font-weight: 650;
+            font-stretch: 125%;
         }
 
         &-close {
@@ -51,13 +56,15 @@
         .part-right {
             flex: 1;
             padding: 1rem 1rem 0 1rem;
+            display: flex;
+            justify-content: center;
         }
 
         .part-left {
             display: flex;
             flex-direction: column;
 
-            .left-body{
+            .left-body {
                 flex: 1;
                 display: flex;
                 justify-content: center;
@@ -77,59 +84,62 @@
                 color: $color-theme-dark;
                 background-color: $color-theme-back-light;
                 margin-bottom: 1rem;
-                transition: all .2s;
+                transition: all 0.2s;
                 cursor: pointer;
 
-                &:hover{
+                &:hover {
                     background-color: $color-theme-light;
                 }
             }
 
             .post-file-preview {
-                width: 100%; // Adjust this width as needed
-                white-space: nowrap; // Prevent line breaks within children
-                padding: 1rem 1rem 1rem 1rem;
+                max-width: 21rem;
+                height: 200px; // Set a fixed height, adjust as needed
+                padding: 1rem;
                 background-color: $color-theme-back-light;
                 border: 2px dashed $color-theme-dark;
                 border-radius: 1rem;
                 margin-bottom: 1rem;
+                overflow: hidden; // Hide overflow
+                overflow-x: auto;
 
-                
-                .sliding-preview:has(p){
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 1rem;
-                }
-                
                 .sliding-preview {
-                    display: flex; // Use flexbox to arrange children side by side
-                    flex-wrap: nowrap; // Prevent wrapping to the next line
-                    overflow-x: auto; // Enable horizontal scrolling
-                    min-height: 10rem;
-                    padding-bottom: .4rem;
+                    display: flex;
+                    flex-wrap: nowrap;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    height: 100%; // Take full height of parent
                     align-items: center;
-                    
+                    justify-content: space-evenly;
+                    text-align: center;
+                    scroll-snap-type: x mandatory;
+
                     @include horizontal-scrollbar;
 
                     .preview-wrapper {
-                        position: relative; // Position for the close icon
-                        width: 100%;
+                        position: relative;
+                        height: 100%; // Take full height
                         flex: 0 0 auto;
+                        margin-right: 10px; // Space between items
+                        width: 100%; // Set a fixed width, adjust as needed
+                        display: flex;
+                        justify-content: center;
+                        scroll-snap-align: start;
 
-                        img,
-                        video, 
-                        embed {
-                            flex: 0 0 auto; // Prevent flex items from shrinking or growing
-                            max-width: 100%; // Adjust the size as needed
-                            margin-right: 10px; // Optional: Add some spacing between elements
-                            background-color: transparent;
-
-                            &:last-child {
-                                margin-right: 0; // Remove margin for the last element
-                            }
+                        &:last-child {
+                            margin-right: 0;
                         }
 
+                        img,
+                        video,
+                        embed {
+                            max-width: 100%; // Allow width to adjust
+                            width: auto; // Allow width to adjust
+                            max-height: 100%; // Take full height
+                            object-fit: contain; // Maintain aspect ratio
+                            background-color: transparent;
+                        }
+            
                         .remove-file {
                             position: absolute;
                             top: 5px;
@@ -140,66 +150,49 @@
                             cursor: pointer;
                             padding: 0.2rem;
                             z-index: 100;
-
+            
                             svg {
                                 font-size: 1.2rem;
                                 color: $color-theme-dark;
                             }
-
+            
                             &:hover {
                                 background: $color-theme-back-light;
                             }
                         }
                     }
                 }
-
+            
                 .no-files-message {
                     text-align: center;
                     color: $color-theme-dark;
                     font-weight: 500;
                 }
-            }
+            }            
         }
 
         .part-right {
             position: relative;
             display: flex;
             flex-direction: column;
+            color: $color-font-dark;
+            overflow-y: auto;
+            max-height: 60vh;
+
+            @include no-scrollbar;
 
             .right-body {
                 flex: 1;
             }
 
             .description-box {
-                textarea {
-                    width: 100%;
-                    height: 8rem;
-                    padding: .6rem 1rem;
-                    color: inherit;
-                    // font-weight: 450;
-                    // font-stretch: 105%;
-                    font-size: .8rem;
-                    border: 2px solid $color-theme-light;
-                    border-radius: 1rem;
-                    font-family: 'Mona-sans', sans-serif;
-                    resize: none;
-                    outline: none;
-                    overflow-y: scroll;
-                    -webkit-font-smoothing: antialiased;
-
-                    @include no-scrollbar;
-
-                    &:focus{
-                        border-color: $color-theme-dark;
-                    }
-                }
+                flex: 1;
             }
 
             .submit-button {
-                position: absolute;
-                bottom: 1rem;
-                width: 92%;
+                width: 100%;
                 padding: 1rem;
+                margin-bottom: 1rem;
                 font-size: 1rem;
                 border: none;
                 outline: none;
@@ -207,82 +200,86 @@
                 color: $color-font-light;
                 background-color: $color-theme-dark;
                 margin-top: 1rem;
-                transition: all .3s ease-out;
+                transition: all 0.3s ease-out;
                 cursor: pointer;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                // position: absolute;
+                // bottom: 0;
+                // left: 0;
 
-                &:hover{
-                    box-shadow: 0 0 2rem rgba($color-theme-dark, .5);
+                &:hover {
+                    box-shadow: 0 0 2rem rgba($color-theme-dark, 0.5);
                 }
 
                 @media (max-width: 768px) {
-                    position: static;
+                    // position: static;
                     width: 100%;
-                    // bottom: 0;
-                }
                 }
             }
         }
     }
+}
 
-
-@media (max-width: 768px){
-    .post-container{
+@media (max-width: 1080px) {
+    .post-container {
         min-width: 100%;
         max-width: none;
         padding: 0;
     }
 
-    .post-head{
-
-        h1{
+    .post-head {
+        h1 {
             font-size: 1.2rem;
         }
     }
 
-    .post-body{
+    .post-body {
         display: flex;
         justify-content: baseline;
         flex-direction: column;
-        font-size: .5rem;
+        font-size: 0.5rem;
 
-        h2{
+        h2 {
             display: none;
         }
 
-        .part-left, .part-right{
+        .part-left,
+        .part-right {
             flex: none;
         }
 
-        .part-left{
-            .select-button{
+        .part-left {
+            .select-button {
                 margin-bottom: 0;
-                font-size: .8rem;
+                font-size: 0.8rem;
+            }
+
+            .image-container{
+                padding: 2% 20%;
             }
         }
     }
 
-    .post-file-preview{
-        max-width: 90%;
+    .post-file-preview {
+        max-width: 20rem;
         display: block;
         margin: 0 auto;
-        aspect-ratio: 16/9;
+        aspect-ratio: 4/3;
         max-height: 30vh;
-        margin-bottom: none;
     }
 
-    .sliding-preview{
+    .sliding-preview {
         min-height: 5rem;
+        height: auto;
     }
 
-    .description-box{
-
-        textarea{
+    .description-box {
+        textarea {
             height: 8vh;
             max-height: 8vh;
-            font-size: .8rem;
+            font-size: 0.8rem;
         }
     }
 }

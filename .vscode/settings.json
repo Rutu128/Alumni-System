@@ -5,7 +5,8 @@
         "cloudinary",
         "getpost",
         "signup",
-        "toastify"
+        "toastify",
+        "webm"
     ],
     "docwriter.progress.trackFunctions": true,
     "docwriter.progress.trackMethods": true,

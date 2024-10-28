@@ -1,0 +1,17 @@
+.dropdown {
+    position: relative;
+
+    &__button {
+    }
+
+    &__menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        z-index: 1000;
+    }
+
+    .animate-dropdown {
+        animation: dropdown 0.2s ease-in-out;
+    }
+}

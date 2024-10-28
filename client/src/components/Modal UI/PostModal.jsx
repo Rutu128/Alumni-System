@@ -1,15 +1,18 @@
 import { useContext, useRef, useState } from 'react';
-import uploadFiles from '../../utils/UploadImage';
+import uploadFiles from '../../utils/Uploads/UploadImage';
 import { PiX } from "react-icons/pi";
 import { PostContext } from '../../context/PostContext';
 import ReactLoading from 'react-loading';
 import { UserContext } from '../../context/UserContext';
+import TextEditor from '../UI components/TextEditor';
+import React from 'react';
 
 
 export default function PostModal({ fileType, closeModal }) {
     const [file, setFile] = useState([]);
     const [fileUrl, setFileUrl] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    // const [description, setDescription] = useState('');
 
     const { submitNewPost } = useContext(PostContext);
     const { createNotification } = useContext(UserContext);
@@ -119,8 +122,10 @@ export default function PostModal({ fileType, closeModal }) {
                 </div>
                 <div className="part-right">
                     <h2>Description:</h2>
-                    <div className="description-box">
-                        <textarea ref={descriptionRef} name="description" id="post-description" placeholder='Describe your post...' />
+                    <div className="u-description-box">
+                        <textarea ref={descriptionRef} name="description" id="post-description" className='u-post-description' placeholder='Describe your post...' />
+                        {/* <TextEditor text={description} setText={setDescription} /> */}
+                        {/* <TextEditor text={description} setText={setDescription} /> */}
                     </div>
                     <button className="submit-button" onClick={handleFileSubmit}>
                         {isLoading ?
