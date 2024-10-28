@@ -7,7 +7,7 @@ import DegreeInputContainer from "./DegreeInputContainer";
 import { DegreeDataStructure } from "../../utils/Data/GeneralDataStructures";
 
 export default function EditFacultyProfile() {
-    const { editedInfo, setEditedInfo } = useContext(UserContext);
+    const { editedInfo, setEditedInfo, createNotification } = useContext(UserContext);
 
     const [facultyInfo, setFacultyInfo] = useState(editedInfo);
     const [selectedMenu, setSelectedMenu] = useState('General');
@@ -20,7 +20,7 @@ export default function EditFacultyProfile() {
     function submitInfo() { 
         for (const [field, value] of Object.entries(facultyInfo)) {
             if (value === "") {
-                // createNotification("Fill in all the details!", "error");
+                setSelectedMenu("General");
                 setError({
                     field: field,
                     message: "This field is required!"
@@ -28,10 +28,13 @@ export default function EditFacultyProfile() {
                 return;
             }
         }
-        for (const [field, value] of Object.entries(facultyInfo)) {
-            if (value === "" || !value) {
-                console.log("Invalid Field: ", field);
-                return;
+        for (const degree of degreeInfo) {
+            for (const [field, value] of Object.entries(degree)) {
+                if (value === "" && (field !== 'endYear' && field !== 'isPursuing')) {
+                    setSelectedMenu("Degrees");
+                    createNotification("Fill in all the degree details!", "error");
+                    return;
+                }
             }
         }
         console.log("Faculty Info: ", facultyInfo);
@@ -55,6 +58,7 @@ export default function EditFacultyProfile() {
             ...facultyInfo,
             [name]: value
         })
+        setError({});
     }
 
     return (

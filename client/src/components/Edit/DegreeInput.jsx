@@ -76,7 +76,8 @@ export default function DegreeInput({ degree = DegreeDataStructure[0], addDegree
                                 Degree
                             </div>
                             <Input
-                                className={`edit-input ${degreeInfo.degree === "" ? 'invalid' : 'valid'} ${error.field === 'degree' ? 'invalid' : 'valid'}`}
+                                wrapper_class="edit-input-wrapper"
+                                className={`edit-input ${degreeInfo.degree === "" ? 'invalid' : 'valid'} ${error.field === 'degree' ? 'error' : ''}`}
                                 name={"degree"}
                                 value={degreeInfo.degree || ''}
                                 onChange={(e) => handleChange(e)}
@@ -89,7 +90,8 @@ export default function DegreeInput({ degree = DegreeDataStructure[0], addDegree
                                 Major
                             </div>
                             <Input
-                                className={`edit-input ${degreeInfo.major === "" ? 'invalid' : 'valid'} ${error.field === 'major' ? 'invalid' : 'valid'}`}
+                                wrapper_class="edit-input-wrapper"
+                                className={`edit-input ${degreeInfo.major === "" ? 'invalid' : 'valid'} ${error.field === 'major' ? 'error' : ''}`}
                                 name={"major"}
                                 value={degreeInfo.major || ''}
                                 onChange={(e) => handleChange(e)}
@@ -104,7 +106,8 @@ export default function DegreeInput({ degree = DegreeDataStructure[0], addDegree
                                 College
                             </div>
                             <Input
-                                className={`edit-input ${degreeInfo.college === "" ? 'invalid' : 'valid'} ${error.field === 'college' ? 'invalid' : 'valid'}`}
+                                wrapper_class="edit-input-wrapper"
+                                className={`edit-input ${degreeInfo.college === "" ? 'invalid' : 'valid'} ${error.field === 'college' ? 'error' : ''}`}
                                 name={"college"}
                                 value={degreeInfo.college || ''}
                                 onChange={(e) => handleChange(e)}
@@ -119,7 +122,8 @@ export default function DegreeInput({ degree = DegreeDataStructure[0], addDegree
                                 Start Date
                             </div>
                             <Input
-                                className={`edit-input ${degreeInfo.startYear === "" ? 'invalid' : 'valid'} ${error.field === 'startYear' ? 'invalid' : 'valid'}`}
+                                wrapper_class="edit-input-wrapper"
+                                className={`edit-input ${degreeInfo.startYear === "" ? 'invalid' : 'valid'} ${error.field === 'startYear' ? 'error' : ''}`}
                                 name={"startYear"}
                                 value={degreeInfo.startYear || ''}
                                 onChange={(e) => handleChange(e)}
@@ -133,7 +137,8 @@ export default function DegreeInput({ degree = DegreeDataStructure[0], addDegree
                                     End Date
                                 </div>
                                 <Input
-                                    className={`edit-input ${degreeInfo.endYear === "" ? 'invalid' : 'valid'} ${error.field === 'endYear' ? 'invalid' : 'valid'}`}
+                                    wrapper_class="edit-input-wrapper"
+                                    className={`edit-input ${degreeInfo.endYear === "" ? 'invalid' : 'valid'} ${error.field === 'endYear' ? 'error' : ''}`}
                                     name={"endYear"}
                                     value={degreeInfo.endYear || ''}
                                     onChange={(e) => handleChange(e)}

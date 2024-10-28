@@ -30,7 +30,7 @@ export default function EditStudentProfile({ }) {
         }
         for (const degree of degreeInfo) {
             for (const [field, value] of Object.entries(degree)) {
-                if (value === "") {
+                if (value === "" && (field !== 'endYear' && field !== 'isPursuing')) {
                     setSelectedMenu("Degrees");
                     createNotification("Fill in all the degree details!", "error");
                     return;

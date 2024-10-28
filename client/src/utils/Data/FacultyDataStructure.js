@@ -1,9 +1,9 @@
 const FacultyDataStructure = {
-    email: "",
     f_id: "",
+    email: "",
     position: "",
-    department: "",
     branch: "",
+    department: "",
     degrees: [],
 };
 

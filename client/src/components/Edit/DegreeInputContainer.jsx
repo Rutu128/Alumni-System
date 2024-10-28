@@ -40,7 +40,7 @@ export default function DegreeInputContainer({ degrees = DegreeDataStructure, se
     function newDegree(){
         for (const degree of degreeInfo) {
             for (const [field, value] of Object.entries(degree)) {
-                if (value === "") {
+                if (value === "" && (field !== 'endYear' && field !== 'isPursuing')) {
                     createNotification("")
                     return;
                 }

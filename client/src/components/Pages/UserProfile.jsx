@@ -9,6 +9,7 @@ import ModalContainer from '../Modal UI/ModalContainer';
 import ProfileEditModal from '../Modal UI/ProfileEditModal';
 import { GlobalContext } from '../../context/GlobalContext';
 import LoadingScreen from '../Homepage UI/LoadingScreen';
+import { Link } from 'react-router-dom';
 
 
 export default function UserProfile() {
@@ -69,9 +70,12 @@ export default function UserProfile() {
                                     </div>
                                 </div>
                                 <div className="edit-profile-cont">
-                                    <button className="edit-profile u-button-secondary" onClick={showProfileEdit}>
+                                    {/* <button className="edit-profile u-button-secondary" onClick={showProfileEdit}>
                                         Edit Profile
-                                    </button>
+                                    </button> */}
+                                    <Link to="/profile/edit" className="edit-profile u-button-secondary">
+                                        Edit Profile
+                                    </Link>
                                 </div>
                             </div>
                         </div>
