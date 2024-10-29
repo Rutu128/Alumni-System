@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { log } from "../../log";
-import { PiUsers, PiUsersDuotone, PiThumbsUp, PiThumbsUpDuotone, PiBell, PiBellDuotone, PiHouse, PiHouseDuotone, PiGear, PiGearFill, PiMagnifyingGlass, PiMagnifyingGlassDuotone, PiGearDuotone } from "react-icons/pi";
+import { PiUsers, PiUsersDuotone, PiThumbsUp, PiThumbsUpDuotone, PiBell, PiBellDuotone, PiHouse, PiHouseDuotone, PiGear, PiGearFill, PiMagnifyingGlass, PiMagnifyingGlassDuotone, PiGearDuotone, PiBagDuotone, PiBag } from "react-icons/pi";
 
 import ProfileImage from "./ProfileImage";
 import SiteIcon from "../UI components/SiteIcon";
@@ -18,9 +18,9 @@ export default function HomepageMenu() {
     const navItems = [
         { name: 'Home', icon: PiHouse, fillIcon: PiHouseDuotone, path: '/' },
         { name: 'Search', icon: PiMagnifyingGlass, fillIcon: PiMagnifyingGlassDuotone, path: '/search' },
+        { name: 'Jobs', icon: PiBag, fillIcon: PiBagDuotone, path: '/jobs' },
         { name: 'Notifications', icon: PiBell, fillIcon: PiBellDuotone, path: '/notifications' },
         { name: 'Network', icon: PiUsers, fillIcon: PiUsersDuotone, path: '/testPage' },
-        { name: 'Interactions', icon: PiThumbsUp, fillIcon: PiThumbsUpDuotone, path: '/testPage' },
         { name: 'Settings', icon: PiGear, fillIcon: PiGearDuotone, path: '/settings' },
     ]
 

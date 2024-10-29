@@ -21,6 +21,7 @@ import MultiStepSignUp from './pages/MultiStepSignUp';
 import SignUpContextProvider from './context/SignUpContext';
 import EditProfile from './components/Edit/EditProfile';
 import Notifications from './components/Pages/Notifications';
+import JobPostings from './pages/JobPostings';
 
 function App() {
   log('<App /> rendered');
@@ -43,6 +44,7 @@ function App() {
                   <Route path='/testPage' element={<TestPage />} />
                   <Route path='/users/:username' element={<Profile />} />
                   <Route path='/search' element={<Search />} />
+                  <Route path='/jobs' element={<JobPostings />} />
                   <Route path='/notifications' element={<Notifications />} />
                   <Route path='/settings' element={<Settings />} />
                   <Route path='/profile'>
