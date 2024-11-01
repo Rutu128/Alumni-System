@@ -157,7 +157,7 @@ export default function Login() {
                     <div className="sign-up u-margin-bottom-small">Don't have an account?
                         <div className="link u-dynamic-text-link">
                             <Link to="/signUp" className="link-element">Sign Up</Link>
-                            <div className="underline"></div>
+                            <div className="underline-element"></div>
                         </div>
                     </div>
                     <div className="separator">
