@@ -134,9 +134,11 @@ const showJobs = asyncHandler(async (req, res) => {
                     status: 1,
                     remote: 1,
                     company: 1,
+                    createdAt: 1,
                     'user.firstName': 1,
                     'user.lastName': 1,
                     'user.email': 1,
+                    'user.avatar': 1,
                 },
             },])
         return res
