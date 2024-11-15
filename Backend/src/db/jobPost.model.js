@@ -29,12 +29,10 @@ const jobPostSchema = new Schema(
           },
           type: {
             type: String,
-            enum: ['internship', 'fulltime'],
             required: true,
           },
           status: {
             type: String,
-            enum: ['open', 'closed'],
             required: true,
           },
           remote: {
