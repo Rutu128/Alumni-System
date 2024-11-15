@@ -255,4 +255,21 @@ const updateJob = asyncHandler(async (req, res) => {
     }
 });
 
-export { uploadJobPost, deleteJobPost, showJobs, getJob, updateJob };
+const JobPostByUser = asyncHandler(async (req, res) => {
+    try {
+        const user_Id = req.user._id;
+        const jobPosts = await JobPost.find({ userId: user_Id });
+
+        if (!jobPosts) {
+            throw new ApiError(400, "No job posts found");
+        }
+
+        return res
+            .status(200)
+            .json(new ApiResponse(200, jobPosts, "Job Posts fetched successfully"));
+    } catch (error) {
+        throw new ApiError(400, error, "Error while fetching job posts");
+    }
+})
+
+export { uploadJobPost, deleteJobPost, showJobs, getJob, updateJob, JobPostByUser };
