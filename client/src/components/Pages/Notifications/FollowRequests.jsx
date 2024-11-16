@@ -36,7 +36,7 @@ export default function FollowRequests() {
                 </h2>
             </div>
             <div className="follow-requests-cont">
-                {followRequests.map((request, index) => {
+                {followRequests?.map((request, index) => {
                     return (
                         <div className="request" key={index}>
                             <div className="request__cont">

@@ -9,6 +9,6 @@ router.route("/show-jobs").get(verifyJWT, showJobs);
 router.route("/delete-job-post/:id").delete(verifyJWT, deleteJobPost);
 router.route("/find-job-post/:id").get(verifyJWT, getJob);
 router.route("/update-job-post/:id").put(verifyJWT, updateJob);
-router.route("/job-post-by-user/:id").get(verifyJWT, JobPostByUser);
+router.route("/job-post-by-user/").get(verifyJWT, JobPostByUser);
 
 export default router

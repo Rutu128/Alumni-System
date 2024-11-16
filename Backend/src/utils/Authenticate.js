@@ -8,7 +8,7 @@ export const isAlumni = async (req, res, next) => {
         req.user = user;
         next();
     }
-    throw new ApiError(401, "Unauthorized request");
+    else throw new ApiError(401, "Unauthorized request");
 };
 
 export const isStudent = async (req, res, next) => {

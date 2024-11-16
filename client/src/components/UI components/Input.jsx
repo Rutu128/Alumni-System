@@ -53,7 +53,7 @@ function Input({ labelText, type, errorText, inputFor, values, showError, genera
                 <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
                     {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
                     <select id={labelText + '-input'} {...props}>
-                        <option htmlFor={labelText + '-input'} value="" hidden disabled defaultValue>{props.placeholder}</option>
+                        <option htmlFor={labelText + '-input'} value="" hidden defaultValue>{props.placeholder}</option>
                         {options.map(value => (
                             <option key={value} value={value}>{value}</option>
                         ))}
@@ -65,6 +65,28 @@ function Input({ labelText, type, errorText, inputFor, values, showError, genera
         )
     }
 
+    else if (type === 'textarea') {
+        return (
+            <div className={"field-wrapper " + props.wrapper_class}>
+                <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                    {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
+                    <textarea {...props} type={type} id={labelText + '-input'} />
+                    <label htmlFor={labelText + '-input'}>{labelText}</label>
+                </div>
+            </div>
+        )
+    }
+    else if (type === 'checkbox') {
+        return (
+            <div className={"field-wrapper " + props.wrapper_class}>
+                <div className={`input-field input-checkbox ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                    {errorText === '' ? null : <span className="u-error-text u-error-text-wide"><MdError className="error-icon" />{errorText}</span>}
+                    <label htmlFor={labelText + '-input'}>{labelText}</label>
+                    <input {...props} type={type} id={labelText + '-input'} />
+                </div>
+            </div>
+        )
+    }
     else {
         return (
             <div className={"field-wrapper " + props.wrapper_class}>

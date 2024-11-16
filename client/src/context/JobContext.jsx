@@ -1,10 +1,10 @@
-import { createContext, useState } from "react";
-import { updateJob } from "../../../Backend/src/controller/jobPost.controller";
+import { createContext, useContext, useState } from "react";
 import postApi from "../utils/API/postApi";
 import handleResponse from "../utils/responseHandler";
 import getApi from "../utils/API/getApi";
 import putApi from "../utils/API/putApi";
 import deleteApi from "../utils/API/deleteApi";
+import { UserContext } from "./UserContext";
 
 export const JobContext = createContext({
     jobData: {
@@ -21,61 +21,71 @@ export const JobContext = createContext({
         createdAt: Date,
         updatedAt: Date,
     },
-    uploadJob: () => {},
-    getJobs: () => {},
-    getJob: () => {},
-    deleteJob: () => {},
-    updateJob: () => {},
+    uploadJob: () => { },
+    getJobs: () => { },
+    getUserJobPosts: () => { },
+    getJob: () => { },
+    deleteJob: () => { },
+    updateJob: () => { },
 });
 
-export default function JobContextProvider({children}){
+// const { userDetail } = useContext(UserContext);
+
+export default function JobContextProvider({ children }) {
     const [jobData, setJobData] = useState([]);
 
-    async function handleUploadJob(job){
-        const response = await postApi('/job/upload-job-post', job);
+    async function handleUploadJob(job) {
+        const response = await postApi('/jobPost/upload-job-post', job);
         console.log(response);
         const res = handleResponse(response);
-        if(res.status === 200){
+        return {
+            status: res.status,
+        };
+    }
+
+    async function handleGetJobs() {
+        const response = await getApi('/jobPost/show-jobs');
+        console.log(response);
+        const res = handleResponse(response);
+        if (res.status === 200) {
+            setJobData(prevData => response.data.data);
+        }
+    }
+
+    async function handleGetUserJobs() {
+        const response = await getApi('/jobPost/job-post-by-user');
+        console.log(response);
+        const res = handleResponse(response);
+        if (res.status === 200) {
+            return response.data.data;
+        }
+    }
+
+    async function handleGetJob(id) {
+        const response = await getApi(`/jobPost/find-job-post/${id}`);
+        console.log(response);
+        const res = handleResponse(response);
+        if (res.status === 200) {
+            setJobData(res.data.data);
+        }
+    }
+
+    async function handleDeleteJob(id) {
+        const response = await deleteApi(`/jobPost/delete-job-post/${id}`);
+        console.log(response);
+        const res = handleResponse(response);
+        if (res.status === 200) {
             return {
                 status: response.status,
             };
         }
     }
 
-    async function handleGetJobs(){
-        const response = await getApi('/job/show-jobs');
+    async function handleUpdateJob(id, job) {
+        const response = await putApi(`/jobPost/update-job-post/${id}`, job);
         console.log(response);
         const res = handleResponse(response);
-        if(res.status === 200){
-            setJobData(res.data);
-        }
-    }
-
-    async function handleGetJob(id){
-        const response = await getApi(`/job/find-job-post/${id}`);
-        console.log(response);
-        const res = handleResponse(response);
-        if(res.status === 200){
-            setJobData(res.data);
-        }
-    }
-
-    async function handleDeleteJob(id){
-        const response = await deleteApi(`/job/delete-job-post/${id}`);
-        console.log(response);
-        const res = handleResponse(response);
-        if(res.status === 200){
-            return {
-                status: response.status,
-            };
-        }
-    }
-
-    async function handleUpdateJob(id, job){
-        const response = await putApi(`/job/update-job-post/${id}`, job);
-        console.log(response);
-        const res = handleResponse(response);
-        if(res.status === 200){
+        if (res.status === 200) {
             return {
                 status: response.status,
             };
@@ -86,6 +96,7 @@ export default function JobContextProvider({children}){
         jobData: jobData,
         uploadJob: handleUploadJob,
         getJobs: handleGetJobs,
+        getUserJobPosts: handleGetUserJobs,
         getJob: handleGetJob,
         deleteJob: handleDeleteJob,
         updateJob: handleUpdateJob,

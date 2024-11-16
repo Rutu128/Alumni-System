@@ -32,6 +32,7 @@ export const UserContext = createContext({
     authenticateUser: () => { },
     createNotification: () => { },
     getOwnerDetails: () => { },
+    updateUserProfile: () => { },
     updateProfile: () => { },
     getUserDetails: () => { },
     searchUser: () => { },
@@ -166,7 +167,12 @@ export default function UserContextProvider({ children }) {
                     ...response.data.data,
                 }
             })
-            setEditedInfo(getData(response.data.data.role));
+            let userEditData = getData(response.data.data.role);
+            setEditedInfo({
+                ...userEditData,
+                // userId: userInfo._id,
+                // user: userInfo
+            });
             return {
                 status: response.data.statusCode,
             }
@@ -186,6 +192,29 @@ export default function UserContextProvider({ children }) {
         type === 'info' && toast.info(message, {
             className: 'toast-notification',
         });
+    }
+
+    async function handleUpdateUserProfile(info){
+        let path = ""
+        if(userInfo.role === 'STUDENT') path = '/user/student/addInfo';
+        else if(userInfo.role === 'ALUMNI') path = '/user/alumni/addInfo';
+        else if(userInfo.role === 'FACULTY') path = '/user/faculty/addInfo';
+
+        console.log(editedInfo);
+
+        const response = await postApi(path, {
+            ...info,
+            // userInfo
+        });
+        const res = handleResponse(response);
+        if(res.status === 200) {
+            console.log('User updated');
+            handleGetOwnerDetails();
+            createNotification('Profile updated successfully', 'success');
+            return res;
+        } else {
+            createNotification('Error updating profile', 'error');
+        }
     }
 
     async function handleUpdateProfile(profile_about){
@@ -295,6 +324,7 @@ export default function UserContextProvider({ children }) {
         getOwnerPosts: handleGetOwnerPosts,
         authenticateUser: handleAuthenticateUser,
         createNotification: createNotification, 
+        updateUserProfile: handleUpdateUserProfile,
         updateProfile: handleUpdateProfile,
         getOwnerDetails: handleGetOwnerDetails,
         getUserDetails: handleGetUserDetails,

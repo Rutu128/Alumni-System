@@ -4,7 +4,7 @@ import Input from "../UI components/Input";
 import { UserContext } from "../../context/UserContext";
 
 export default function EditStudentProfile({ }) {
-    const { editedInfo, setEditedInfo, createNotification } = useContext(UserContext);
+    const { editedInfo, setEditedInfo, createNotification, updateUserProfile } = useContext(UserContext);
 
     const [studentInfo, setStudentInfo] = useState(editedInfo);
     const [error, setError] = useState({
@@ -12,7 +12,7 @@ export default function EditStudentProfile({ }) {
         message: ''
     });
 
-    function handleSubmit() {
+    async function handleSubmit() {
         for (const [field, value] of Object.entries(studentInfo)) {
             if (value === "") {
                 // createNotification("Fill in all the details!", "error");
@@ -23,7 +23,7 @@ export default function EditStudentProfile({ }) {
                 return;
             }
         }
-        // console.log("Student Info: ", studentInfo);
+        console.log("Student Info: ", studentInfo);
         setEditedInfo(prevInfo => {
             return {
                 ...prevInfo,
@@ -33,6 +33,9 @@ export default function EditStudentProfile({ }) {
         setTimeout(() => {
             console.log("Student Info: ", editedInfo);
         }, 1000);
+        const res = await updateUserProfile({
+            ...studentInfo
+        });
     }
 
     function handleChange(e) {

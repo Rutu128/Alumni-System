@@ -90,10 +90,9 @@ const studentInfo = asyncHandler(async (req, res) => {
     try {
         const { c_id, c_email, batch, collage, branch } = req.body;
         if (
-            [c_id, c_email, collage, branch].some(
+            [c_id, c_email, collage, batch, branch].some(
                 (field) => field.trim() === ""
-            ) ||
-            !batch
+            )
         ) {
             throw new ApiError(400, "Please fill all the fields");
         }
@@ -143,8 +142,9 @@ const facultyInfo = asyncHandler(async (req, res) => {
             throw new ApiError(400, "Please fill all the fields");
         }
         const alreadyExist = await FacultyInfo.findOne({
-            $or: [f_email, f_id],
+            $or: [{ f_email: f_email }, { f_id: f_id }],
         });
+
         if (alreadyExist) {
             throw new ApiError(409, "Faculty already exist");
         }
@@ -420,7 +420,7 @@ const verrifyStudent = asyncHandler(async (req, res) => {
             throw new ApiError(404, "Student details not found");
         }
         res.status(200).json(new ApiResponse(200, details, "success"));
-    } catch (error) {}
+    } catch (error) { }
 });
 
 const isEmailExists = asyncHandler(async (req, res) => {
