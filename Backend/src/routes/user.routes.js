@@ -40,18 +40,18 @@ router.route("/update-avatar").post(verifyJWT, updateAvatar);
 // Student
 router.route("/student/addInfo").post(verifyJWT, isStudent, studentInfo);
 router.route("/student/verify").post(verifyJWT, isStudent, verrifyStudent);
-router.route("/student/verify").post(verifyJWT, isStudent, updateStudentProfile);
+router.route("/student/updateInfo").post(verifyJWT, isStudent, updateStudentProfile);
 
 
 //Alumni
 router.route("/alumni/addInfo").post(verifyJWT, isAlumni, alumniInfo);
-router.route("/alumni/addInfo").post(verifyJWT, isAlumni, updateAlumniProfile);
+router.route("/alumni/updateInfo").post(verifyJWT, isAlumni, updateAlumniProfile);
 
 
 //Faculty
 
 router.route("/faculty/addInfo").post(verifyJWT, isFaculty, facultyInfo);
-router.route("/faculty/addInfo").post(verifyJWT, isFaculty, updateFacultyProfile);
+router.route("/faculty/updateInfo").post(verifyJWT, isFaculty, updateFacultyProfile);
 
 
 
