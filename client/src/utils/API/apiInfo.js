@@ -1,5 +1,5 @@
 const apiInfo = {
-    URL: "http://localhost:8000",
+    URL: "http://185.7.81.222:8000",
 };
 
 export default apiInfo;
