@@ -179,14 +179,13 @@ const facultyInfo = asyncHandler(async (req, res) => {
 const alumniInfo = asyncHandler(async (req, res) => {
     const userId = req.user._id;
     try {
-        const { c_id, status, batch, location, degreeName, collage, branch } =
+        const { c_id, status, batch, degreeName, collage, branch } =
             req.body;
         if (
             [
                 c_id,
                 status,
                 batch,
-                location,
                 degreeName,
                 collage,
                 branch,
