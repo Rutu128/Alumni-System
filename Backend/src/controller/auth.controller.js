@@ -142,7 +142,7 @@ const facultyInfo = asyncHandler(async (req, res) => {
         ) {
             throw new ApiError(400, "Please fill all the fields");
         }
-        const alreadyExist = await StudentInfo.findOne({
+        const alreadyExist = await FacultyInfo.findOne({
             $or: [f_email, f_id],
         });
         if (alreadyExist) {
