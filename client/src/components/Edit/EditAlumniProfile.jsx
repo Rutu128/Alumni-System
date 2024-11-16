@@ -7,7 +7,7 @@ import { PiBagDuotone, PiStudentDuotone, PiUserCircleDuotone } from "react-icons
 import ExperienceInputContainer from "./ExperienceInputContainer";
 
 export default function EditStudentProfile({ }) {
-    const { editedInfo, setEditedInfo, createNotification } = useContext(UserContext);
+    const { editedInfo, setEditedInfo, createNotification, updateUserProfile } = useContext(UserContext);
 
     const [alumniInfo, setAlumniInfo] = useState(editedInfo);
     const [selectedMenu, setSelectedMenu] = useState('General');
@@ -18,7 +18,8 @@ export default function EditStudentProfile({ }) {
         message: ''
     });
 
-    function submitInfo() {
+    async function submitInfo() {
+        console.log("Alumni Info: ", alumniInfo);
         for (const [field, value] of Object.entries(alumniInfo)) {
             if (value === "" || !value) {
                 setError({
@@ -28,24 +29,24 @@ export default function EditStudentProfile({ }) {
                 return;
             }
         }
-        for (const degree of degreeInfo) {
-            for (const [field, value] of Object.entries(degree)) {
-                if (value === "" && (field !== 'endYear' && field !== 'isPursuing')) {
-                    setSelectedMenu("Degrees");
-                    createNotification("Fill in all the degree details!", "error");
-                    return;
-                }
-            }
-        }
-        for (const experience of experienceInfo) {
-            for (const [field, value] of Object.entries(experience)) {
-                if (value === "") {
-                    setSelectedMenu("Professional");
-                    createNotification("Fill in all the experience details!", "error");
-                    return;
-                }
-            }
-        }
+        // for (const degree of degreeInfo) {
+        //     for (const [field, value] of Object.entries(degree)) {
+        //         if (value === "" && (field !== 'endYear' && field !== 'isPursuing')) {
+        //             setSelectedMenu("Degrees");
+        //             createNotification("Fill in all the degree details!", "error");
+        //             return;
+        //         }
+        //     }
+        // }
+        // for (const experience of experienceInfo) {
+        //     for (const [field, value] of Object.entries(experience)) {
+        //         if (value === "") {
+        //             setSelectedMenu("Professional");
+        //             createNotification("Fill in all the experience details!", "error");
+        //             return;
+        //         }
+        //     }
+        // }
         console.log("Alumni Info: ", alumniInfo);
         console.log("Degrees submitted : ", degreeInfo);
         setEditedInfo(prevInfo => {
@@ -56,6 +57,12 @@ export default function EditStudentProfile({ }) {
                 experience: experienceInfo
             }
         })
+
+        const res = await updateUserProfile({
+            ...alumniInfo,
+            // degrees: degreeInfo,
+            // workExperience: experienceInfo
+        });
     }
 
 

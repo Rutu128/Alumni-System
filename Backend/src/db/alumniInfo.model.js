@@ -1,4 +1,6 @@
+import bodyParser from "body-parser";
 import mongoose, { Schema } from "mongoose";
+// import { type } from "os";
 
 const alumniInfoSchema = new Schema(
     {
@@ -7,14 +9,18 @@ const alumniInfoSchema = new Schema(
             ref: "User",
             required: true,
         },
+        c_id: {
+            type: String,
+            required: true,
+        },
         status: {
             type: String,
             enum: ["EMPLOYED", "STUDIES", "NAN"],
             required: true,
             default: "NAN",
         },
-        graduationYear: {
-            type: Number,
+        batch: {
+            type: String,
             required: true,
         },
         degreeName: {
@@ -22,7 +28,7 @@ const alumniInfoSchema = new Schema(
             required: true,
         },
         collage: {
-            typeof: String,
+            type: String,
             required: true,
         },
         branch: {
@@ -35,61 +41,52 @@ const alumniInfoSchema = new Schema(
                     type: String,
                     required: true,
                 },
-                year: {
-                    type: Number,
+                startYear: {
+                    type: String,
+                    required: true,
+                },
+                endYear: {
+                    type: String,
                     required: true,
                 },
                 major: {
                     type: String,
                     required: true,
                 },
+                isPursuing: {
+                    type: Boolean,
+                    required: true,
+                },
+                college:{
+                    type: String,
+                    required: true,
+                }
             },
         ],
         workExperience: [
             {
-                companyName: {
+                company: {
                     type: String,
                     required: true,
                 },
-                role: {
+                position: {
                     type: String,
                     required: true,
                 },
-                duration: {
-                    type: Number,
+                startYear: {
+                    type: String,
                     required: true,
                 },
-                location: {
+                endYear: {
                     type: String,
+                    required: true,
+                },
+                isCurrentlyWorking: {
+                    type: Boolean,
                     required: true,
                 },
             },
         ],
-        location: {
-            type: String,
-            required: true,
-        },
-        currentJob: {
-            type: String,
-        },
-        currentPosition: {
-            type: String,
-        },
-        currentCompany: {
-            type: String,
-        },
-        currentCollage: {
-            type: String,
-        },
-        currentDegree: {
-            type: String,
-        },
-        currentYear: {
-            type: Number,
-        },
-        currentMajor: {
-            type: String,
-        },
     },
     {
         timestamps: true,

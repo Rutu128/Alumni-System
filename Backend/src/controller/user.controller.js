@@ -5,7 +5,6 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { randomBytes } from "crypto";
 import mongoose from "mongoose";
 
-
 const ping = asyncHandler(async (req, res) => {
     const user = req.user._id;
     // console.log(user);
@@ -200,8 +199,6 @@ const getUserDetails = asyncHandler(async (req, res) => {
                     description: 1,
                     isRequested: 1,
                     isAccepted: 1,
-
-
                 },
             },
         ]);
@@ -209,7 +206,6 @@ const getUserDetails = asyncHandler(async (req, res) => {
         return res
             .status(200)
             .json(new ApiResponse(200, userDetails, "User details"));
-        
     } catch (error) {
         throw new ApiError(400, error, "Failed to fetch user details");
     }
@@ -218,12 +214,94 @@ const getUserDetails = asyncHandler(async (req, res) => {
 const me = asyncHandler(async (req, res) => {
     try {
         const user_id = req.user._id;
-        const userDetails = await User.findById(user_id).select(
-            "firstName lastName email avatar headline designation passingYear description c_id"
-        );
-        return res
-            .status(200)
-            .json(new ApiResponse(200, userDetails, "User details"));
+        const id = new mongoose.Types.ObjectId(user_id);
+        if (req.user.role === "STUDENT") {
+            const userDetails = await User.aggregate([
+                {
+                    $match: {
+                        _id: id,
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "studentinfos",
+                        localField: "_id",
+                        foreignField: "userId",
+                        as: "info",
+                    },
+                },
+                {
+                    $project: {
+                        password: 0,
+                        refreshToken: 0,
+                        isVerified: 0,
+                        createdAt: 0,
+                        updatedAt: 0,
+                    },
+                },
+            ]);
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userDetails, "User details"));
+        }
+        if (req.user.role === "ALUMNI") {
+            const userDetails = await User.aggregate([
+                {
+                    $match: {
+                        _id: id,
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "alumniinfos",
+                        localField: "_id",
+                        foreignField: "userId",
+                        as: "info",
+                    },
+                },
+                {
+                    $project: {
+                        password: 0,
+                        refreshToken: 0,
+                        isVerified: 0,
+                        createdAt: 0,
+                        updatedAt: 0,
+                    },
+                },
+            ]);
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userDetails, "User details"));
+        }
+        if (req.user.role === "FACULTY") {
+            const userDetails = await User.aggregate([
+                {
+                    $match: {
+                        _id: id,
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "facultyinfos",
+                        localField: "_id",
+                        foreignField: "userId",
+                        as: "info",
+                    },
+                },
+                {
+                    $project: {
+                        password: 0,
+                        refreshToken: 0,
+                        isVerified: 0,
+                        createdAt: 0,
+                        updatedAt: 0,
+                    },
+                },
+            ]);
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userDetails, "User details"));
+        }
     } catch (error) {
         throw new ApiError(400, error, "Failed to get user details");
     }
@@ -233,11 +311,9 @@ const updateProfile = asyncHandler(async (req, res) => {
     const {
         firstName,
         lastName,
-        c_id,
         email,
         passingYear,
         dob,
-        designation,
         headline,
         avatar,
         description,
@@ -252,11 +328,9 @@ const updateProfile = asyncHandler(async (req, res) => {
         $set: {
             firstName: firstName ? firstName : user.firstName,
             lastName: lastName ? lastName : user.lastName,
-            c_id: c_id ? c_id : user.c_id,
             email: email ? email : user.email,
             passingYear: passingYear ? passingYear : user.passingYear,
             dob: dob ? dob : user.dob,
-            designation: designation ? designation : user.designation,
             avatar: avatar ? avatar : user.avatar,
             headline: headline ? headline : user.headline,
             description: description ? description : user.description,
@@ -307,6 +381,121 @@ const findUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, error, "Failed to find user");
     }
 });
+
+const updateAlumniProfile = asyncHandler(async (req, res) => {
+    const {
+        userId,
+        status,
+        c_id,
+        batch,
+        degreeName,
+        collage,
+        branch,
+        degree,
+        workExperience,
+    } = req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Update the alumni info
+    const updatedAlumniInfo = await AlumniInfo.findOneAndUpdate(
+        { userId },
+        {
+            $set: {
+                status,
+                batch,
+                c_id,
+                degreeName,
+                collage,
+                branch,
+                degree,
+                workExperience,
+            },
+        },
+        { new: true, upsert: true }
+    );
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "Alumni profile updated successfully"));
+});
+
+const updateStudentProfile = asyncHandler(async (req, res) => {
+    const { userId, c_id, c_email, batch, collage, branch } = req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Update the student info
+    const updatedStudentInfo = await StudentInfo.findOneAndUpdate(
+        { userId },
+        {
+            $set: {
+                c_id,
+                c_email,
+                batch,
+                collage,
+                branch,
+            },
+        },
+        { new: true, upsert: true }
+    );
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                updatedStudentInfo,
+                "Student profile updated successfully"
+            )
+        );
+});
+
+const updateFacultyProfile = asyncHandler(async (req, res) => {
+    const { userId, f_id, f_email, position, collage, branch, degree } =
+        req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Update the faculty info
+    const updatedFacultyInfo = await FacultyInfo.findOneAndUpdate(
+        { userId },
+        {
+            $set: {
+                f_id,
+                f_email,
+                position,
+                collage,
+                branch,
+                degree,
+            },
+        },
+        { new: true, upsert: true }
+    );
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                updatedFacultyInfo,
+                "Faculty profile updated successfully"
+            )
+        );
+});
+
 export {
     ping,
     addInfo,
@@ -315,4 +504,7 @@ export {
     updateProfile,
     updateAvatar,
     findUser,
+    updateAlumniProfile,
+    updateStudentProfile,
+    updateFacultyProfile,
 };

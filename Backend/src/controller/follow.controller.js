@@ -146,6 +146,7 @@ const showRequest = asyncHandler(async (req, res) => {
                     lastName: 1,
                     avatar: 1,
                     userId: 1,
+                    status: 1,
                     updatedAt: 1,
                 },
             },

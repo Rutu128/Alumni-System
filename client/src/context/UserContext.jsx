@@ -32,6 +32,7 @@ export const UserContext = createContext({
     authenticateUser: () => { },
     createNotification: () => { },
     getOwnerDetails: () => { },
+    updateUserProfile: () => { },
     updateProfile: () => { },
     getUserDetails: () => { },
     searchUser: () => { },
@@ -166,7 +167,12 @@ export default function UserContextProvider({ children }) {
                     ...response.data.data,
                 }
             })
-            setEditedInfo(getData(response.data.data.role));
+            let userEditData = getData(response.data.data.role);
+            setEditedInfo({
+                ...userEditData,
+                // userId: userInfo._id,
+                // user: userInfo
+            });
             return {
                 status: response.data.statusCode,
             }
@@ -188,6 +194,29 @@ export default function UserContextProvider({ children }) {
         });
     }
 
+    async function handleUpdateUserProfile(info){
+        let path = ""
+        if(userInfo.role === 'STUDENT') path = '/user/student/addInfo';
+        else if(userInfo.role === 'ALUMNI') path = '/user/alumni/addInfo';
+        else if(userInfo.role === 'FACULTY') path = '/user/faculty/addInfo';
+
+        console.log(editedInfo);
+
+        const response = await postApi(path, {
+            ...info,
+            // userInfo
+        });
+        const res = handleResponse(response);
+        if(res.status === 200) {
+            console.log('User updated');
+            handleGetOwnerDetails();
+            createNotification('Profile updated successfully', 'success');
+            return res;
+        } else {
+            createNotification('Error updating profile', 'error');
+        }
+    }
+
     async function handleUpdateProfile(profile_about){
         const response = await postApi('/user/addInfo', profile_about);
         const res = handleResponse(response);
@@ -203,12 +232,11 @@ export default function UserContextProvider({ children }) {
         const res = handleResponse(response);
         if(res.status === 200 | 202){
             const newData = response.data.data;
-            console.log(newData);
             
             setUserInfo(prevInfo => {
                 return {
                     ...prevInfo,
-                    ...newData,
+                    ...newData[0].info[0],
                 }
             })
         }
@@ -248,7 +276,7 @@ export default function UserContextProvider({ children }) {
         const response = await getApi('/follow');
         const res = handleResponse(response);
         if(res.status === 200){
-            console.log(response.data.data);
+            console.log("Follow Requests: " ,response.data.data);
             return response.data.data;
         }
     }
@@ -295,6 +323,7 @@ export default function UserContextProvider({ children }) {
         getOwnerPosts: handleGetOwnerPosts,
         authenticateUser: handleAuthenticateUser,
         createNotification: createNotification, 
+        updateUserProfile: handleUpdateUserProfile,
         updateProfile: handleUpdateProfile,
         getOwnerDetails: handleGetOwnerDetails,
         getUserDetails: handleGetUserDetails,

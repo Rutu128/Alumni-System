@@ -31,21 +31,30 @@ const facultyInfoSchema = new Schema(
         },
         degree: [
             {
-                degreeName: {
+                degree: {
                     type: String,
                     required: true,
                 },
-                year: {
-                    type: Number,
+                startYear: {
+                    type: String,
                     required: true,
                 },
-                collage: {
+                endYear: {
                     type: String,
                     required: true,
                 },
                 major: {
                     type: String,
+                    required: true,
                 },
+                isPursuing: {
+                    type: Boolean,
+                    required: true,
+                },
+                college:{
+                    type: String,
+                    required: true,
+                }
             },
         ],
     },
