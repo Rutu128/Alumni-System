@@ -2,17 +2,18 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import dotenv from "dotenv";
 import morgan from "morgan";
 import { createStream } from "rotating-file-stream";
 import path from "path";
 import { existsSync, mkdirSync } from "fs";
 import { getname } from "./helper.js";
-
+dotenv.config();
 const app = express();
 
 app.use(
     cors({
-        origin: ["http://localhost:5173", "http://localhost:8000"],
+        origin: ["http://37.27.81.8:9001", "http://localhost:5174", "http://localhost:5173","http://185.7.81.222:8001"],
         credentials: true,
         methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS", "UPDATE", "PUT"],
     })
@@ -46,9 +47,13 @@ app.use(morgan(`:method :date :url :host :user `, { stream: accessLogStream }));
 import authRouter from "./routes/auth.routes.js";
 import postRouter from "./routes/post.routes.js";
 import userRouter from "./routes/user.routes.js";
+import follwerRouter from "./routes/follower.routes.js";
+import jobPostRouter from "./routes/jobPost.routes.js";
 // // routes Declaration
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
 app.use("/user", userRouter);
+app.use("/follow", follwerRouter);
+app.use("/jobPost", jobPostRouter);
 
 export { app };

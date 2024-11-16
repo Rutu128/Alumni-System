@@ -199,7 +199,7 @@ export default function SignUp() {
                         errorText={userErrors.dobError}
                     />
                     <Input
-                        labelText='Passing Year'
+                        labelText='Batch'
                         className={`u-margin-bottom-small ${userDetails.passingYear === '' ? 'invalid' : 'valid'} ${userErrors.passingYearError ? 'error' : ''}`}
                         type="dropdown"
                         values={[1990, 2024]}
@@ -207,6 +207,7 @@ export default function SignUp() {
                         onChange={handleChange}
                         value={userDetails.passingYear}
                         errorText={userErrors.passingYearError}
+                        generateYears={true}
                     />
                     <Input
                         labelText='Password'
@@ -240,7 +241,7 @@ export default function SignUp() {
                     <div className="sign-up u-margin-bottom-s_small">Already have an account?
                         <div className="link u-dynamic-text-link">
                             <Link to="/login" className="link-element">Login</Link>
-                            <div className="underline"></div>
+                            <div className="underline-element"></div>
                         </div>
                     </div>
                     <div className="auth-login">

@@ -23,21 +23,8 @@ const userSchema = new Schema(
             type: String,
             required: true,
         },
-        c_id: {
-            type: String,
-            required: true,
-            unique: true,
-        },
         dob: {
             type: String,
-            required: true,
-        },
-        image: {
-            type: String,
-            // required: true
-        },
-        passingYear: {
-            type: Number,
             required: true,
         },
         avatar: {
@@ -55,11 +42,12 @@ const userSchema = new Schema(
             type: String,
             default: "",
         },
-        designation: {
+        role: {
             type: String,
-            default: "",
+            enum: ["STUDENT", "ALUMNI", "FACULTY"],
+            default: "STUDENT",
         },
-        description:{
+        description: {
             type: String,
             default: "",
         },

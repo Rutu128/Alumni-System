@@ -3,8 +3,8 @@ import ProfileImage from "../Homepage UI/ProfileImage";
 import { PostContext } from "../../context/PostContext";
 import Post from "./Post";
 
-export default function PostContainer({ posts }) {
-    const { likePost, likeComment, getComments, newComment } = useContext(PostContext);
+export default function PostContainer({ handleFetchPosts, posts, notOwner }) {
+    const { likePost, likeComment, getComments, newComment, deletePost } = useContext(PostContext);
 
     if (posts.length === 0 || posts === null) {
         return null;
@@ -16,8 +16,18 @@ export default function PostContainer({ posts }) {
                     {posts.map((post, index) => {
                         return (
                             <div key={index}>
-                                <Post postData={post} getComments={getComments} newComment={newComment} likePost={likePost} likeComment={likeComment} />
-                                <div className="separator"></div>
+                                <Post 
+                                    notOwner={notOwner} 
+                                    postData={post} 
+                                    // getComments={getComments} 
+                                    // newComment={newComment} 
+                                    // likePost={likePost} 
+                                    // likeComment={likeComment} 
+                                    // deletePost={deletePost}
+                                    handleFetchPosts={handleFetchPosts}
+                                    profileView={true}
+                                />
+                                {/* <div className="separator"></div> */}
                             </div>
                         )
                     })}

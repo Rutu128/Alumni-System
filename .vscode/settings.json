@@ -3,9 +3,11 @@
         "batchmates",
         "charusat",
         "cloudinary",
+        "DEPSTAR",
         "getpost",
         "signup",
-        "toastify"
+        "toastify",
+        "webm"
     ],
     "docwriter.progress.trackFunctions": true,
     "docwriter.progress.trackMethods": true,

@@ -2,9 +2,11 @@ import { useState } from "react";
 import { RiEyeFill } from "react-icons/ri";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { MdError } from "react-icons/md";
+import { PiCaretDown } from "react-icons/pi";
+
 import React from "react";
 
-function Input({ labelText, type, errorText, inputFor, values, showError, ...props }) {
+function Input({ labelText, type, errorText, inputFor, values, showError, generateYears = false, ...props }) {
 
     if (type === 'password') {
         const [showPassword, setShowPassword] = useState(false);
@@ -15,47 +17,84 @@ function Input({ labelText, type, errorText, inputFor, values, showError, ...pro
         }
 
         return (
-            <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
-                {errorText === '' ? null : <div className="u-error-text"><MdError className="error-icon" />{errorText}</div>}
-                <input {...props} type={showPassword ? 'text' : 'password'} id={labelText + '-input'} autoComplete="true" />
-                <label htmlFor={labelText + '-input'}>{labelText}</label>
-                <button onClick={handleShowPassword} className={showPassword ? "showPassword" : "hidePassword"} >
-                    {showPassword ?
-                        <RiEyeCloseLine className="react-icons" /> :
-                        <RiEyeFill className="react-icons" />
-                    }
-                </button>
+            <div className={"field-wrapper " + props.wrapper_class}>
+                <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                    {errorText === '' ? null : <div className="u-error-text"><MdError className="error-icon" />{errorText}</div>}
+                    <input {...props} type={showPassword ? 'text' : 'password'} id={labelText + '-input'} autoComplete="true" />
+                    <label htmlFor={labelText + '-input'}>{labelText}</label>
+                    <button onClick={handleShowPassword} className={showPassword ? "showPassword" : "hidePassword"} >
+                        {showPassword ?
+                            <RiEyeCloseLine className="react-icons" /> :
+                            <RiEyeFill className="react-icons" />
+                        }
+                    </button>
+                </div>
             </div>
         )
-    } else if (type === 'dropdown') {
+    }
+    else if (type === 'dropdown') {
+        let options = [];
         const generateOptions = (start, end) => {
-            let options = [];
             for (let i = start; i >= end; i--) {
                 options.push(i);
             }
             return options;
         };
 
+        if (generateYears) {
+            options = generateOptions(values[1], values[0]);
+        } else {
+            options = values;
+            // console.log(options);
+        }
+
         return (
-            <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
-                {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
-                <select id={labelText + '-input'} {...props}>
-                    <option htmlFor={labelText + '-input'} value="" hidden={true} disabled></option>
-                    {generateOptions(values[1], values[0]).map(value => (
-                        <option key={value} value={value}>{value}</option>
-                    ))}
-                </select>
-                <label htmlFor={labelText + '-input'}>{labelText}</label>
+            <div className={"field-wrapper " + props.wrapper_class}>
+                <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                    {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
+                    <select id={labelText + '-input'} {...props}>
+                        <option htmlFor={labelText + '-input'} value="" hidden defaultValue>{props.placeholder}</option>
+                        {options.map(value => (
+                            <option key={value} value={value}>{value}</option>
+                        ))}
+                    </select>
+                    <label htmlFor={labelText + '-input'}>{labelText}</label>
+                    <PiCaretDown className={`react-icons select-arrow ${props.value !== '' && 'option-selected'} ${props.select_arrow_class}`} />
+                </div>
             </div>
         )
     }
 
+    else if (type === 'textarea') {
+        return (
+            <div className={"field-wrapper " + props.wrapper_class}>
+                <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                    {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
+                    <textarea {...props} type={type} id={labelText + '-input'} />
+                    <label htmlFor={labelText + '-input'}>{labelText}</label>
+                </div>
+            </div>
+        )
+    }
+    else if (type === 'checkbox') {
+        return (
+            <div className={"field-wrapper " + props.wrapper_class}>
+                <div className={`input-field input-checkbox ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                    {errorText === '' ? null : <span className="u-error-text u-error-text-wide"><MdError className="error-icon" />{errorText}</span>}
+                    <label htmlFor={labelText + '-input'}>{labelText}</label>
+                    <input {...props} type={type} id={labelText + '-input'} />
+                </div>
+            </div>
+        )
+    }
     else {
         return (
-            <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
-                {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
-                <input {...props} type={type} id={labelText + '-input'} />
-                <label htmlFor={labelText + '-input'}>{labelText}</label>
+            <div className={"field-wrapper " + props.wrapper_class}>
+                <div className={`input-field ${inputFor === 'login' ? 'input-field-login' : 'input-field'}`}>
+                    {errorText === '' ? null : <span className="u-error-text"><MdError className="error-icon" />{errorText}</span>}
+                    <input {...props} type={type} id={labelText + '-input'} />
+                    <label htmlFor={labelText + '-input'}>{labelText}</label>
+                </div>
             </div>
         )
     }

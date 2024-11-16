@@ -2,297 +2,8 @@ import asyncHandler from "express-async-handler";
 import { User } from "../db/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-// import jwt from "jsonwebtoken";
-import { Verification } from "../db/verification.model.js";
-import mailer from "../utils/Mailer.js";
 import { randomBytes } from "crypto";
 import mongoose from "mongoose";
-
-const generateAccessAndRefreshTokens = async (userId) => {
-    try {
-        const user = await User.findById(userId);
-        const accessToken = user.generateAccessToken();
-        const refreshToken = user.generateRefreshToken();
-
-        user.refreshToken = refreshToken;
-        user.save({ validateBeforeSave: false });
-        return { accessToken, refreshToken };
-    } catch (error) {
-        throw new ApiError(
-            500,
-            "something went wrong during generating access token and refresh token"
-        );
-    }
-};
-
-const generateRandomHex = (length) => {
-    return randomBytes(length).toString("hex");
-};
-
-const registerUser = asyncHandler(async (req, res) => {
-    const { firstName, lastName, c_id, email, password, passingYear, dob } =
-        req.body;
-
-    if (
-        [firstName, lastName, email, c_id, dob, passingYear, password].some(
-            (field) => field?.trim() === ""
-        )
-    ) {
-        throw new ApiError(400, "Please fill all the fields");
-    }
-    const existedUser = await User.findOne({
-        $or: [{ c_id }, { email }],
-    });
-    // console.log('Existed user:', existedUser);
-    if (existedUser) {
-        console.log(existedUser);
-        throw new ApiError(
-            409,
-            "User with email address or charusat id is already exists "
-        );
-    }
-
-    const user_initials = firstName[0] + lastName[0];
-    if (!user_initials) {
-        throw new ApiError(403, "User initials are not setedIn");
-    }
-    const avatarUrl = `https://avatar.iran.liara.run/username?username=${firstName}+${lastName}`;
-    const user = await User.create({
-        firstName,
-        lastName,
-        email,
-        c_id,
-        dob,
-        initials: user_initials,
-        avatar: avatarUrl,
-        passingYear,
-        password,
-    });
-
-    const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
-    );
-    // console.log(createdUser)
-
-    if (!createdUser) {
-        throw new ApiError(500, "something went wrong");
-    }
-    const token = generateRandomHex(20);
-    const verificationToken = Verification.create({
-        userId: user._id,
-        token,
-        expiresAt: Date.now() + 300,
-    });
-    const verificationLink = `${process.env.BASE_URL}/api/auth/verify-email/${token}`;
-    await mailer.sendVerificationLink(email, verificationLink);
-
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(200, createdUser, "user registered Successfully")
-        );
-});
-
-const loginUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
-
-    if ([email, password].some((field) => field?.trim() === "")) {
-        throw new ApiError(400, "Please fill all the fields");
-    }
-    const user = await User.findOne({ email });
-    // const isverified = user.isVerified
-    // if (!isverified) {
-    //     throw new ApiError(401, "please verify your email")
-    // }
-
-    if (!user) {
-        throw new ApiError(404, "user not found");
-    }
-
-    const isPasswordValid = await user.isPasswordCorrect(password);
-
-    if (!isPasswordValid) {
-        throw new ApiError(401, "invalid password");
-    }
-
-    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-        user._id
-    );
-
-    const loggedInUser = await User.findById(user._id).select(
-        "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
-    );
-
-    const options = {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-        maxAge: 604800000,
-    };
-
-    // const user_info = await Info.findOne({ user: user._id })
-    // if (!user_info) {
-    //     return res.status(202).cookie("accessToken", accessToken, options).cookie("refreshToken", refreshToken).json(new ApiResponse(202, { user: loggedInUser, accessToken, refreshToken }, "Add Information"))
-    // }
-    return res
-        .status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken)
-        .json(
-            new ApiResponse(
-                200,
-                {
-                    user: loggedInUser,
-                    accessToken,
-                    refreshToken,
-                },
-                "loggedin Successfully"
-            )
-        );
-});
-
-const verify = asyncHandler(async (req, res) => {
-    const { token } = req.params;
-    // console.log(token);
-    // console.log(typeof token);
-
-    if (!token) {
-        throw new ApiError(404, "Token not found");
-    }
-
-    const verification = await Verification.findOne({ token: token });
-    if (!verification) {
-        throw new ApiError(404, "Verification not found");
-    }
-
-    const user = await User.findById(verification.userId);
-    if (!user) {
-        throw new ApiError(404, "User not found");
-    }
-
-    user.isVerified = true;
-    await user.save({ validateBeforeSave: false });
-    await Verification.deleteOne({ token: token });
-
-    return res
-        .status(200)
-        .json(new ApiResponse(200, user, "Email verified successfully"));
-});
-
-const changePassword = asyncHandler(async (req, res) => {
-    const { oldPassword, newPassword } = req.body;
-    if (!oldPassword || !newPassword) {
-        throw new ApiError(400, "Give Old and New Password Both!!!");
-    }
-    const user_id = req.user?._id;
-    if (!user_id) {
-        throw new ApiError(404, "User dosen't fetch");
-    }
-    const user = await User.findById(user_id);
-    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
-    if (!isPasswordCorrect) {
-        throw new ApiError(400, "Invalid password");
-    }
-    user.password = newPassword;
-    await user.save({ validateBeforeSave: false });
-
-    return res
-        .status(200)
-        .json(new ApiResponse(200, {}, "Password updated successfully"));
-});
-
-const logoutUser = asyncHandler(async (req, res) => {
-    //remove cookies
-    //reset refresh token
-    await User.findById(
-        req.user._id,
-        {
-            unset: {
-                refreshToken: 1,
-            },
-        },
-        {
-            new: true,
-        }
-    );
-    const options = {
-        httpOnly: true,
-        secure: true,
-    };
-    // console.log(hii)
-    return res
-        .status(200)
-        .clearCookie("accessToken", options)
-        .clearCookie("refreshToken", options)
-        .json(new ApiResponse(200, {}, "User logged Out"));
-});
-
-const googleLogin = asyncHandler(async (req, res) => {
-    const { code } = req.query;
-
-    try {
-        // Exchange authorization code for access token
-        const { data } = await axios.post(
-            "https://oauth2.googleapis.com/token",
-            {
-                client_id: process.env.GOOGLE_CLIENT_ID,
-                client_secret: process.env.GOOGLE_CLIENT_SECRET,
-                code,
-                redirect_uri: process.env.GOOGLE_REDIRECT_URI,
-                grant_type: "authorization_code",
-            }
-        );
-
-        const { access_token, id_token } = data;
-        const { data: profile } = await axios.get(
-            "https://www.googleapis.com/oauth2/v1/userinfo",
-            {
-                headers: { Authorization: `Bearer ${access_token}` },
-            }
-        );
-        let user = await User.findOne({ email: profile.email.toLowerCase() });
-
-        if (!user) {
-            user = await User.create({
-                firstName: profile.given_name,
-                lastName: profile.family_name,
-                email: profile.email.toLowerCase(),
-                isVerified: true,
-            });
-            if (!user) {
-                throw new ApiError(500, "Failed to create user");
-            }
-        }
-        const { accessToken, refreshToken } =
-            await generateAccessAndRefreshTokens(user._id);
-
-        const loggedInUser = await User.findById(user._id).select(
-            "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
-        );
-
-        const options = {
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-            maxAge: 3000000,
-        };
-
-        return res
-            .status(200)
-            .cookie("accessToken", accessToken, options)
-            .cookie("refreshToken", refreshToken)
-            .json(
-                new ApiResponse(
-                    200,
-                    { user: loggedInUser, accessToken, refreshToken },
-                    "loggedin Successfully"
-                )
-            )
-            .redirect(`${process.env.BASE_URL}/`);
-    } catch (error) {
-        throw new ApiError(500, "Failed to authenticate with Google");
-    }
-});
 
 const ping = asyncHandler(async (req, res) => {
     const user = req.user._id;
@@ -326,7 +37,7 @@ const addInfo = asyncHandler(async (req, res) => {
     }).select(
         "-password -refreshToken -dob -c_id -passingYear -isVerified -createdAt -updatedAt -_id"
     );
-    if (!updated_user ) {
+    if (!updated_user) {
         throw new ApiError(500, "Failed to add info");
     }
     user = await User.findById({ _id: user_id }).select(
@@ -341,6 +52,7 @@ const getUserDetails = asyncHandler(async (req, res) => {
     try {
         const user_id = req.params.id;
         const id = new mongoose.Types.ObjectId(user_id);
+        const userId = new mongoose.Types.ObjectId(req.user._id);
         const userDetails = await User.aggregate([
             {
                 $match: {
@@ -349,57 +61,53 @@ const getUserDetails = asyncHandler(async (req, res) => {
             },
             {
                 $lookup: {
-                    from: "posts",
+                    from: "follows",
                     localField: "_id",
                     foreignField: "userId",
-                    as: "posts",
-                },
-            },
-            {
-                $unwind: "$posts",
-            },
-            {
-                $lookup: {
-                    from: "postlikes",
-                    localField: "posts._id",
-                    foreignField: "postId",
-                    as: "likes",
-                },
-            },
-            {
-                $lookup: {
-                    from: "comments",
-                    localField: "posts._id",
-                    foreignField: "postId",
-                    as: "comments",
+                    as: "follow",
                 },
             },
             {
                 $addFields: {
-                    "posts.isLiked": {
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follow.followings", 0],
+                            },
+                            [],
+                        ],
+                    },
+
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follow.followers", 0],
+                            },
+                            [],
+                        ],
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    isRequested: {
                         $cond: {
                             if: {
-                                $in: [id, "$likes.userId"],
+                                $in: [userId, "$followers.userId"],
                             },
                             then: true,
                             else: false,
                         },
                     },
-                    "posts.likesCount": { $size: "$likes" },
-                    "posts.commentsCount": { $size: "$comments" },
-                },
-            },
-            {
-                $group: {
-                    _id: "$_id",
-                    posts: { $push: "$posts" },
-                    firstName: { $first: "$firstName" },
-                    lastName: { $first: "$lastName" },
-                    email: { $first: "$email" },
-                    avatar: { $first: "$avatar" },
-                    headline: { $first: "$headline" },
-                    designation: { $first: "$designation" },
-                    passingYear: { $first: "$passingYear" },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [userId, "$followings.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
                 },
             },
             {
@@ -408,11 +116,89 @@ const getUserDetails = asyncHandler(async (req, res) => {
                     firstName: 1,
                     lastName: 1,
                     email: 1,
-                    posts: 1,
                     avatar: 1,
                     headline: 1,
                     designation: 1,
                     passingYear: 1,
+                    description: 1,
+                    isRequested: 1,
+                    isAccepted: 1,
+                    followings: {
+                        $size: "$followings",
+                    },
+                    followers: {
+                        $size: "$followers",
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "follows",
+                    localField: "_id",
+                    foreignField: "userId",
+                    as: "follower",
+                },
+            },
+            {
+                $addFields: {
+                    followers: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followers", 0],
+                            },
+                            [],
+                        ],
+                    },
+                    followings: {
+                        $ifNull: [
+                            {
+                                $arrayElemAt: ["$follower.followings", 0],
+                            },
+                            [],
+                        ],
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    isRequested: {
+                        $cond: {
+                            if: {
+                                $in: [userId, "$followers.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                    isAccepted: {
+                        $cond: {
+                            if: {
+                                $in: [userId, "$followings.userId"],
+                            },
+                            then: true,
+                            else: false,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    follower: {
+                        $size: "$followers",
+                    },
+                    following: {
+                        $size: "$followings",
+                    },
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    avatar: 1,
+                    headline: 1,
+                    designation: 1,
+                    passingYear: 1,
+                    description: 1,
+                    isRequested: 1,
+                    isAccepted: 1,
                 },
             },
         ]);
@@ -421,7 +207,7 @@ const getUserDetails = asyncHandler(async (req, res) => {
             .status(200)
             .json(new ApiResponse(200, userDetails, "User details"));
     } catch (error) {
-        throw new ApiError(400, error, "Failed to get user details");
+        throw new ApiError(400, error, "Failed to fetch user details");
     }
 });
 
@@ -429,86 +215,93 @@ const me = asyncHandler(async (req, res) => {
     try {
         const user_id = req.user._id;
         const id = new mongoose.Types.ObjectId(user_id);
-        const userDetails = await User.aggregate([
-            {
-                $match: {
-                    _id: id,
-                },
-            },
-            {
-                $lookup: {
-                    from: "posts",
-                    localField: "_id",
-                    foreignField: "userId",
-                    as: "posts",
-                },
-            },
-            {
-                $unwind: "$posts",
-            },
-            {
-                $lookup: {
-                    from: "postlikes",
-                    localField: "posts._id",
-                    foreignField: "postId",
-                    as: "likes",
-                },
-            },
-            {
-                $lookup: {
-                    from: "comments",
-                    localField: "posts._id",
-                    foreignField: "postId",
-                    as: "comments",
-                },
-            },
-            {
-                $addFields: {
-                    "posts.isLiked": {
-                        $cond: {
-                            if: {
-                                $in: [id, "$likes.userId"],
-                            },
-                            then: true,
-                            else: false,
-                        },
+        if (req.user.role === "STUDENT") {
+            const userDetails = await User.aggregate([
+                {
+                    $match: {
+                        _id: id,
                     },
-                    "posts.likesCount": { $size: "$likes" },
-                    "posts.commentsCount": { $size: "$comments" },
                 },
-            },
-            {
-                $group: {
-                    _id: "$_id",
-                    posts: { $push: "$posts" },
-                    firstName: { $first: "$firstName" },
-                    lastName: { $first: "$lastName" },
-                    email: { $first: "$email" },
-                    avatar: { $first: "$avatar" },
-                    headline: { $first: "$headline" },
-                    designation: { $first: "$designation" },
-                    passingYear: { $first: "$passingYear" },
-                    description: { $first: "$description" },
+                {
+                    $lookup: {
+                        from: "studentinfos",
+                        localField: "_id",
+                        foreignField: "userId",
+                        as: "info",
+                    },
                 },
-            },
-            {
-                $project: {
-                    _id: 1,
-                    firstName: 1,
-                    lastName: 1,
-                    email: 1,
-                    posts: 1,
-                    avatar: 1,
-                    headline: 1,
-                    designation: 1,
-                    passingYear: 1,
-                    description: 1,
+                {
+                    $project: {
+                        password: 0,
+                        refreshToken: 0,
+                        isVerified: 0,
+                        createdAt: 0,
+                        updatedAt: 0,
+                    },
                 },
-            },
-        ]);
-        return res
-            .status(200)
-            .json(new ApiResponse(200, userDetails, "User details"));
+            ]);
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userDetails, "User details"));
+        }
+        if (req.user.role === "ALUMNI") {
+            const userDetails = await User.aggregate([
+                {
+                    $match: {
+                        _id: id,
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "alumniinfos",
+                        localField: "_id",
+                        foreignField: "userId",
+                        as: "info",
+                    },
+                },
+                {
+                    $project: {
+                        password: 0,
+                        refreshToken: 0,
+                        isVerified: 0,
+                        createdAt: 0,
+                        updatedAt: 0,
+                    },
+                },
+            ]);
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userDetails, "User details"));
+        }
+        if (req.user.role === "FACULTY") {
+            const userDetails = await User.aggregate([
+                {
+                    $match: {
+                        _id: id,
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "facultyinfos",
+                        localField: "_id",
+                        foreignField: "userId",
+                        as: "info",
+                    },
+                },
+                {
+                    $project: {
+                        password: 0,
+                        refreshToken: 0,
+                        isVerified: 0,
+                        createdAt: 0,
+                        updatedAt: 0,
+                    },
+                },
+            ]);
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userDetails, "User details"));
+        }
     } catch (error) {
         throw new ApiError(400, error, "Failed to get user details");
     }
@@ -518,11 +311,9 @@ const updateProfile = asyncHandler(async (req, res) => {
     const {
         firstName,
         lastName,
-        c_id,
         email,
         passingYear,
         dob,
-        designation,
         headline,
         avatar,
         description,
@@ -537,11 +328,9 @@ const updateProfile = asyncHandler(async (req, res) => {
         $set: {
             firstName: firstName ? firstName : user.firstName,
             lastName: lastName ? lastName : user.lastName,
-            c_id: c_id ? c_id : user.c_id,
             email: email ? email : user.email,
             passingYear: passingYear ? passingYear : user.passingYear,
             dob: dob ? dob : user.dob,
-            designation: designation ? designation : user.designation,
             avatar: avatar ? avatar : user.avatar,
             headline: headline ? headline : user.headline,
             description: description ? description : user.description,
@@ -577,17 +366,145 @@ const updateAvatar = asyncHandler(async (req, res) => {
         throw new ApiError(400, error, "Failed to update avatar");
     }
 });
+
+const findUser = asyncHandler(async (req, res) => {
+    try {
+        const { search } = req.params;
+        const users = await User.find({
+            $or: [
+                { firstName: { $regex: `${search}`, $options: "i" } },
+                { lastName: { $regex: `${search}`, $options: "i" } },
+            ],
+        }).select("_id firstName lastName avatar");
+        return res.status(200).json(new ApiResponse(200, users, "Success"));
+    } catch (error) {
+        throw new ApiError(400, error, "Failed to find user");
+    }
+});
+
+const updateAlumniProfile = asyncHandler(async (req, res) => {
+    const {
+        userId,
+        status,
+        c_id,
+        batch,
+        degreeName,
+        collage,
+        branch,
+        degree,
+        workExperience,
+    } = req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Update the alumni info
+    const updatedAlumniInfo = await AlumniInfo.findOneAndUpdate(
+        { userId },
+        {
+            $set: {
+                status,
+                batch,
+                c_id,
+                degreeName,
+                collage,
+                branch,
+                degree,
+                workExperience,
+            },
+        },
+        { new: true, upsert: true }
+    );
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "Alumni profile updated successfully"));
+});
+
+const updateStudentProfile = asyncHandler(async (req, res) => {
+    const { userId, c_id, c_email, batch, collage, branch } = req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Update the student info
+    const updatedStudentInfo = await StudentInfo.findOneAndUpdate(
+        { userId },
+        {
+            $set: {
+                c_id,
+                c_email,
+                batch,
+                collage,
+                branch,
+            },
+        },
+        { new: true, upsert: true }
+    );
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                updatedStudentInfo,
+                "Student profile updated successfully"
+            )
+        );
+});
+
+const updateFacultyProfile = asyncHandler(async (req, res) => {
+    const { userId, f_id, f_email, position, collage, branch, degree } =
+        req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Update the faculty info
+    const updatedFacultyInfo = await FacultyInfo.findOneAndUpdate(
+        { userId },
+        {
+            $set: {
+                f_id,
+                f_email,
+                position,
+                collage,
+                branch,
+                degree,
+            },
+        },
+        { new: true, upsert: true }
+    );
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                updatedFacultyInfo,
+                "Faculty profile updated successfully"
+            )
+        );
+});
+
 export {
-    registerUser,
-    loginUser,
-    verify,
-    changePassword,
-    logoutUser,
-    googleLogin,
     ping,
     addInfo,
     getUserDetails,
     me,
     updateProfile,
     updateAvatar,
+    findUser,
+    updateAlumniProfile,
+    updateStudentProfile,
+    updateFacultyProfile,
 };

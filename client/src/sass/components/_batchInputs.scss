@@ -1,0 +1,129 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+@import "../abstracts/functions";
+
+@import '../base/animation';
+@import '../base/utilities';
+@import '../base/base';
+@import '../base/typography';
+
+@import './headings';
+
+.batchInput{
+
+    &__cont {
+
+    }
+
+    &__head {
+
+    }
+    
+    &__cell{
+        padding: 1rem;
+        border-radius: 1.5rem;
+        border: 2px solid $color-theme-back-light;
+        background-color: $color-theme-back-light-2;
+        overflow: hidden;
+        min-height: 4rem;
+
+        .cell--shrinked{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+
+            .cell--actions{
+                padding: .5rem !important;
+                border-radius: 1rem;
+                transition: all .3s;
+
+                &:hover{
+                    background-color: $color-theme-back-light;
+                }
+            }
+
+            .rotated{
+                transform-origin: center;
+                transform: rotate(180deg);
+            }
+        }
+
+        &:has(.expanded){
+            animation: expand .3s ease;
+            // height: 100%;
+        }
+        
+        .cell--block{
+            display: flex;
+            width: 100%;
+            gap: 1rem;
+            height: 100%;
+
+            .cell--head{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex: 1;
+            }
+
+            .input-cell{
+                flex: 1;
+                transition: all 0.3s;
+
+                input{
+                    background-color: #fff !important;
+                }
+
+                &-w-a{
+                    flex: none;
+                    width: auto;
+                }
+            }
+
+            .input-cell-checkbox {
+                display: flex;
+                align-items: center;
+            }
+
+            .checkbox {
+                font-size: 1.3rem;
+            }
+
+            .font-theme{
+                color: $color-theme-dark;
+            }
+        }
+
+        .cell--actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+
+        .input-field {
+            @include input;
+
+            height: auto;
+        }
+
+        .f4{
+            flex: 4;
+        }
+
+        .f6{
+            flex: 6;
+        }
+
+        .f2{
+            flex: 2;
+        }
+
+        .f1{
+            flex: 1;
+        }
+    }
+}

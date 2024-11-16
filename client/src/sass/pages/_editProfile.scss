@@ -1,0 +1,106 @@
+@import "../abstracts/variables";
+@import "../abstracts/functions";
+@import "../abstracts/mixins";
+
+@import "../base/animation";
+@import "../base/utilities";
+@import "../base/typography";
+
+@import "../layout/header";
+@import "../layout/post_menu";
+
+@import "../components/headings";
+@import "../components/dropdown";
+@import "../components/posts";
+@import "../components/buttons";
+
+.edit {
+    &-cont {
+        margin-bottom: 1rem;
+
+        &--head{
+            .head--categories{
+                
+                .categories--item{
+                    margin-right: 1rem;
+                    cursor: pointer;
+                    color: $color-font-dark;
+                    font-size: responsive-font-size(1);
+                    font-weight: 500;
+                    transition: all 0.3s;
+                    padding: .3rem .7rem;
+                    border-radius: .5rem;
+                    display: inline-flex;
+                    align-items: center;
+    
+                    div{
+                        display: inline-block;
+    
+                        &:not(:last-child){
+                            margin-right: responsive-font-size(0.5);
+                        }
+                    }
+    
+                    .item--icon {
+                        font-size: responsive-font-size(1.4);
+                        margin: none;
+                        padding: none;
+                    }
+    
+                    &:hover{
+                        background-color: $color-theme-back-light;
+                    }
+                }
+    
+                .selected{
+                    background-color: $color-theme-back-light;
+    
+                    .item--icon{
+                        color: $color-theme-dark;
+                    }
+                }
+            }
+        }
+    }
+
+    &-section {
+        &-head {
+            h2 {
+                padding-bottom: 0.3rem;
+                border-bottom: 1px solid $color-grey-light-3;
+            }
+        }
+
+        &-inputs {
+            font-size: responsive-font-size(0.9);
+        }
+    }
+    
+    &-profile {
+        &-actions {
+            margin-top: 1.5rem;
+        }
+    }
+}
+
+.input-cell {
+    margin-bottom: .5rem;
+    
+    .edit-label{
+        font-weight: 500;
+        font-stretch: 110%;
+        font-size: .9rem;
+        padding: .3rem 0 .3rem .1rem;
+        color: $color-grey-dark-3;
+    }
+    
+    @include input;
+
+    .input-field .invalid {
+        border-color: $color-grey-light-3;
+    }
+    
+    .input-field .valid{
+        border-color: $color-theme-light;
+    }
+}

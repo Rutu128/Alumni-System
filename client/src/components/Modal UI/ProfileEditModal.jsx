@@ -3,7 +3,7 @@ import { PiX } from "react-icons/pi";
 import { UserContext } from '../../context/UserContext';
 import ReactLoading from 'react-loading';
 import ProfileImage from '../Homepage UI/ProfileImage';
-import { uploadFile } from '../../utils/UploadImage';
+import { uploadFile } from '../../utils/Uploads/UploadImage';
 
 export default function ProfileEditModal({ closeModal }) {
     const { createNotification, userDetail, updateProfile } = useContext(UserContext);
@@ -23,28 +23,28 @@ export default function ProfileEditModal({ closeModal }) {
         if (selectedFile) {
             setFile(selectedFile);
             setFileUrl(URL.createObjectURL(selectedFile));
-            // Reset input value to allow re-selecting the same file
             event.target.value = null;
         }
     };
 
     async function handleFileSubmit() {
-        // if (!file || about.trim() === '' || designation.trim() === '') {
-        //     createNotification('Please fill in all fields!', 'error');
-        //     return;
-        // }
         setIsLoading(true);
+        let profile_url;
 
         if(file){
-            const profile_url = await uploadFile(file);
+            profile_url = await uploadFile(file);
             console.log(profile_url);
         }
         
-        // Perform your submit logic here
-        const response = await updateProfile({ avatar: (file ? profile_url.url : null), about, designation, headline });
+        const response = await updateProfile({ avatar: (file ? profile_url.url : null), description: about, designation, headline });
 
         setIsLoading(false);
-        closeModal();
+        if(response.status === 200){
+            createNotification('Profile updated successfully!', 'success');
+            closeModal();
+        } else {
+            return;
+        }
     }
 
     function handleCloseModal() {
@@ -64,7 +64,7 @@ export default function ProfileEditModal({ closeModal }) {
             <div className="post-body">
                 <div className="part-left">
                     <div className="left-body">
-                        <div className="u-padding-small">
+                        <div className="image-container u-padding-small">
                             {file ? (
                                 <img src={fileUrl} className="preview-image u-full-length-image" alt="Selected Image" />
                             ) : (
@@ -79,19 +79,19 @@ export default function ProfileEditModal({ closeModal }) {
                             style={{ display: 'none' }}
                         />
                     </div>
-                    <button className="select-button u-no-margin" onClick={() => inputRef.current.click()}>Select Image</button>
+                    <button className="u-button-secondary u-button-secondary-1 u-no-margin" onClick={() => inputRef.current.click()}>Select Image</button>
                 </div>
                 <div className="part-right">
                     <div className="right-body">
                         <h2>About:</h2>
-                        <div className="description-box">
+                        <div className="u-description-box">
                             <textarea
                                 value={about}
                                 onChange={(e) => setAbout(e.target.value)}
                                 name="about"
                                 id="about"
                                 placeholder="Enter about..."
-                                className='u-input-primary'
+                                className='u-post-description'
                             />
                         </div>
                         <h2>Designation:</h2>
@@ -115,7 +115,7 @@ export default function ProfileEditModal({ closeModal }) {
                                 className='u-input-primary'
                             />
                     </div>
-                    <button className="u-button-primary" onClick={handleFileSubmit}>
+                    <button className="u-button-primary u-button-primary-1 u-flex-justify-center" onClick={handleFileSubmit}>
                         {isLoading ?
                             <ReactLoading type={'spin'} width={'1.6rem'} height={'1.6rem'} className={"loader"} />
                             :

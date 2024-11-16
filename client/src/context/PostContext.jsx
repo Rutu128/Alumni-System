@@ -1,44 +1,72 @@
-import { createContext, useState } from "react";
-import uploadFiles from "../utils/UploadImage";
-import postApi from "../utils/postApi";
-import getApi from "../utils/getApi";
-import putApi from "../utils/putApi";
+import { createContext, useContext, useState } from "react";
+import uploadFiles from "../utils/Uploads/UploadImage";
+import postApi from "../utils/API/postApi";
+import getApi from "../utils/API/getApi";
+import putApi from "../utils/API/putApi";
 import handleResponse from '../utils/responseHandler';
+import deleteApi from "../utils/API/deleteApi";
+import { UserContext } from "./UserContext";
 
 export const PostContext = createContext({
     posts: [{
-        post_id: String,
+        _id: String,
         content: [{
             "url": String,
         }],
         description: String,
         createdAt: Date,
-        comments: [],
+        comments: Number,
+        likes: Number,
+        isAccepted: Boolean,
+        isRequested: Boolean,
+        isLiked: Boolean,
         user: {
             firstName: String,
             lastName: String,
-            initials: String
+            initials: String,
+            avatar: String,
+            _id: String,
         },
-        likes: String,
     }],
+    updatePostState: () => { },
     submitNewPost: () => { },
     getPosts: () => { },
-    getSpecificPosts: () => { },
+    getPostData: () => { },
     likePost: () => { },
     likeComment: () => { },
     getComments: () => { },
     newComment: () => { },
+    deletePost: () => { },
 })
 
 export default function PostContextProvider({ children }){
-    const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState([]);
+    const { createNotification } = useContext(UserContext);
+
+    function handleUpdatePostState(field, value, index){
+        setPosts((prevData) => {
+            let updatedPost = prevData[index];
+            updatedPost[field] = value;
+            console.log(updatedPost);
+            prevData[index] = updatedPost;
+            return [
+                ...prevData,
+            ]
+        })
+    }
 
     async function handleNewPost(files, type, description){
         let cloudUrls = [];
+        // if(!files || files.length === 0){
+        //     return {
+        //         status: 400,
+        //         message: 'No files selected'
+        //     };
+        // }
         if(type !== 'text'){
             cloudUrls = await uploadFiles(files, type);
         }
-        // console.log(cloudUrls);
+        console.log(cloudUrls);
         console.log('Description : ' + description);
         try {
             const response = await postApi('/post/uploadPost', {
@@ -47,6 +75,11 @@ export default function PostContextProvider({ children }){
             });
         
             console.log(response);
+            if(response.status === 200){
+                handleGetPosts();
+            } else if(response.status === 401){
+                createNotification('Unauthorized', 'error');
+            }
             return handleResponse(response);
         
         } catch (error) {
@@ -60,6 +93,7 @@ export default function PostContextProvider({ children }){
 
     async function handleGetPosts(page){
         const response = await getApi('/post/getpost/' + page);
+        console.log(response);
         
         const apiStatus = handleResponse(response);
         
@@ -73,6 +107,14 @@ export default function PostContextProvider({ children }){
                     ...postData
                 ]
             });
+        }
+    }
+
+    async function handleGetPostData(id){
+        const response = await getApi('/post/findPost/' + id);
+        const apiStatus = handleResponse(response);
+        if(apiStatus.status === 200){
+            return response.data.data;
         }
     }
 
@@ -121,14 +163,22 @@ export default function PostContextProvider({ children }){
         }
     }
 
+    async function handleDeletePost(id){
+        const response = await deleteApi('/post/delete/' + id);
+        return handleResponse(response);
+    }
+
     const ctxValue = {
         posts: posts,
+        updatePostState: handleUpdatePostState,
         submitNewPost: handleNewPost,
         getPosts: handleGetPosts,
+        getPostData: handleGetPostData,
         likePost: handleLikePost,
         likeComment: handleLikeComment,
         getComments: handleGetComments,
         newComment: handleNewComment,
+        deletePost: handleDeletePost,
     }
 
     return <PostContext.Provider value={ctxValue}>
