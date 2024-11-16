@@ -210,7 +210,7 @@ const alumniInfo = asyncHandler(async (req, res) => {
             degree: [],
             workExperience: [],
         });
-        alumniInfo.degree.push({ degree: degreeName, year, major: branch });
+        // alumniInfo.degree.push({ degree: degreeName, year, major: branch });
         alumniInfo = await alumniInfo.save();
         return res
             .status(200)
