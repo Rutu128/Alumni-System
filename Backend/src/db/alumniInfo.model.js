@@ -19,7 +19,7 @@ const alumniInfoSchema = new Schema(
             default: "NAN",
         },
         batch: {
-            type: Number,
+            type: String,
             required: true,
         },
         degreeName: {
