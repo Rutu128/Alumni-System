@@ -10,6 +10,7 @@ import { StudentInfo } from "../db/studentInfo.model.js";
 import { FacultyInfo } from "../db/facultyInfo.model.js";
 import { Otp } from "../db/otp.model.js";
 import { userDetails } from "../utils/Authenticate.js";
+import { AlumniInfo } from "../db/alumniInfo.model.js";
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
         const user = await User.findById(userId);
