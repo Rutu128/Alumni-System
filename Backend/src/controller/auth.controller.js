@@ -179,7 +179,7 @@ const facultyInfo = asyncHandler(async (req, res) => {
 const alumniInfo = asyncHandler(async (req, res) => {
     const userId = req.user._id;
     try {
-        const { status, batch, location, degreeName, collage, branch } =
+        const { c_id, status, batch, location, degreeName, collage, branch } =
             req.body;
         if (
             [
@@ -190,7 +190,8 @@ const alumniInfo = asyncHandler(async (req, res) => {
                 degreeName,
                 collage,
                 branch,
-            ].some((field) => field?.trim() === "")
+            ].some((field) => field?.trim() === "") ||
+            !batch
         ) {
             throw new ApiError(400, "Please fill all the fields");
         }
@@ -200,6 +201,7 @@ const alumniInfo = asyncHandler(async (req, res) => {
         }
         let alumniInfo = new AlumniInfo({
             userId,
+            c_id,
             status,
             graduationYear,
             degreeName,
