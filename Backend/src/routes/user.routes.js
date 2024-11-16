@@ -5,15 +5,18 @@ import {
     findUser,
     getUserDetails,
     me,
+    updateAlumniProfile,
     updateAvatar,
+    updateFacultyProfile,
     updateProfile,
+    updateStudentProfile,
 } from "../controller/user.controller.js";
 import {
     getUserPosts,
     myLikes,
     myPosts,
 } from "../controller/post.controller.js";
-import { isFaculty, isStudent } from "../utils/Authenticate.js";
+import { isAlumni, isFaculty, isStudent } from "../utils/Authenticate.js";
 import {
     alumniInfo,
     facultyInfo,
@@ -37,12 +40,19 @@ router.route("/update-avatar").post(verifyJWT, updateAvatar);
 // Student
 router.route("/student/addInfo").post(verifyJWT, isStudent, studentInfo);
 router.route("/student/verify").post(verifyJWT, isStudent, verrifyStudent);
+router.route("/student/updateInfo").post(verifyJWT, isStudent, updateStudentProfile);
+
 
 //Alumni
-router.route("/alumni/addInfo").post(verifyJWT, isStudent, alumniInfo);
+router.route("/alumni/addInfo").post(verifyJWT, isAlumni, alumniInfo);
+router.route("/alumni/updateInfo").post(verifyJWT, isAlumni, updateAlumniProfile);
+
 
 //Faculty
 
 router.route("/faculty/addInfo").post(verifyJWT, isFaculty, facultyInfo);
+router.route("/faculty/updateInfo").post(verifyJWT, isFaculty, updateFacultyProfile);
+
+
 
 export default router;

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
 import { UserContext } from '../src/context/UserContext';
 import { BrowserRouter } from 'react-router-dom';
-import Login from '../src/components/Login';
+import Login from '../src/pages/Login'
 
 const mockLoginUser = jest.fn();
 

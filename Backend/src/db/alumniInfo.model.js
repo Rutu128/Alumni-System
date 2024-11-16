@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { type } from "os";
 
 const alumniInfoSchema = new Schema(
     {
@@ -7,14 +8,18 @@ const alumniInfoSchema = new Schema(
             ref: "User",
             required: true,
         },
+        c_id: {
+            type: String,
+            required: true,
+        },
         status: {
             type: String,
             enum: ["EMPLOYED", "STUDIES", "NAN"],
             required: true,
             default: "NAN",
         },
-        graduationYear: {
-            type: Number,
+        batch: {
+            type: String,
             required: true,
         },
         degreeName: {
@@ -65,31 +70,6 @@ const alumniInfoSchema = new Schema(
                 },
             },
         ],
-        location: {
-            type: String,
-            required: true,
-        },
-        currentJob: {
-            type: String,
-        },
-        currentPosition: {
-            type: String,
-        },
-        currentCompany: {
-            type: String,
-        },
-        currentCollage: {
-            type: String,
-        },
-        currentDegree: {
-            type: String,
-        },
-        currentYear: {
-            type: Number,
-        },
-        currentMajor: {
-            type: String,
-        },
     },
     {
         timestamps: true,
