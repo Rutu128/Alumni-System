@@ -232,12 +232,11 @@ export default function UserContextProvider({ children }) {
         const res = handleResponse(response);
         if(res.status === 200 | 202){
             const newData = response.data.data;
-            console.log(newData);
             
             setUserInfo(prevInfo => {
                 return {
                     ...prevInfo,
-                    ...newData,
+                    ...newData[0].info[0],
                 }
             })
         }
@@ -277,7 +276,7 @@ export default function UserContextProvider({ children }) {
         const response = await getApi('/follow');
         const res = handleResponse(response);
         if(res.status === 200){
-            console.log(response.data.data);
+            console.log("Follow Requests: " ,response.data.data);
             return response.data.data;
         }
     }

@@ -60,21 +60,32 @@ export default function ProfileInfo({ userDetail, notOwner, showProfileEdit = ()
                 </div>
                 <div className="details u-flex-justify-center">
                     <div className="about_college_info">
-                        {userDetail.c_id &&
-                            <div className="info--cell">
-                                <div className="info--head">Student ID</div>
-                                <div className="info--value">{userDetail.c_id?.toUpperCase()}</div>
-                            </div>
-                        }
-                        {userDetail.batch &&
+                        <div className="info--cell">
+                            {userDetail.role === 'STUDENT' || userDetail.role === "ALUMNI" ?
+                                <>
+                                    <div className="info--head">Student ID</div>
+                                    <div className="info--value">{userDetail.c_id}</div>
+                                </>
+                                :
+                                <>
+                                    <div className="info--head">Faculty ID</div>
+                                    <div className="info--value">{userDetail.f_id}</div>
+                                </>
+                            }
+                        </div>
+                        {userDetail.role !== 'FACULTY' &&
                             <div className="info--cell">
                                 <div className="info--head">Batch</div>
-                                <div className="info--value">{userDetail.passingYear}</div>
+                                <div className="info--value">{userDetail.batch}</div>
                             </div>
                         }
                         <div className="info--cell">
-                            <div className="info--head">Email</div>
-                            <div className="info--value">{userDetail.email}</div>
+                            <div className="info--head">College</div>
+                            <div className="info--value">{userDetail.collage}</div>
+                        </div>
+                        <div className="info--cell">
+                            <div className="info--head">Branch</div>
+                            <div className="info--value">{userDetail.branch}</div>
                         </div>
                     </div>
                     <div className="about_text">
