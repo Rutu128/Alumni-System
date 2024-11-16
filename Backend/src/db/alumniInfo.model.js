@@ -1,5 +1,6 @@
+import bodyParser from "body-parser";
 import mongoose, { Schema } from "mongoose";
-import { type } from "os";
+// import { type } from "os";
 
 const alumniInfoSchema = new Schema(
     {
@@ -27,7 +28,7 @@ const alumniInfoSchema = new Schema(
             required: true,
         },
         collage: {
-            typeof: String,
+            type: String,
             required: true,
         },
         branch: {
@@ -40,32 +41,48 @@ const alumniInfoSchema = new Schema(
                     type: String,
                     required: true,
                 },
-                year: {
-                    type: Number,
+                startYear: {
+                    type: String,
+                    required: true,
+                },
+                endYear: {
+                    type: String,
                     required: true,
                 },
                 major: {
                     type: String,
                     required: true,
                 },
+                isPursuing: {
+                    type: Boolean,
+                    required: true,
+                },
+                college:{
+                    type: String,
+                    required: true,
+                }
             },
         ],
         workExperience: [
             {
-                companyName: {
+                company: {
                     type: String,
                     required: true,
                 },
-                role: {
+                position: {
                     type: String,
                     required: true,
                 },
-                duration: {
-                    type: Number,
+                startYear: {
+                    type: String,
                     required: true,
                 },
-                location: {
+                endYear: {
                     type: String,
+                    required: true,
+                },
+                isCurrentlyWorking: {
+                    type: Boolean,
                     required: true,
                 },
             },
