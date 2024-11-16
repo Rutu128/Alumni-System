@@ -185,7 +185,7 @@ const alumniInfo = asyncHandler(async (req, res) => {
             [
                 c_id,
                 status,
-                graduationYear,
+                batch,
                 location,
                 degreeName,
                 collage,
@@ -203,7 +203,7 @@ const alumniInfo = asyncHandler(async (req, res) => {
             userId,
             c_id,
             status,
-            graduationYear,
+            batch,
             degreeName,
             collage,
             branch,
