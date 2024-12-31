@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
     cors({
-        origin: ["http://37.27.81.8:9001", "http://localhost:5174", "http://localhost:5173","http://185.7.81.222:8001","https://alumni-system.pages.dev"],
+        origin: process.env.CLIENT_URL,
         credentials: true,
         methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS", "UPDATE", "PUT"],
     })
