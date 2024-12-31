@@ -18,7 +18,7 @@ app.use(
         methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS", "UPDATE", "PUT"],
     })
 );
-app.use(express.json({ limit: "16kb" }));
+app.use(express.json({ limit: "16kb" }));   
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
