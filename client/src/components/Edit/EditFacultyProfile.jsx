@@ -7,7 +7,7 @@ import DegreeInputContainer from "./DegreeInputContainer";
 import { DegreeDataStructure } from "../../utils/Data/GeneralDataStructures";
 
 export default function EditFacultyProfile() {
-    const { editedInfo, setEditedInfo, createNotification } = useContext(UserContext);
+    const { editedInfo, setEditedInfo, createNotification, updateUserProfile } = useContext(UserContext);
 
     const [facultyInfo, setFacultyInfo] = useState(editedInfo);
     const [selectedMenu, setSelectedMenu] = useState('General');
@@ -17,7 +17,7 @@ export default function EditFacultyProfile() {
         message: ''
     });
 
-    function submitInfo() { 
+    async function submitInfo() { 
         for (const [field, value] of Object.entries(facultyInfo)) {
             if (value === "") {
                 setSelectedMenu("General");
@@ -46,6 +46,10 @@ export default function EditFacultyProfile() {
                 degrees: degreeInfo
             }
         })
+
+        await updateUserProfile({
+            ...facultyInfo
+        });
         setTimeout(() => {
             console.log("Edited Info: ", editedInfo);
         }, 1000);

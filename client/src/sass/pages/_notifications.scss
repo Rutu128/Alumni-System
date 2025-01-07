@@ -95,9 +95,14 @@
 
         button{
             width: 8rem;
-            flex: 1;
+            height: 2.6rem !important;
+            height: auto;
+            display: flex;
+            align-items: center;
+            // flex: 1;
 
             @media (max-width: 768px) {
+
                 width: 6rem;
             }
         }

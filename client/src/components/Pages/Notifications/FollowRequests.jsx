@@ -36,37 +36,39 @@ export default function FollowRequests() {
                 </h2>
             </div>
             <div className="follow-requests-cont">
-                {followRequests.map((request, index) => {
-                    return (
-                        <div className="request" key={index}>
-                            <div className="request__cont">
-                                <div className="request__cont-left">
-                                    <div className="request__avatar">
-                                        <Link to={`/users/${request.firstName}_${request.lastName}`} state={{ userId: request.userId }} className='u-user-link'>
-                                            <UserProfile profileSrc={request.avatar} className="user-profile" />
-                                        </Link>
-                                    </div>
-                                    <div className="request__info">
-                                        <div className="request__info--head">
-                                            <Link to={`/users/${request.firstName}_${request.lastName}`} state={{ userId: request.userId }} className='u-user-link u-il-blk'>
-                                                <div className="username">{`${request.firstName} ${request.lastName}`}</div>
+                {followRequests?.map((request, index) => {
+                    if (request.status === "pending") {
+                        return (
+                            <div className="request" key={index}>
+                                <div className="request__cont">
+                                    <div className="request__cont-left">
+                                        <div className="request__avatar">
+                                            <Link to={`/users/${request.firstName}_${request.lastName}`} state={{ userId: request.userId }} className='u-user-link'>
+                                                <UserProfile profileSrc={request.avatar} className="user-profile" />
                                             </Link>
-                                            <div className="request__date u-il-blk">
-                                                {formatDate(request.updatedAt)}
-                                            </div>
                                         </div>
-                                        <p>Sent you a follow request</p>
+                                        <div className="request__info">
+                                            <div className="request__info--head">
+                                                <Link to={`/users/${request.firstName}_${request.lastName}`} state={{ userId: request.userId }} className='u-user-link u-il-blk'>
+                                                    <div className="username">{`${request.firstName} ${request.lastName}`}</div>
+                                                </Link>
+                                                <div className="request__date u-il-blk">
+                                                    {formatDate(request.updatedAt)}
+                                                </div>
+                                            </div>
+                                            <p>Sent you a follow request</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="request__btn">
-                                    <button className="u-button u-button-primary" onClick={() => {
-                                        acceptRequest(request._id);
-                                    }}>Accept</button>
-                                    <button className="u-button u-button-secondary">Decline</button>
+                                    <div className="request__btn">
+                                        <button className="u-button u-button-primary" onClick={() => {
+                                            acceptRequest(request._id);
+                                        }}>Accept</button>
+                                        <button className="u-button u-button-secondary">Decline</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )
+                        )
+                    }
                 })}
             </div>
         </div>

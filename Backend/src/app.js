@@ -13,12 +13,12 @@ const app = express();
 
 app.use(
     cors({
-        origin: ["http://37.27.81.8:9001", "http://localhost:5174", "http://localhost:5173"],
+        origin:"https://alumni-system.pages.dev",
         credentials: true,
         methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS", "UPDATE", "PUT"],
     })
 );
-app.use(express.json({ limit: "16kb" }));
+app.use(express.json({ limit: "16kb" }));   
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());

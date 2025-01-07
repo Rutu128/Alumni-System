@@ -82,6 +82,11 @@
             }
         }
     }
+    .edit-input-wrapper .input-field {
+        label, .invalid + label {
+            margin-left: 1rem !important;
+        }
+    }
 
     .input-field,
     .input-field-login {
@@ -108,11 +113,12 @@
         }
 
 
-        input[value=""]:not(:focus) {
+        input[value=""]:not(:focus), textarea[value=""]:not(:focus) {
             color: transparent;
         }
 
         input,
+        textarea,
         select {
             position: relative;
             display: inline-block;
@@ -137,7 +143,7 @@
         .edit-input {
             border-color: $color-grey-light-3;
             border-radius: .8rem;
-            padding: .5rem .8rem;
+            padding: .6rem .8rem;
             font-size: responsive-font-size(.9);
 
             // &[value=""]:not(:focus){
@@ -223,6 +229,7 @@
 
         input:focus + label,
         select:focus + label,
+        textarea:focus + label,
         .valid + label,
         .showPassword:active + label {
             background-color: #fff;
@@ -259,6 +266,23 @@
             z-index: 2;
             // color: rgba($color-theme-dark, .6);
             font-size: responsive-font-size(0.9);
+        }
+    }
+
+    .input-checkbox {
+        width: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        // justify-content: flex-start;
+        padding: .5rem;
+
+        label {
+            // display: inline-block;
+            position: relative !important;
+            transform: translateY(0) !important;
+            cursor: pointer;
+            // left: 0;
         }
     }
 }

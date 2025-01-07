@@ -1,5 +1,5 @@
 const apiInfo = {
-    URL: "http://localhost:8000",
+    URL: "https://alumni-system-4vqx.onrender.com",
 };
 
 export default apiInfo;

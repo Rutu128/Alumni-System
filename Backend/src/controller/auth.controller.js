@@ -10,6 +10,7 @@ import { StudentInfo } from "../db/studentInfo.model.js";
 import { FacultyInfo } from "../db/facultyInfo.model.js";
 import { Otp } from "../db/otp.model.js";
 import { userDetails } from "../utils/Authenticate.js";
+import { AlumniInfo } from "../db/alumniInfo.model.js";
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
         const user = await User.findById(userId);
@@ -89,10 +90,9 @@ const studentInfo = asyncHandler(async (req, res) => {
     try {
         const { c_id, c_email, batch, collage, branch } = req.body;
         if (
-            [c_id, c_email, collage, branch].some(
+            [c_id, c_email, collage, batch, branch].some(
                 (field) => field.trim() === ""
-            ) ||
-            !batch
+            )
         ) {
             throw new ApiError(400, "Please fill all the fields");
         }
@@ -141,9 +141,10 @@ const facultyInfo = asyncHandler(async (req, res) => {
         ) {
             throw new ApiError(400, "Please fill all the fields");
         }
-        const alreadyExist = await StudentInfo.findOne({
-            $or: [f_email, f_id],
+        const alreadyExist = await FacultyInfo.findOne({
+            $or: [{ f_email: f_email }, { f_id: f_id }],
         });
+
         if (alreadyExist) {
             throw new ApiError(409, "Faculty already exist");
         }
@@ -209,7 +210,7 @@ const alumniInfo = asyncHandler(async (req, res) => {
             degree: [],
             workExperience: [],
         });
-        alumniInfo.degree.push({ degree: degreeName, year, major: branch });
+        // alumniInfo.degree.push({ degree: degreeName, year, major: branch });
         alumniInfo = await alumniInfo.save();
         return res
             .status(200)
@@ -301,9 +302,9 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 
     const options = {
-        // httpOnly: true,
-        // secure: true,
-        // sameSite: "strict",
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
         maxAge: 604800000,
     };
 
@@ -419,7 +420,7 @@ const verrifyStudent = asyncHandler(async (req, res) => {
             throw new ApiError(404, "Student details not found");
         }
         res.status(200).json(new ApiResponse(200, details, "success"));
-    } catch (error) {}
+    } catch (error) { }
 });
 
 const isEmailExists = asyncHandler(async (req, res) => {
