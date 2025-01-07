@@ -49,11 +49,13 @@ import postRouter from "./routes/post.routes.js";
 import userRouter from "./routes/user.routes.js";
 import follwerRouter from "./routes/follower.routes.js";
 import jobPostRouter from "./routes/jobPost.routes.js";
+import notificationRouter from "./routes/notification.routes.js";
 // // routes Declaration
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
 app.use("/user", userRouter);
 app.use("/follow", follwerRouter);
 app.use("/jobPost", jobPostRouter);
+app.use("/notification", notificationRouter);
 
 export { app };
