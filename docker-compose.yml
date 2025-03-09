@@ -1,0 +1,14 @@
+services:
+  backend:
+    image: alumni-backend:latest
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    command: npm start
+  
+  frontend:
+    image: alumni-frontend:latest
+    ports:
+      - "5173:5173"
+    command: npm run dev
